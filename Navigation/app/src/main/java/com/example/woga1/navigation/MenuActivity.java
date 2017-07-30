@@ -8,8 +8,6 @@ import android.view.Window;
 import android.widget.EditText;
 
 public class MenuActivity extends Activity {
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
