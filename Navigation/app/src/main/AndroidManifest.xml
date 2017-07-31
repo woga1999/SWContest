@@ -24,6 +24,7 @@
             android:name=".MenuActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".SearchActivity" />
+        <activity android:name=".ReadyActivity"></activity>
     </application>
 
 </manifest>
