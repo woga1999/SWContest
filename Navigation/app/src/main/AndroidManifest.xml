@@ -23,8 +23,17 @@
         <activity
             android:name=".MenuActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".SearchActivity" />
-        <activity android:name=".ReadyActivity"></activity>
+        <activity
+            android:name=".SearchActivity"
+            android:parentActivityName=".MenuActivity" />
+        <activity
+            android:name=".ReadyActivity"
+            android:parentActivityName=".MenuActivity" />
+        <activity android:name=".NavigationActivity" />
+        <activity android:name=".BackActivity" />
+        <activity android:name=".FavoriteActivity" />
+        <activity android:name=".NearActivity" />
+        <activity android:name=".DestinationActivity"></activity>
     </application>
 
 </manifest>

@@ -20,6 +20,6 @@
         android:layout_height="52dp"
         android:layout_gravity="center"
         android:layout_weight="0.04"
-        android:src="@mipmap/circle" />
+        android:src="@mipmap/dsd"  />
 
 </LinearLayout>

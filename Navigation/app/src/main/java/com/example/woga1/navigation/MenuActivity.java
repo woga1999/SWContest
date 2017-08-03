@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
@@ -23,15 +24,19 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
         EditText search = (EditText) findViewById(R.id.search);
         imageGridView = (GridView) findViewById(R.id.gridView);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
 
+        Button button1 = (Button) findViewById(R.id.button1);
+        Button button2 = (Button) findViewById(R.id.button2);
+        Button button3 = (Button) findViewById(R.id.button3);
+        Button button4 = (Button) findViewById(R.id.button4);
+        Button button5 = (Button) findViewById(R.id.button5);
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.custom_bar);
 
         search.setMovementMethod(null);
-//        ActionBar actionBar = getSupportActionBar();
-//        actionBar.setDisplayShowHomeEnabled(true);
-//        actionBar.setIcon(R.mipmap.circle);
+
         ArrayList<Integer> imageList = new ArrayList<>();
         imageList.add(R.drawable.mapholder);
         imageList.add(R.drawable.mapholder);
@@ -64,6 +69,30 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MenuActivity.this, SearchActivity.class));
+            }
+
+        });
+
+        button1.setOnClickListener(new EditText.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MenuActivity.this, FavoriteActivity.class));
+            }
+
+        });
+
+        button2.setOnClickListener(new EditText.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MenuActivity.this, NearActivity.class));
+            }
+
+        });
+
+        button3.setOnClickListener(new EditText.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MenuActivity.this, DestinationActivity.class));
             }
 
         });

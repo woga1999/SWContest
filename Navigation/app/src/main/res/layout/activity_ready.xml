@@ -20,7 +20,7 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/anotherCourse"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1.00"
@@ -28,7 +28,7 @@
             android:text="다른경로" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/startNavigation"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="2"
