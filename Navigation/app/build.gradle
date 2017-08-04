@@ -2,10 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion '26.0.0'
     defaultConfig {
         applicationId "com.example.woga1.navigation"
-        minSdkVersion 21
+        minSdkVersion 18
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -26,6 +26,7 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    provided 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
     testCompile 'junit:junit:4.12'
     compile files('libs/com.skp.Tmap_1.0.47.jar')
 }

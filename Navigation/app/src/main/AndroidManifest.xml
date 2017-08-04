@@ -20,8 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MapActivity">
-            </activity>
+        <activity android:name=".RoadActivity"/>
+        <activity android:name=".MapActivity"/>
+        <activity android:name=".GpsActivity"/>
     </application>
 
 </manifest>
