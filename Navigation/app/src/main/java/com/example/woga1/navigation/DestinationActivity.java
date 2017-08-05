@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class DestinationActivity extends AppCompatActivity {
 
@@ -49,6 +50,11 @@ public class DestinationActivity extends AppCompatActivity {
                 // get TextView's Text.
                 String strText = (String) parent.getItemAtPosition(position) ;
 
+                Intent intents = new Intent(DestinationActivity.this, ReadyActivity.class);
+                intents.putExtra("destination", strText);
+                //Toast.makeText(getApplicationContext(),names[position], Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),strText, Toast.LENGTH_SHORT).show();
+                startActivityForResult(intents, 1);
                 // TODO : use strText
             }
         }) ;
