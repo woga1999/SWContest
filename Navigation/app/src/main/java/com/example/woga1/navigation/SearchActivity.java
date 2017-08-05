@@ -6,11 +6,15 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 
 public class SearchActivity extends AppCompatActivity {
+    static final String[] LIST_MENU = {"신도림역", "수목아트빌", "초지역", "휴먼타운"} ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +55,29 @@ public class SearchActivity extends AppCompatActivity {
             }
 
         });
+        button3.setOnClickListener(new EditText.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SearchActivity.this, DetailSearchActivity.class));
+            }
 
+        });
 
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, LIST_MENU) ;
+
+        ListView listview = (ListView) findViewById(R.id.listview1) ;
+        listview.setAdapter(adapter) ;
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View v, int position, long id) {
+
+                // get TextView's Text.
+                String strText = (String) parent.getItemAtPosition(position) ;
+
+                // TODO : use strText
+            }
+        }) ;
     }
 
 

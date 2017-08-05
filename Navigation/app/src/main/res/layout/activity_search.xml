@@ -25,7 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="최근목적지"
-            android:background="#FFFFFFFF"/>
+            android:textColor="#FFFFFF"
+            android:background="#4D4D4D"/>
 
         <Button
             android:id="@+id/button2"
@@ -33,7 +34,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="즐겨찾기"
-            android:background="#FFFFFFFF"/>
+            android:textColor="#FFFFFF"
+            android:background="#4D4D4D"/>
 
         <Button
         android:id="@+id/button3"
@@ -41,7 +43,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="주소검색"
-            android:background="#FFFFFFFF"/>
+            android:textColor="#FFFFFF"
+            android:background="#4D4D4D"/>
 
         <Button
             android:id="@+id/button4"
@@ -49,14 +52,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="지도지정"
-            android:background="#FFFFFFFF"/>
+            android:textColor="#FFFFFF"
+            android:background="#4D4D4D"/>
 
     </LinearLayout>
 
     <ListView
+        android:id="@+id/listview1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.03"
-        android:background="#FFFFFFFF"/>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

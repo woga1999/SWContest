@@ -33,7 +33,11 @@
         <activity android:name=".BackActivity" />
         <activity android:name=".FavoriteActivity" />
         <activity android:name=".NearActivity" />
-        <activity android:name=".DestinationActivity"></activity>
+        <activity android:name=".DestinationActivity" />
+        <activity
+            android:name=".StopNavigation"
+            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"></activity>
+        <activity android:name=".DetailSearchActivity"></activity>
     </application>
 
 </manifest>

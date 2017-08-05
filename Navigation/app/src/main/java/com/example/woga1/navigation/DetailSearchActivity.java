@@ -12,24 +12,25 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-public class DestinationActivity extends AppCompatActivity {
+public class DetailSearchActivity extends AppCompatActivity {
 
-    static final String[] LIST_MENU = {"홍대", "건대", "세종대학교","어린이대공원역"} ;
-
+    static final String[] LIST_MENU = {"서울특별시", "경기도", "인천광역시","강원도","경상남도","경상북도","광주광역시"
+            ,"대구광역시","대전광역시","부산광역시","세종특별자치시","울산광역시","전라남도","전라북도","제주특별자치도","충청남도","충청북도"} ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_destination);
+        setContentView(R.layout.activity_detail_search);
 
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.custom_destinationbar);
+        getSupportActionBar().setCustomView(R.layout.custom_searchbar);
 
         ImageButton backImageButton = (ImageButton) findViewById(R.id.backimageButton);
+
         backImageButton.setOnClickListener(new EditText.OnClickListener(){
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(DestinationActivity.this, MenuActivity.class));
+                startActivity(new Intent(DetailSearchActivity.this, SearchActivity.class));
             }
 
         });
@@ -49,6 +50,5 @@ public class DestinationActivity extends AppCompatActivity {
                 // TODO : use strText
             }
         }) ;
-
     }
 }
