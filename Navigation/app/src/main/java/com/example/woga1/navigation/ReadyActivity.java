@@ -17,6 +17,11 @@ public class ReadyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable());
+
+        Intent intent = getIntent();
+        final String name = intent.getExtras().getString("destination");
+        //Toast.makeText(getApplicationContext(),name,Toast.LENGTH_SHORT).show();
+
         setContentView(R.layout.activity_ready);
 
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
@@ -28,7 +33,10 @@ public class ReadyActivity extends AppCompatActivity {
         startNavigation.setOnClickListener(new EditText.OnClickListener(){
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ReadyActivity.this, NavigationActivity.class));
+                //startActivity(new Intent(ReadyActivity.this, NavigationActivity.class));
+                Intent intent = new Intent(ReadyActivity.this, NavigationActivity.class);
+                intent.putExtra("destination", name);
+                startActivityForResult(intent, 1);
             }
 
         });

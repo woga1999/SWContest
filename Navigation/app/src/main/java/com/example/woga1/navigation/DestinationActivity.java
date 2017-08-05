@@ -14,12 +14,15 @@ import android.widget.ListView;
 
 public class DestinationActivity extends AppCompatActivity {
 
-    static final String[] LIST_MENU = {"홍대", "건대", "세종대학교","어린이대공원역"} ;
+//    static final String[] LIST_MENU = {"홍대", "건대", "세종대학교","어린이대공원역"} ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_destination);
+
+        Intent intent = getIntent();
+        String[] myStrings = intent.getStringArrayExtra("destination");
 
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -34,7 +37,7 @@ public class DestinationActivity extends AppCompatActivity {
 
         });
 
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, LIST_MENU) ;
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, myStrings) ;
 
         ListView listview = (ListView) findViewById(R.id.listview1) ;
         listview.setAdapter(adapter) ;

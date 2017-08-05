@@ -4,11 +4,28 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imageView_gridItem"
+    <LinearLayout
         android:layout_width="150dp"
         android:layout_height="150dp"
-        app:srcCompat="@drawable/star" />
+        android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/imageView_gridItem"
+            android:layout_width="150dp"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            app:srcCompat="@drawable/star" />
+
+        <TextView
+            android:id="@+id/textView_gridItem"
+            android:layout_width="150dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="즐겨찾기"
+            android:textColor="#000000"
+            android:textSize="15dp" />
+
+    </LinearLayout>
 
 </LinearLayout>

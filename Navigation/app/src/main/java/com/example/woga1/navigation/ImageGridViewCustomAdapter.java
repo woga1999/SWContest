@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -17,20 +18,20 @@ import java.util.ArrayList;
 public class ImageGridViewCustomAdapter extends BaseAdapter{
 
     private Context context;
-    public ArrayList<Integer> imageArrayList;
+    public ArrayList<Player> players;
 
-    public ImageGridViewCustomAdapter(Context context, ArrayList<Integer> imageArrayList){
+    public ImageGridViewCustomAdapter(Context context, ArrayList<Player> players){
         this.context = context;
-        this.imageArrayList = imageArrayList;
+        this.players = players;
     }
     @Override
     public int getCount() {
-        return imageArrayList.size();
+        return players.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return imageArrayList.get(position);
+        return players.get(position);
     }
 
     @Override
@@ -47,7 +48,9 @@ public class ImageGridViewCustomAdapter extends BaseAdapter{
         }
 
         ImageView image = (ImageView)item.findViewById(R.id.imageView_gridItem);
-        image.setImageResource(imageArrayList.get(position));
+        image.setImageResource(players.get(position).getImg());
+        TextView txt = (TextView)item.findViewById(R.id.textView_gridItem);
+        txt.setText(players.get(position).getName());
         return item;
     }
 }
