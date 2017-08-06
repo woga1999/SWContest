@@ -28,12 +28,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".RoadActivity"/>
-        <activity android:name=".MapActivity"/>
+        <activity android:name=".MapActivity">
+
+        </activity>
         <activity android:name=".Search2Activity"/>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"/>
         <activity
             android:name=".MenuActivity"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden" >
+
+        </activity>
         <activity
             android:name=".SearchActivity"
             android:parentActivityName=".MenuActivity" />

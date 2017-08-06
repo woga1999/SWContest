@@ -9,11 +9,12 @@
     android:weightSum="1">
 
 
-    <ImageButton
-        android:id="@+id/imageButton"
+    <RelativeLayout
+        android:id="@+id/mapview"
         android:layout_width="match_parent"
-        android:layout_height="464dp"
-        app:srcCompat="@mipmap/circle" />
+        android:layout_height="406dp">
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

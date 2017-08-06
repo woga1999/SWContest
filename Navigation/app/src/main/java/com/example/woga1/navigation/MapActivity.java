@@ -56,6 +56,7 @@ public class MapActivity extends Activity implements TMapGpsManager.onLocationCh
     ArrayList<String> des = new ArrayList<String>();
     int totalDistance;
     int totalTime;
+    RelativeLayout mapview = null;
 //    String description;
     private static final String TAG = "RoadTracker";
     @Override
@@ -74,9 +75,10 @@ public class MapActivity extends Activity implements TMapGpsManager.onLocationCh
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         relativeLayout = new RelativeLayout(this);
+        mapview = (RelativeLayout) findViewById(R.id.mapview);
         //sendBroadcast(new Intent("com.skt.intent.action.GPS_TURN_ON")); //GPS를 켜놓지 않아도 현재위치를 받아와서 출발지로 인식한다.
         //alertCheckGPS();
-            execute();
+        execute();
     }
 
     public void execute() {
@@ -140,8 +142,10 @@ public class MapActivity extends Activity implements TMapGpsManager.onLocationCh
 
         String LineID = tpolyline.getID();
         tmapview.addTMapPolyLine(LineID, tpolyline);
-        relativeLayout.addView(tmapview);
-        setContentView(relativeLayout);
+//        mapview.addView(tmapview);
+//        setContentView(mapview);
+//        relativeLayout.addView(tmapview);
+//        setContentView(relativeLayout);
         double distance = totalDistance/1000;
         Toast.makeText(this, String.valueOf(distance)+"km"+String.valueOf(totalTime)+"초", Toast.LENGTH_SHORT).show();
 
@@ -154,6 +158,7 @@ public class MapActivity extends Activity implements TMapGpsManager.onLocationCh
                 Log.d(TAG, "Distance: " + wayDistance + "M");
             }
         });
+        mapview.addView(tmapview);
     }
 
 
