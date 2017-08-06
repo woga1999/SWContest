@@ -47,7 +47,7 @@ import static com.skp.Tmap.TMapView.TILETYPE_HDTILE;
  * Created by woga1 on 2017-07-28.
  */
 public class MapActivity extends Activity implements TMapGpsManager.onLocationChangedCallback, TMapView.OnCalloutRightButtonClickCallback {
-
+    //여기에 출발지와 도착지의 위도 경도를 넘기면 경로를 그린다.
     RelativeLayout relativeLayout = null;
     TMapView tmapview;
     public TMapPolyLine tpolyline;

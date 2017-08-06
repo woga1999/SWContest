@@ -18,7 +18,8 @@ import org.w3c.dom.NodeList;
  */
 
 public class RoadActivity extends Activity {
-
+    //이거 내가 여따가 길 크게하는 것 할라고
+    //근데 이거 안 될 수도 있어 틀 바뀔 위험 이씀
 
     private TMapView mMapView = null;
     public String mApiKey = "cad2cc9b-a3d5-3c32-8709-23279b7247f9";

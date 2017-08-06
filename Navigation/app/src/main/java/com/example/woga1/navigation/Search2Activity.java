@@ -17,6 +17,8 @@ import java.util.List;
  */
 
 public class Search2Activity extends AppCompatActivity {
+    //이거 나 지오코딩하려고 만든거 이여가지고 내가 적을래 (핸드쉐이크) 지오코딩 시험한 것 이라서 그냥 오빠가 출발지랑 목적지할때
+    //참고하면 될거 같아. 지오코딩이란 주소를 위도 경도로 바꾸는 것
     EditText start,end;
 
     @Override

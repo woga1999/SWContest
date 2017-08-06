@@ -19,6 +19,7 @@ import java.util.ArrayList;
 //public class GpsActivity extends AppCompatActivity
 //        implements TMapGpsManager.onLocationChangedCallback {
 public class GpsActivity extends AppCompatActivity
+    //솔직히 필요없는 Activity
         implements TMapGpsManager.onLocationChangedCallback {
 
     private Context mContext = null;
