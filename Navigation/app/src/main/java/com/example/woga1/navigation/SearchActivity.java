@@ -55,6 +55,7 @@ public class SearchActivity extends AppCompatActivity {
             }
 
         });
+
         button3.setOnClickListener(new EditText.OnClickListener(){
             @Override
             public void onClick(View view) {
