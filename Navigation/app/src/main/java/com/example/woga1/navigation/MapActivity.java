@@ -1,18 +1,22 @@
 package com.example.woga1.navigation;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.skp.Tmap.TMapData;
+import com.skp.Tmap.TMapGpsManager;
 import com.skp.Tmap.TMapMarkerItem;
 import com.skp.Tmap.TMapPoint;
 import com.skp.Tmap.TMapPolyLine;
@@ -42,13 +46,29 @@ import static com.skp.Tmap.TMapView.TILETYPE_HDTILE;
 /**
  * Created by woga1 on 2017-07-28.
  */
-public class MapActivity extends Activity{
+public class MapActivity extends Activity implements TMapGpsManager.onLocationChangedCallback, TMapView.OnCalloutRightButtonClickCallback {
+
     RelativeLayout relativeLayout = null;
     TMapView tmapview;
     public TMapPolyLine tpolyline;
     ArrayList<TMapPoint> passList = new ArrayList<TMapPoint>();
+    ArrayList<Integer> trunTypeList = new ArrayList<Integer>();
+    ArrayList<String> des = new ArrayList<String>();
     int totalDistance;
+    int totalTime;
+//    String description;
     private static final String TAG = "RoadTracker";
+    @Override
+    public void onLocationChange(Location location){
+        if(true){
+            tmapview.setLocationPoint(location.getLongitude(), location.getLatitude());
+        }
+    }
+    @Override
+    public void onCalloutRightButton(TMapMarkerItem markerItem) {
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,22 +77,16 @@ public class MapActivity extends Activity{
         //sendBroadcast(new Intent("com.skt.intent.action.GPS_TURN_ON")); //GPS를 켜놓지 않아도 현재위치를 받아와서 출발지로 인식한다.
         //alertCheckGPS();
             execute();
-
     }
-
-    public void btnNow(View v) {
-        sendBroadcast(new Intent("com.skt.intent.action.GPS_TURN_ON")); //GPS를 켜놓지 않아도 현재위치를 받아와서 출발지로 인식한다.
-    }
-
 
     public void execute() {
         //sendBroadcast(new Intent("com.skt.intent.action.GPS_TURN_ON"));
-
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         tmapview = new TMapView(this);
-//        TMapGpsManager tmapgps = new TMapGpsManager(this);
-//        tmapgps.setProvider(tmapgps.NETWORK_PROVIDER);
-//        tmapgps.OpenGps();
-//        TMapPoint point = tmapgps.getLocation();
+        TMapGpsManager tmapgps = new TMapGpsManager(this);
+        tmapgps.setProvider(tmapgps.NETWORK_PROVIDER);
+        tmapgps.OpenGps();
+        TMapPoint point = tmapgps.getLocation();
         TMapPoint tpoint1 = new TMapPoint(37.540662, 127.069235);
         TMapPoint tpoint2 = new TMapPoint(37.550447, 127.073118);
         tpolyline = new TMapPolyLine();
@@ -83,12 +97,13 @@ public class MapActivity extends Activity{
 
         tItem.setTMapPoint(tpoint1);
         tItem.setName("뚝섬유원지");
+
         tItem.setVisible(TMapMarkerItem.VISIBLE);
         TMapMarkerItem tItem2 = new TMapMarkerItem();
         tItem2.setTMapPoint(tpoint2);
         tItem2.setName("세종대학교");
         passList= getJsonData(tpoint1,tpoint2);
-        //tmapview.addMarkerItem("1", tItem);
+        tmapview.addMarkerItem("1", tItem);
         //tmapview.addMarkerItem("2", tItem2);
 
 //        TMapTapi tmaptapi = new TMapTapi(this);
@@ -104,30 +119,41 @@ public class MapActivity extends Activity{
         tmapview.setPathRotate(true); //나침반 회전 시 출,도착 아이콘을 같이 회전시킬지 여부를 결정합니다.
 
         //tpolyline = tmapdata.findPathDataWithType(TMapData.TMapPathType.CAR_PATH, tpoint1, tpoint2, passList, 0);
-
+        tmapview.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonClickCallback() {
+            @Override
+            public void onCalloutRightButton(TMapMarkerItem markerItem) {
+        }
+        });
         for(int i=0; i<passList.size(); i++)
         {
-            TMapPoint point = new TMapPoint(passList.get(i).getLatitude(), passList.get(i).getLongitude());
+            TMapPoint passpoint = new TMapPoint(passList.get(i).getLatitude(), passList.get(i).getLongitude());
 
-            TMapMarkerItem tItem1 = new TMapMarkerItem();
-            tItem1.setTMapPoint(point);
-            tmapview.addMarkerItem(String.valueOf(i), tItem1);
+            TMapMarkerItem item = new TMapMarkerItem();
+            item.setCanShowCallout(true); //풍선뷰 사용여부
+            if(des.get(i) != null) {
+                item.setCalloutTitle(des.get(i));
+            }
+            item.setTMapPoint(passpoint);
+            tmapview.addMarkerItem(String.valueOf(i), item);
+
         }
 
         String LineID = tpolyline.getID();
         tmapview.addTMapPolyLine(LineID, tpolyline);
         relativeLayout.addView(tmapview);
         setContentView(relativeLayout);
+        double distance = totalDistance/1000;
+        Toast.makeText(this, String.valueOf(distance)+"km"+String.valueOf(totalTime)+"초", Toast.LENGTH_SHORT).show();
 
-//        tmapdata.findPathDataWithType(TMapData.TMapPathType.CAR_PATH, tpoint1, tpoint2,  new TMapData.FindPathDataListenerCallback() {
-//            @Override
-//            public void onFindPathData(TMapPolyLine polyLine) {
-////폴리 라인을 그리고 시작, 끝지점의 거리를 산출하여 로그에 표시한다
-//                tmapview.addTMapPath(polyLine);
-//                double wayDistance = polyLine.getDistance();
-//                Log.d(TAG, "Distance: " + wayDistance + "M");
-//            }
-//        });
+        tmapdata.findPathDataWithType(TMapData.TMapPathType.CAR_PATH, tpoint1, tpoint2,  new TMapData.FindPathDataListenerCallback() {
+            @Override
+            public void onFindPathData(TMapPolyLine polyLine) {
+//폴리 라인을 그리고 시작, 끝지점의 거리를 산출하여 로그에 표시한다
+                tmapview.addTMapPath(polyLine);
+                double wayDistance = polyLine.getDistance();
+                Log.d(TAG, "Distance: " + wayDistance + "M");
+            }
+        });
     }
 
 
@@ -210,23 +236,27 @@ public class MapActivity extends Activity{
 
                     Log.d(TAG, "0\n");
                     JSONObject jAr = new JSONObject(responseString);
-
+                    //JSONArray jAr2 = new JSONArray(responseString);
                     Log.d(TAG, "1\n");
-
                     JSONArray features = jAr.getJSONArray("features");
                     passList = new ArrayList<>();
 
-
                     for(int i=0; i<features.length(); i++)
                     {
-                        JSONObject test2 = features.getJSONObject(i);
+                        JSONObject root = features.getJSONObject(i);
+                        JSONObject properties = root.getJSONObject("properties");
                         if(i == 0){
-                            JSONObject properties = test2.getJSONObject("properties");
+                            //JSONObject properties = root.getJSONObject("properties");
                             totalDistance += properties.getInt("totalDistance");
+                            totalTime += properties.getInt("totalTime");
                         }
-                        JSONObject geometry = test2.getJSONObject("geometry");
+                        else
+                        {
+                            String description = properties.getString("description");
+                            des.add(description);
+                        }
+                        JSONObject geometry = root.getJSONObject("geometry");
                         JSONArray coordinates = geometry.getJSONArray("coordinates");
-
 
                         String geoType = geometry.getString("type");
                         if(geoType.equals("Point"))
@@ -242,18 +272,17 @@ public class MapActivity extends Activity{
                         }
                         if(geoType.equals("LineString"))
                         {
-                            for(int j=0; j<coordinates.length(); j++)
-                            {
-                                JSONArray JLinePoint = coordinates.getJSONArray(j);
-                                double lonJson = JLinePoint.getDouble(0);
-                                double latJson = JLinePoint.getDouble(1);
+                            if(i==0) {
+                                for (int j = 0; j < coordinates.length(); j++) {
+                                    JSONArray JLinePoint = coordinates.getJSONArray(j);
+                                    double lonJson = JLinePoint.getDouble(0);
+                                    double latJson = JLinePoint.getDouble(1);
 
-                                Log.d(TAG, "-");
-                                Log.d(TAG, lonJson+","+latJson+"\n");
-                                TMapPoint point = new TMapPoint(latJson, lonJson);
-
-                                passList.add(point);
-
+                                    Log.d(TAG, "-");
+                                    Log.d(TAG, lonJson + "," + latJson + "\n");
+                                    TMapPoint point = new TMapPoint(latJson, lonJson);
+                                    passList.add(point);
+                                }
                             }
                         }
                     }
