@@ -21,7 +21,7 @@ import java.util.List;
 
 public class MenuActivity extends AppCompatActivity {
     //거의 Main화면이다. 맨처음 나오는 Activity
-    static final String[] names = {"신도림역", "수목아트빌", "초지역", "휴먼타운","","","","","","","","","","",""} ;
+    static final String[] names = {"신도림역", "수목아트빌", "초지역", "휴먼타운","화정역","","","","","","","","","",""} ;
     static final int[] images={R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,
             R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,
             R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,};
@@ -46,7 +46,7 @@ public class MenuActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.custom_bar);
 
-         search.setMovementMethod(null);
+        search.setMovementMethod(null);
 
         gv = (GridView) findViewById(R.id.gridView);
 
@@ -62,6 +62,7 @@ public class MenuActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(),names[position],Toast.LENGTH_SHORT).show();
                 //startActivity(new Intent(MenuActivity.this, ReadyActivity.class));
                 changeToLongitudeLatitude(names[position]);
+//                changeToLongitudeLatitude("서울 영등포구 도림로53길 9");
                 Intent intent = new Intent(MenuActivity.this, ReadyActivity.class);
                 intent.putExtra("destination", names[position]);
                 intent.putExtra("longtitude",longtitude);

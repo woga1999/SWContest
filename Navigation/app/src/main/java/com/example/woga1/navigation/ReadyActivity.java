@@ -73,6 +73,7 @@ public class ReadyActivity extends AppCompatActivity {
         final String name = intent.getExtras().getString("destination");
         longtitude  = intent.getExtras().getString("longtitude");
         latitude = intent.getExtras().getString("latitude");
+        Toast.makeText(getApplicationContext(),name, Toast.LENGTH_LONG).show();
         Toast.makeText(getApplicationContext(),longtitude, Toast.LENGTH_LONG).show();
         Toast.makeText(getApplicationContext(),latitude,Toast.LENGTH_SHORT).show();
 

@@ -27,11 +27,21 @@ public class SearchActivity extends AppCompatActivity {
         Button button3 = (Button) findViewById(R.id.button3);
         Button button4 = (Button) findViewById(R.id.button4);
         EditText search = (EditText) findViewById(R.id.search);
+        search.setMovementMethod(null);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.custom_searchbar);
 
         ImageButton backImageButton = (ImageButton) findViewById(R.id.backimageButton);
+
+
+        search.setOnClickListener(new EditText.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SearchActivity.this, AddressSearchActivity.class));
+            }
+
+        });
 
         backImageButton.setOnClickListener(new EditText.OnClickListener(){
             @Override

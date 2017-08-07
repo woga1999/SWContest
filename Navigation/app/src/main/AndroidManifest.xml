@@ -2,14 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.woga1.navigation">
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_OWNER_DATA"/>
-    <uses-permission android:name="android.permission.READ_OWNER_DATA"/>
-    <uses-permission android:name="android.permision.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_OWNER_DATA" />
+    <uses-permission android:name="android.permission.READ_OWNER_DATA" />
+    <uses-permission android:name="android.permision.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -27,36 +30,32 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RoadActivity"/>
-        <activity android:name=".MapActivity">
-
-        </activity>
-        <activity android:name=".Search2Activity">
-
-        </activity>
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".RoadActivity" />
+        <activity android:name=".MapActivity"></activity>
+        <activity android:name=".Search2Activity"></activity>
+        <activity android:name=".MainActivity" />
         <activity
             android:name=".MenuActivity"
-            android:windowSoftInputMode="stateHidden" >
-
-        </activity>
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".SearchActivity"
             android:parentActivityName=".MenuActivity" />
         <activity
             android:name=".ReadyActivity"
             android:parentActivityName=".MenuActivity" />
-        <activity android:name=".NavigationActivity" >
-
-        </activity>
+        <activity android:name=".NavigationActivity"></activity>
         <activity android:name=".BackActivity" />
         <activity android:name=".FavoriteActivity" />
         <activity android:name=".NearActivity" />
         <activity android:name=".DestinationActivity" />
         <activity
             android:name=".StopNavigation"
-            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"></activity>
-        <activity android:name=".DetailSearchActivity"></activity>
+            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog" />
+        <activity android:name=".DetailSearchActivity" />
+        <activity android:name=".AddressSearchActivity"
+            android:windowSoftInputMode="stateHidden">
+
+        </activity>
     </application>
 
 </manifest>
