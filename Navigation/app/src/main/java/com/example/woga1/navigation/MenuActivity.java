@@ -122,7 +122,7 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
-
+   
     private ArrayList<Player> getImageandText()
     {
         ArrayList<Player> players = new ArrayList<Player>();
