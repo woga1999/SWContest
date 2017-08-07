@@ -58,7 +58,9 @@ public class ReadyActivity extends AppCompatActivity {
     int totalDistance;
     int totalTime;
     RelativeLayout mapview = null;
-    //    String description;
+    String description;
+    String longtitude;
+    String  latitude;
     private static final String TAG = "RoadTracker";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +71,10 @@ public class ReadyActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final String name = intent.getExtras().getString("destination");
-        //Toast.makeText(getApplicationContext(),name,Toast.LENGTH_SHORT).show();
+        longtitude  = intent.getExtras().getString("longtitude");
+        latitude = intent.getExtras().getString("latitude");
+        Toast.makeText(getApplicationContext(),longtitude, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),latitude,Toast.LENGTH_SHORT).show();
 
         setContentView(R.layout.activity_ready);
 
@@ -85,6 +90,8 @@ public class ReadyActivity extends AppCompatActivity {
                 //startActivity(new Intent(ReadyActivity.this, NavigationActivity.class));
                 Intent intent = new Intent(ReadyActivity.this, NavigationActivity.class);
                 intent.putExtra("destination", name);
+                intent.putExtra("longtitude",longtitude);
+                intent.putExtra("latitude",latitude);
                 startActivityForResult(intent, 1);
             }
 
@@ -93,9 +100,8 @@ public class ReadyActivity extends AppCompatActivity {
         mapview = (RelativeLayout) findViewById(R.id.mapview);
         //sendBroadcast(new Intent("com.skt.intent.action.GPS_TURN_ON")); //GPS를 켜놓지 않아도 현재위치를 받아와서 출발지로 인식한다.
         //alertCheckGPS();
-        execute();
-
-
+//        execute();
+        execute(Double.parseDouble(longtitude), Double.parseDouble(latitude));
 
 
         backImageButton.setOnClickListener(new EditText.OnClickListener(){
@@ -107,7 +113,7 @@ public class ReadyActivity extends AppCompatActivity {
         });
     }
 
-    public void execute() {
+    public void execute(double longtitude, double latitude) {
         //sendBroadcast(new Intent("com.skt.intent.action.GPS_TURN_ON"));
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         tmapview = new TMapView(this);
@@ -115,8 +121,10 @@ public class ReadyActivity extends AppCompatActivity {
         tmapgps.setProvider(tmapgps.NETWORK_PROVIDER);
         tmapgps.OpenGps();
         TMapPoint point = tmapgps.getLocation();
-        TMapPoint tpoint1 = new TMapPoint(37.540662, 127.069235);
-        TMapPoint tpoint2 = new TMapPoint(37.550447, 127.073118);
+        TMapPoint tpoint1 = new TMapPoint(37.550447, 127.073118);
+        TMapPoint tpoint2 = new TMapPoint(latitude, longtitude);
+//        TMapPoint tpoint2 = new TMapPoint(35.666565, 127.069235);
+
         tpolyline = new TMapPolyLine();
         TMapMarkerItem tItem = new TMapMarkerItem();
         TMapData tmapdata = new TMapData();
@@ -125,6 +133,7 @@ public class ReadyActivity extends AppCompatActivity {
 
         tItem.setTMapPoint(tpoint1);
         tItem.setName("뚝섬유원지");
+//        tItem.setName("신도림역");
 
         tItem.setVisible(TMapMarkerItem.VISIBLE);
         TMapMarkerItem tItem2 = new TMapMarkerItem();
@@ -140,7 +149,7 @@ public class ReadyActivity extends AppCompatActivity {
         tmapview.setSKPMapApiKey("cad2cc9b-a3d5-3c32-8709-23279b7247f9");
         tmapview.setCompassMode(true);
         tmapview.setIconVisibility(true); //현재위치 파랑마커표시
-        tmapview.setZoomLevel(15);
+        tmapview.setZoomLevel(11);
         tmapview.setMapType(TMapView.MAPTYPE_STANDARD);
         tmapview.setLanguage(TMapView.LANGUAGE_KOREAN);
         tmapview.setTrackingMode(true); //화면중심을 단말의 현재위치로 이동시켜주는 트래킹 모드
@@ -173,7 +182,7 @@ public class ReadyActivity extends AppCompatActivity {
 //        relativeLayout.addView(tmapview);
 //        setContentView(relativeLayout);
         double distance = totalDistance/1000;
-        Toast.makeText(this, String.valueOf(distance)+"km"+String.valueOf(totalTime)+"초", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, String.valueOf(distance)+"km"+String.valueOf(totalTime)+"초", Toast.LENGTH_SHORT).show();
 
         tmapdata.findPathDataWithType(TMapData.TMapPathType.CAR_PATH, tpoint1, tpoint2,  new TMapData.FindPathDataListenerCallback() {
             @Override

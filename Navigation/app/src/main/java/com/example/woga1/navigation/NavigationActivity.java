@@ -58,6 +58,8 @@ public class NavigationActivity extends Activity {
     int totalDistance;
     int totalTime;
     RelativeLayout mapview = null;
+    String longtitude;
+    String  latitude;
     //    String description;
     private static final String TAG = "RoadTracker";
     @Override
@@ -67,6 +69,9 @@ public class NavigationActivity extends Activity {
 
         Intent intent = getIntent();
         final String name = intent.getExtras().getString("destination");
+        longtitude  = intent.getExtras().getString("longtitude");
+        latitude = intent.getExtras().getString("latitude");
+
         Toast.makeText(getApplicationContext(),name,Toast.LENGTH_SHORT).show();
 
         destinationText = (TextView) findViewById(R.id.destination);
@@ -86,11 +91,11 @@ public class NavigationActivity extends Activity {
         mapview = (RelativeLayout) findViewById(R.id.mapview);
         //sendBroadcast(new Intent("com.skt.intent.action.GPS_TURN_ON")); //GPS를 켜놓지 않아도 현재위치를 받아와서 출발지로 인식한다.
         //alertCheckGPS();
-        execute();
-
+//        execute();
+        execute(Double.parseDouble(longtitude), Double.parseDouble(latitude));
     }
 
-    public void execute() {
+    public void execute(double longtitude, double latitude) {
         //sendBroadcast(new Intent("com.skt.intent.action.GPS_TURN_ON"));
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         tmapview = new TMapView(this);
@@ -98,8 +103,8 @@ public class NavigationActivity extends Activity {
         tmapgps.setProvider(tmapgps.NETWORK_PROVIDER);
         tmapgps.OpenGps();
         TMapPoint point = tmapgps.getLocation();
-        TMapPoint tpoint1 = new TMapPoint(37.540662, 127.069235);
-        TMapPoint tpoint2 = new TMapPoint(37.550447, 127.073118);
+        TMapPoint tpoint1 = new TMapPoint(37.550447, 127.073118);
+        TMapPoint tpoint2 = new TMapPoint(latitude, longtitude);
         tpolyline = new TMapPolyLine();
         TMapMarkerItem tItem = new TMapMarkerItem();
         TMapData tmapdata = new TMapData();

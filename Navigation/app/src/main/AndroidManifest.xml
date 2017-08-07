@@ -31,7 +31,9 @@
         <activity android:name=".MapActivity">
 
         </activity>
-        <activity android:name=".Search2Activity"/>
+        <activity android:name=".Search2Activity">
+
+        </activity>
         <activity android:name=".MainActivity"/>
         <activity
             android:name=".MenuActivity"
@@ -44,7 +46,9 @@
         <activity
             android:name=".ReadyActivity"
             android:parentActivityName=".MenuActivity" />
-        <activity android:name=".NavigationActivity" />
+        <activity android:name=".NavigationActivity" >
+
+        </activity>
         <activity android:name=".BackActivity" />
         <activity android:name=".FavoriteActivity" />
         <activity android:name=".NearActivity" />
