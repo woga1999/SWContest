@@ -61,7 +61,10 @@ public class ReadyActivity extends AppCompatActivity {
     String description;
     String longtitude;
     String  latitude;
+
     private static final String TAG = "RoadTracker";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -20,6 +20,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBi3rThxI8SHZkuWTAFjPj6ehLV1yJjrHo" />
         <activity
             android:name=".LoadingActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -39,7 +42,8 @@
             android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".SearchActivity"
-            android:parentActivityName=".MenuActivity" />
+            android:parentActivityName=".MenuActivity"
+            />
         <activity
             android:name=".ReadyActivity"
             android:parentActivityName=".MenuActivity" />
@@ -53,7 +57,7 @@
             android:theme="@android:style/Theme.DeviceDefault.Light.Dialog" />
         <activity android:name=".DetailSearchActivity" />
         <activity android:name=".AddressSearchActivity"
-            android:windowSoftInputMode="stateHidden">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         </activity>
     </application>

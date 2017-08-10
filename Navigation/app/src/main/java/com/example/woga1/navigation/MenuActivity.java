@@ -21,7 +21,7 @@ import java.util.List;
 
 public class MenuActivity extends AppCompatActivity {
     //거의 Main화면이다. 맨처음 나오는 Activity
-    static final String[] names = {"신도림역", "수목아트빌", "초지역", "휴먼타운","화정역","","","","","","","","","",""} ;
+    static final String[] names = {"신도림역", "수목아트빌", "초지역", "휴먼타운","화정역","대림정보문화도서관","","","","","","","","",""} ;
     static final int[] images={R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,
             R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,
             R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,};
