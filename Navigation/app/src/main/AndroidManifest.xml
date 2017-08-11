@@ -12,7 +12,8 @@
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
-
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -23,6 +24,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBi3rThxI8SHZkuWTAFjPj6ehLV1yJjrHo" />
+
         <activity
             android:name=".LoadingActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -34,20 +36,19 @@
             </intent-filter>
         </activity>
         <activity android:name=".RoadActivity" />
-        <activity android:name=".MapActivity"></activity>
-        <activity android:name=".Search2Activity"></activity>
+        <activity android:name=".MapActivity" />
+        <activity android:name=".Search2Activity" />
         <activity android:name=".MainActivity" />
         <activity
             android:name=".MenuActivity"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".SearchActivity"
-            android:parentActivityName=".MenuActivity"
-            />
+            android:parentActivityName=".MenuActivity" />
         <activity
             android:name=".ReadyActivity"
             android:parentActivityName=".MenuActivity" />
-        <activity android:name=".NavigationActivity"></activity>
+        <activity android:name=".NavigationActivity" />
         <activity android:name=".BackActivity" />
         <activity android:name=".FavoriteActivity" />
         <activity android:name=".NearActivity" />
@@ -56,10 +57,10 @@
             android:name=".StopNavigation"
             android:theme="@android:style/Theme.DeviceDefault.Light.Dialog" />
         <activity android:name=".DetailSearchActivity" />
-        <activity android:name=".AddressSearchActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
-        </activity>
+        <activity
+            android:name=".AddressSearchActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <activity android:name=".BluetoothActivity"></activity>
     </application>
 
 </manifest>

@@ -21,13 +21,14 @@ import java.util.List;
 
 public class MenuActivity extends AppCompatActivity {
     //거의 Main화면이다. 맨처음 나오는 Activity
-    static final String[] names = {"신도림역", "수목아트빌", "초지역", "휴먼타운","화정역","대림정보문화도서관","","","","","","","","",""} ;
+    static final String[] names = {"세종대학교","어린이대공원역","신도림역","","","","","","","","","","","",""} ;
     static final int[] images={R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,
             R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,
             R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,};
     private GridView gv;
     private String longtitude;
     private String latitude;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +129,16 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MenuActivity.this, DestinationActivity.class);
                 intent.putExtra("destination", names);
+                startActivityForResult(intent, 1);
+            }
+
+        });
+
+        button4.setOnClickListener(new EditText.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuActivity.this, BluetoothActivity.class);
+//                intent.putExtra("destination", names);
                 startActivityForResult(intent, 1);
             }
 

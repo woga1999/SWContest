@@ -49,6 +49,8 @@ import java.util.List;
 import static com.skp.Tmap.TMapView.TILETYPE_HDTILE;
 public class ReadyActivity extends AppCompatActivity {
     //Navigation전 화면으로 나오는 Activity  경로안내 Activity
+//    static final String[] names = {"신도림역","초지역","화정역","","","","","","","","",""} ;
+
     RelativeLayout relativeLayout = null;
     TMapView tmapview;
     public TMapPolyLine tpolyline;
