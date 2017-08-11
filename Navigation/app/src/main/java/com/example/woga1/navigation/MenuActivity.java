@@ -34,6 +34,11 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        DestinationList destinationList = DestinationList.getInstance();
+//        destinationList.addDestination("신도림역");
+//        destinationList.addDestinationDetail("2222");
+        Toast.makeText(getApplicationContext(),destinationList.getDestination("신도림역"),Toast.LENGTH_SHORT).show();
         EditText search = (EditText) findViewById(R.id.search);
 //        imageGridView = (GridView) findViewById(R.id.gridView);
 

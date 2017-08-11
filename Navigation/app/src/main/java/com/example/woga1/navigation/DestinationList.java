@@ -1,6 +1,6 @@
 package com.example.woga1.navigation;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by Jangwon on 2017-08-11.
@@ -10,8 +10,8 @@ public class DestinationList {
 
     private static DestinationList destinationListObject;
 
-    private List<String> destination;
-    private List<String> destinationDetail;
+    private ArrayList<String> destination = new ArrayList<String>();
+    private ArrayList<String> destinationDetail = new ArrayList<String>();
 
     public static synchronized DestinationList getInstance(){
         if(destinationListObject ==null){
@@ -21,11 +21,30 @@ public class DestinationList {
     }
 
     public void addDestination(String name){
-        destination.add(name);
+        for(int i=0; i<10; i++)
+        {
+            if(destination.contains(name))
+            {
+                destination.remove(i);
+                destinationDetail.remove(i);
+            }
+        }
+        destination.add(0,name);
     }
 
     public void addDestinationDetail(String name){
-        destinationDetail.add(name);
+        destinationDetail.add(0,name);
+    }
+
+    public String  getDestination(String name) {
+        for (int i=0; i < 10; i++) {
+            if (destination.contains(name)) {
+                return destinationDetail.get(i);
+            }
+        }
+
+        return null;
+
     }
 
 
