@@ -25,7 +25,7 @@ import java.util.List;
 
 public class MenuActivity extends AppCompatActivity {
     //거의 Main화면이다. 맨처음 나오는 Activity
-    static final String[] names = {"세종대학교","어린이대공원역","신도림역","","","","","","","","","","","",""} ;
+    static final String[] names = {"","","","","","","","","","","","","","",""} ;
     List<String> destinationLists;
 
     static final int[] images={R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,
@@ -156,6 +156,11 @@ public class MenuActivity extends AppCompatActivity {
             Log.e("destination", destinationLists.get(i));
         }
 
+        for(int i=0; i<destinationLists.size();i++)
+        {
+            names[i] = destinationLists.get(i);
+            
+        }
 
         gv = (GridView) findViewById(R.id.gridView);
 
@@ -170,10 +175,10 @@ public class MenuActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 //Toast.makeText(getApplicationContext(),names[position],Toast.LENGTH_SHORT).show();
                 //startActivity(new Intent(MenuActivity.this, ReadyActivity.class));
-                changeToLongitudeLatitude(destinationLists.get(position));
+                changeToLongitudeLatitude(names[position]);
 //                changeToLongitudeLatitude("서울 영등포구 도림로53길 9");
                 Intent intent = new Intent(MenuActivity.this, ReadyActivity.class);
-                intent.putExtra("destination", destinationLists.get(position));
+                intent.putExtra("destination", names[position]);
                 intent.putExtra("longtitude",longtitude);
                 intent.putExtra("latitude",latitude);
                 startActivityForResult(intent, 1);
@@ -185,21 +190,10 @@ public class MenuActivity extends AppCompatActivity {
     private ArrayList<Player> getImageandText()
     {
         ArrayList<Player> players = new ArrayList<Player>();
-        players.add(new Player(destinationLists.get(0),images[0]));
-        players.add(new Player(destinationLists.get(1),images[1]));
-        players.add(new Player(destinationLists.get(2),images[2]));
-//        players.add(new Player(destinationLists.get(3),images[3]));
-//        players.add(new Player(destinationLists.get(4),images[4]));
-//        players.add(new Player(destinationLists.get(5),images[5]));
-//        players.add(new Player(destinationLists.get(6),images[6]));
-//        players.add(new Player(destinationLists.get(7),images[7]));
-//        players.add(new Player(destinationLists.get(8),images[8]));
-//        players.add(new Player(destinationLists.get(9),images[9]));
-//        players.add(new Player(destinationLists.get(10),images[10]));
-//        players.add(new Player(destinationLists.get(11),images[11]));
-//        players.add(new Player(destinationLists.get(12),images[12]));
-//        players.add(new Player(destinationLists.get(13),images[13]));
-//        players.add(new Player(destinationLists.get(14),images[14]));
+        for(int i=0; i<15;i++)
+        {
+            players.add(new Player(names[i],images[i]));
+        }
 
         return players;
     }
