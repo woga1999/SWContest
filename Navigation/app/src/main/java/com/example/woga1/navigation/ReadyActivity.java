@@ -1,10 +1,12 @@
 package com.example.woga1.navigation;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
@@ -18,8 +20,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.skp.Tmap.TMapData;
 import com.skp.Tmap.TMapGpsManager;
 import com.skp.Tmap.TMapMarkerItem;
@@ -64,6 +66,10 @@ public class ReadyActivity extends AppCompatActivity {
     String longtitude;
     String  latitude;
 
+    String infoFirst="1";
+    String infoSecond="2";
+    String firstData;
+    String destinationName;
     private static final String TAG = "RoadTracker";
 
 
@@ -75,18 +81,20 @@ public class ReadyActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        final String name = intent.getExtras().getString("destination");
+        destinationName = intent.getExtras().getString("destination");
         longtitude  = intent.getExtras().getString("longtitude");
         latitude = intent.getExtras().getString("latitude");
-        Toast.makeText(getApplicationContext(),name, Toast.LENGTH_LONG).show();
-        Toast.makeText(getApplicationContext(),longtitude, Toast.LENGTH_LONG).show();
-        Toast.makeText(getApplicationContext(),latitude,Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(),destinationName, Toast.LENGTH_LONG).show();
+//        Toast.makeText(getApplicationContext(),longtitude, Toast.LENGTH_LONG).show();
+//        Toast.makeText(getApplicationContext(),latitude,Toast.LENGTH_SHORT).show();
 
         setContentView(R.layout.activity_ready);
 
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.custom_readybar);
+
+        one();
 
         Button startNavigation = (Button) findViewById(R.id.startNavigation);
         ImageButton backImageButton = (ImageButton) findViewById(R.id.backimageButton);
@@ -95,7 +103,7 @@ public class ReadyActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //startActivity(new Intent(ReadyActivity.this, NavigationActivity.class));
                 Intent intent = new Intent(ReadyActivity.this, NavigationActivity.class);
-                intent.putExtra("destination", name);
+                intent.putExtra("destination", destinationName);
                 intent.putExtra("longtitude",longtitude);
                 intent.putExtra("latitude",latitude);
                 startActivityForResult(intent, 1);
@@ -117,6 +125,81 @@ public class ReadyActivity extends AppCompatActivity {
             }
 
         });
+
+
+//        SharedPreferences sharedPref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPref.edit();
+//        List<String> destinationList = new ArrayList<String>(15);
+//        destinationList.add("0");
+//        destinationList.add("김태균이");
+//        Gson gson = new Gson();
+//        String json = gson.toJson(destinationList);
+//        if(destinationName.equals("신도림역")) {
+//            editor.putString("First", json); //First라는 key값으로 1데이터를 저장한다.
+//            Log.e("test","true");
+//
+//        }
+//        else {
+//            editor.putString("Second", json); //Second라는 key값으로 2 데이터를 저장한다.
+//            Log.e("test","destinationName");
+//        }
+
+
+
+    }
+    public void one()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String listToString = sharedPreferences.getString("Destination", "a");
+        Gson gson = new Gson();
+        List<String> destinationLists;
+        destinationLists=gson.fromJson(listToString,List.class);
+        destinationLists.add(0,destinationName);
+        String json = gson.toJson(destinationLists);
+        editor.putString("Destination", json);
+        editor.commit();
+
+//        int d=destinationLists.size();
+//        String total2 = String.valueOf(d);
+//        Log.e("tests",total2);
+//        Log.e("test","사이즈0아님");
+//        Toast.makeText(getApplicationContext(),total2, Toast.LENGTH_LONG).show();
+        for(int i=1; i<destinationLists.size(); i++)
+        {
+//            Log.e("destination",destinationLists.get(i));
+//            Toast.makeText(getApplicationContext(),destinationLists.get(i), Toast.LENGTH_LONG).show();
+            if(destinationName.equals(destinationLists.get(i)))
+            {
+                destinationLists.remove(i);
+                break;
+            }
+        }
+        json = gson.toJson(destinationLists);
+        editor.putString("Destination", json);
+        editor.commit(); //완료한다.
+        for(int i=0; i<destinationLists.size(); i++) {
+            Log.e("destination", destinationLists.get(i));
+        }
+//        Toast.makeText(getApplicationContext(),,Toast.LENGTH_SHORT).show();
+//        if(destinationLists.isEmpty())
+//        {
+//            Log.e("test","사이즈0");
+//            destinationLists.add(0,destinationName);
+//        }
+//        else {
+
+//        }
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        String json = gson.toJson(destinationLists);
+//        editor.putString("First", json);
+
+//        editor.clear();
+
+//        for(int i=0; i<destinationLists.size(); i++)//
+//        {
+//            Log.e("final",destinationLists.get(i));
+//        }
     }
 
     public void execute(double longtitude, double latitude) {

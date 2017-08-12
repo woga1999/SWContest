@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 
 public class DestinationList {
-
+    //싱글톤 Activity
     private static DestinationList destinationListObject;
 
     private ArrayList<String> destination = new ArrayList<String>();
