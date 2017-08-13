@@ -25,14 +25,14 @@ import java.util.List;
 
 public class MenuActivity extends AppCompatActivity {
     //거의 Main화면이다. 맨처음 나오는 Activity
-    static final String[] names = {"","","","","","","","","","","","","","",""} ;
+    String[] names = {"","","","","","","","","","","","","","",""} ;
     List<String> destinationLists;
 
     static final int[] images={R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,
             R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,
             R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,};
     private GridView gv;
-    private String longtitude;
+    private String longitude;
     private String latitude;
 
 
@@ -177,7 +177,7 @@ public class MenuActivity extends AppCompatActivity {
 //                changeToLongitudeLatitude("서울 영등포구 도림로53길 9");
                 Intent intent = new Intent(MenuActivity.this, ReadyActivity.class);
                 intent.putExtra("destination", names[position]);
-                intent.putExtra("longtitude",longtitude);
+                intent.putExtra("longitude",longitude);
                 intent.putExtra("latitude",latitude);
                 startActivityForResult(intent, 1);
             }
@@ -232,7 +232,7 @@ public class MenuActivity extends AppCompatActivity {
 
 
                 latitude= String.valueOf(endLat);
-                longtitude= String.valueOf(endLon);
+                longitude= String.valueOf(endLon);
 //                Toast.makeText(getApplicationContext(),"start- 위도: "+String.valueOf(startLat)+" 경도: "+String.valueOf(startLon)+"  end- 위도:"+String.valueOf(endLat)+" 경도: "+String.valueOf(endLon), Toast.LENGTH_LONG).show();
                 //tv.setText(list.get(0).toString());
                 //          list.get(0).getCountryName();  // 국가명

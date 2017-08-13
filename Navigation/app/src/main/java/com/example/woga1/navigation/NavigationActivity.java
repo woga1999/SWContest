@@ -58,7 +58,7 @@ public class NavigationActivity extends Activity {
     int totalDistance;
     int totalTime;
     RelativeLayout mapview = null;
-    String longtitude;
+    String longitude;
     String  latitude;
     //    String description;
     private static final String TAG = "RoadTracker";
@@ -69,7 +69,7 @@ public class NavigationActivity extends Activity {
 
         Intent intent = getIntent();
         final String name = intent.getExtras().getString("destination");
-        longtitude  = intent.getExtras().getString("longtitude");
+        longitude  = intent.getExtras().getString("longitude");
         latitude = intent.getExtras().getString("latitude");
 
         Toast.makeText(getApplicationContext(),name,Toast.LENGTH_SHORT).show();
@@ -92,10 +92,10 @@ public class NavigationActivity extends Activity {
         //sendBroadcast(new Intent("com.skt.intent.action.GPS_TURN_ON")); //GPS를 켜놓지 않아도 현재위치를 받아와서 출발지로 인식한다.
         //alertCheckGPS();
 //        execute();
-        execute(Double.parseDouble(longtitude), Double.parseDouble(latitude));
+        execute(Double.parseDouble(longitude), Double.parseDouble(latitude));
     }
 
-    public void execute(double longtitude, double latitude) {
+    public void execute(double longitude, double latitude) {
         //sendBroadcast(new Intent("com.skt.intent.action.GPS_TURN_ON"));
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         tmapview = new TMapView(this);
@@ -104,7 +104,7 @@ public class NavigationActivity extends Activity {
         tmapgps.OpenGps();
         TMapPoint point = tmapgps.getLocation();
         TMapPoint tpoint1 = new TMapPoint(37.550447, 127.073118);
-        TMapPoint tpoint2 = new TMapPoint(latitude, longtitude);
+        TMapPoint tpoint2 = new TMapPoint(latitude, longitude);
         tpolyline = new TMapPolyLine();
         TMapMarkerItem tItem = new TMapMarkerItem();
         TMapData tmapdata = new TMapData();

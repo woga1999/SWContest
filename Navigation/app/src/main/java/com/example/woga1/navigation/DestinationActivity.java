@@ -22,8 +22,6 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.List;
 
-import static com.example.woga1.navigation.MenuActivity.names;
-
 public class DestinationActivity extends AppCompatActivity {
 //최근목적지를 나타내는 Activity
 
@@ -36,7 +34,7 @@ public class DestinationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_destination);
 
         Intent intent = getIntent();
-        String[] myStrings = intent.getStringArrayExtra("destination");
+        final String[] myStrings = intent.getStringArrayExtra("destination");
 
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -82,7 +80,7 @@ public class DestinationActivity extends AppCompatActivity {
 
                 // get TextView's Text.
                 String strText = (String) parent.getItemAtPosition(position) ;
-                changeToLongitudeLatitude(names[position]);
+                changeToLongitudeLatitude(myStrings[position]);
                 Intent intents = new Intent(DestinationActivity.this, ReadyActivity.class);
                 intents.putExtra("destination", strText);
                 intents.putExtra("longtitude",longtitude);

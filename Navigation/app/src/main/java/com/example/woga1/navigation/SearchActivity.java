@@ -1,6 +1,8 @@
 package com.example.woga1.navigation;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -28,12 +30,10 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.List;
-
-import static com.example.woga1.navigation.MenuActivity.names;
-
 
 public class SearchActivity extends AppCompatActivity implements PlaceSelectionListener {
     //검색할 때 나오는 Activity
@@ -43,7 +43,8 @@ public class SearchActivity extends AppCompatActivity implements PlaceSelectionL
     private static final int REQUEST_SELECT_PLACE = 1000;
     private TextView locationTextView;
     private TextView attributionsTextView;
-    private String longtitude;
+    private String[] names = {"","","","","","","","","","","","","","",""} ;
+    private String longitude;
     private String latitude;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +116,21 @@ public class SearchActivity extends AppCompatActivity implements PlaceSelectionL
 
         });
 
+        SharedPreferences sharedPreferences = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        String listToString = sharedPreferences.getString("Destination", null);
+        if(listToString != null) {
+            Log.e("test","null이 아님");
+            Gson gson = new Gson();
+            List<String> destinationLists;
+            destinationLists = gson.fromJson(listToString, List.class);
+
+            for (int i = 0; i < destinationLists.size(); i++) {
+                Log.e("destination", destinationLists.get(i));
+                names[i] = destinationLists.get(i);
+            }
+
+        }
+
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, names) ;
 
         ListView listview = (ListView) findViewById(R.id.listview1) ;
@@ -143,8 +159,11 @@ public class SearchActivity extends AppCompatActivity implements PlaceSelectionL
 //      changeToLongitudeLatitude("서울 영등포구 도림로53길 9");
         Intent intent = new Intent(SearchActivity.this, ReadyActivity.class);
         intent.putExtra("destination", place.getName());
-        intent.putExtra("longitude",longtitude);
+        intent.putExtra("longitude",longitude);
         intent.putExtra("latitude",latitude);
+        Log.e("long",place.getName().toString());
+        Log.e("long",longitude);
+        Log.e("long",latitude);
         startActivityForResult(intent, 1);
 
         if (!TextUtils.isEmpty(place.getAttributions())){
@@ -208,7 +227,7 @@ public class SearchActivity extends AppCompatActivity implements PlaceSelectionL
 
 
                 latitude= String.valueOf(endLat);
-                longtitude= String.valueOf(endLon);
+                longitude= String.valueOf(endLon);
 //                Toast.makeText(getApplicationContext(),"start- 위도: "+String.valueOf(startLat)+" 경도: "+String.valueOf(startLon)+"  end- 위도:"+String.valueOf(endLat)+" 경도: "+String.valueOf(endLon), Toast.LENGTH_LONG).show();
                 //tv.setText(list.get(0).toString());
                 //          list.get(0).getCountryName();  // 국가명

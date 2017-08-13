@@ -101,7 +101,7 @@ public class ReadyActivity extends AppCompatActivity {
                 //startActivity(new Intent(ReadyActivity.this, NavigationActivity.class));
                 Intent intent = new Intent(ReadyActivity.this, NavigationActivity.class);
                 intent.putExtra("destination", destinationName);
-                intent.putExtra("longtitude",longitude);
+                intent.putExtra("longitude",longitude);
                 intent.putExtra("latitude",latitude);
                 startActivityForResult(intent, 1);
             }
@@ -193,6 +193,8 @@ public class ReadyActivity extends AppCompatActivity {
 
         for(int i=0; i<destinationLists.size(); i++) {
             Log.e("destination~", destinationLists.get(i));
+            Log.e("destination~", latitudeLists.get(i));
+            Log.e("destination~", longitudeLists.get(i));
         }
 
 //        Toast.makeText(getApplicationContext(),,Toast.LENGTH_SHORT).show();
