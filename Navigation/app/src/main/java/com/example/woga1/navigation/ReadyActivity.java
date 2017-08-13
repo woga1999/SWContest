@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -20,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.skp.Tmap.TMapData;
@@ -63,12 +66,8 @@ public class ReadyActivity extends AppCompatActivity {
     int totalTime;
     RelativeLayout mapview = null;
     String description;
-    String longtitude;
+    String longitude;
     String  latitude;
-
-    String infoFirst="1";
-    String infoSecond="2";
-    String firstData;
     String destinationName;
     private static final String TAG = "RoadTracker";
 
@@ -82,11 +81,9 @@ public class ReadyActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         destinationName = intent.getExtras().getString("destination");
-        longtitude  = intent.getExtras().getString("longtitude");
+        longitude  = intent.getExtras().getString("longitude");
         latitude = intent.getExtras().getString("latitude");
-//        Toast.makeText(getApplicationContext(),destinationName, Toast.LENGTH_LONG).show();
-//        Toast.makeText(getApplicationContext(),longtitude, Toast.LENGTH_LONG).show();
-//        Toast.makeText(getApplicationContext(),latitude,Toast.LENGTH_SHORT).show();
+
 
         setContentView(R.layout.activity_ready);
 
@@ -104,18 +101,17 @@ public class ReadyActivity extends AppCompatActivity {
                 //startActivity(new Intent(ReadyActivity.this, NavigationActivity.class));
                 Intent intent = new Intent(ReadyActivity.this, NavigationActivity.class);
                 intent.putExtra("destination", destinationName);
-                intent.putExtra("longtitude",longtitude);
+                intent.putExtra("longtitude",longitude);
                 intent.putExtra("latitude",latitude);
                 startActivityForResult(intent, 1);
             }
-
         });
         relativeLayout = new RelativeLayout(this);
         mapview = (RelativeLayout) findViewById(R.id.mapview);
         //sendBroadcast(new Intent("com.skt.intent.action.GPS_TURN_ON")); //GPS를 켜놓지 않아도 현재위치를 받아와서 출발지로 인식한다.
         //alertCheckGPS();
 //        execute();
-        execute(Double.parseDouble(longtitude), Double.parseDouble(latitude));
+        execute(Double.parseDouble(longitude), Double.parseDouble(latitude));
 
 
         backImageButton.setOnClickListener(new EditText.OnClickListener(){
@@ -126,38 +122,48 @@ public class ReadyActivity extends AppCompatActivity {
 
         });
 
-
-//        SharedPreferences sharedPref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPref.edit();
-//        List<String> destinationList = new ArrayList<String>(15);
-//        destinationList.add("0");
-//        destinationList.add("김태균이");
-//        Gson gson = new Gson();
-//        String json = gson.toJson(destinationList);
-//        if(destinationName.equals("신도림역")) {
-//            editor.putString("First", json); //First라는 key값으로 1데이터를 저장한다.
-//            Log.e("test","true");
-//
-//        }
-//        else {
-//            editor.putString("Second", json); //Second라는 key값으로 2 데이터를 저장한다.
-//            Log.e("test","destinationName");
-//        }
-
-
-
     }
     public void one()
     {
         SharedPreferences sharedPreferences = getSharedPreferences("pref", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        String listToString = sharedPreferences.getString("Destination", "a");
+        String destinationListToString = sharedPreferences.getString("Destination", null);
+        String latitudeListToString = sharedPreferences.getString("Latitude",null);
+        String longitudeListToString = sharedPreferences.getString("Longitude",null);
+
         Gson gson = new Gson();
-        List<String> destinationLists;
-        destinationLists=gson.fromJson(listToString,List.class);
+        List<String> destinationLists = new ArrayList<String>();
+        List<String> latitudeLists = new ArrayList<String>();
+        List<String> longitudeLists = new ArrayList<String>();
+        if(destinationListToString != null) {
+            Log.e("test","null이 아니다");
+            destinationLists = gson.fromJson(destinationListToString, List.class);
+            latitudeLists = gson.fromJson(latitudeListToString, List.class);
+            longitudeLists = gson.fromJson(longitudeListToString, List.class);
+        }
+        if(latitude==null)
+        {
+            Log.e("latitude","null이다");
+            for(int i=0; i<destinationLists.size(); i++)
+            {
+                if(destinationName.equals(destinationLists.get(i)))
+                {
+                    latitude = latitudeLists.get(i);
+                    longitude = longitudeLists.get(i);
+                }
+            }
+        }
         destinationLists.add(0,destinationName);
+        latitudeLists.add(0,latitude);
+        longitudeLists.add(0,longitude);
+
         String json = gson.toJson(destinationLists);
         editor.putString("Destination", json);
+        json = gson.toJson(latitudeLists);
+        editor.putString("Latitude", json);
+        json = gson.toJson(longitudeLists);
+        editor.putString("Longitude", json);
+
         editor.commit();
 
 //        int d=destinationLists.size();
@@ -172,15 +178,23 @@ public class ReadyActivity extends AppCompatActivity {
             if(destinationName.equals(destinationLists.get(i)))
             {
                 destinationLists.remove(i);
+                latitudeLists.remove(i);
+                longitudeLists.remove(i);
                 break;
             }
         }
         json = gson.toJson(destinationLists);
         editor.putString("Destination", json);
+        json = gson.toJson(latitudeLists);
+        editor.putString("Latitude", json);
+        json = gson.toJson(longitudeLists);
+        editor.putString("Longitude", json);
         editor.commit(); //완료한다.
+
         for(int i=0; i<destinationLists.size(); i++) {
-            Log.e("destination", destinationLists.get(i));
+            Log.e("destination~", destinationLists.get(i));
         }
+
 //        Toast.makeText(getApplicationContext(),,Toast.LENGTH_SHORT).show();
 //        if(destinationLists.isEmpty())
 //        {
@@ -202,7 +216,9 @@ public class ReadyActivity extends AppCompatActivity {
 //        }
     }
 
-    public void execute(double longtitude, double latitude) {
+    public void execute(double longitude, double latitude) {
+        //위도 경도를 받아서 지도상에 띄움
+
         //sendBroadcast(new Intent("com.skt.intent.action.GPS_TURN_ON"));
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         tmapview = new TMapView(this);
@@ -211,7 +227,7 @@ public class ReadyActivity extends AppCompatActivity {
         tmapgps.OpenGps();
         TMapPoint point = tmapgps.getLocation();
         TMapPoint tpoint1 = new TMapPoint(37.550447, 127.073118);
-        TMapPoint tpoint2 = new TMapPoint(latitude, longtitude);
+        TMapPoint tpoint2 = new TMapPoint(latitude, longitude);
 //        TMapPoint tpoint2 = new TMapPoint(35.666565, 127.069235);
 
         tpolyline = new TMapPolyLine();
@@ -458,5 +474,51 @@ public class ReadyActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return passList;
+    }
+
+    private void changeToLongitudeLatitude(String destinations)
+    {
+        final Geocoder geocoder = new Geocoder(this);
+        List<Address> list = null;
+        List<Address> list1 = null;
+        String start = "세종대학교";
+        String destination = destinations;
+        try {
+            list = geocoder.getFromLocationName(
+                    start, // 지역 이름
+                    10); // 읽을 개수
+            list1 = geocoder.getFromLocationName(destination, 10);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("test","입출력 오류 - 서버에서 주소변환시 에러발생");
+        }
+
+        if (list != null || list1 !=null) {
+            if (list.size() == 0) {
+                Toast.makeText(getApplicationContext(),"해당되는 주소 정보는 없습니다", Toast.LENGTH_LONG).show();
+                //tv.setText("해당되는 주소 정보는 없습니다");
+            }
+            else if(list1.size() ==0) {
+                Toast.makeText(getApplicationContext(),"해당되는 주소 정보는 없습니다", Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                Address addr = list.get(0);
+                double startLat = addr.getLatitude();
+                double startLon = addr.getLongitude();
+                Address addr1 = list1.get(0);
+                double endLat = addr1.getLatitude();
+                double endLon = addr1.getLongitude();
+
+
+                latitude= String.valueOf(endLat);
+                longitude= String.valueOf(endLon);
+//                Toast.makeText(getApplicationContext(),"start- 위도: "+String.valueOf(startLat)+" 경도: "+String.valueOf(startLon)+"  end- 위도:"+String.valueOf(endLat)+" 경도: "+String.valueOf(endLon), Toast.LENGTH_LONG).show();
+                //tv.setText(list.get(0).toString());
+                //          list.get(0).getCountryName();  // 국가명
+                //          list.get(0).getLatitude();        // 위도
+                //          list.get(0).getLongitude();    // 경도
+            }
+        }
     }
 }

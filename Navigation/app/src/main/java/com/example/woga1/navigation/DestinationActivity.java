@@ -1,6 +1,8 @@
 package com.example.woga1.navigation;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -44,6 +47,26 @@ public class DestinationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(DestinationActivity.this, MenuActivity.class));
+            }
+
+        });
+
+        Button editButton = (Button) findViewById(R.id.editButton);
+        editButton.setOnClickListener(new EditText.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                SharedPreferences sharedPreferences = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+//                String listToString = sharedPreferences.getString("Destination", "a");
+//                Gson gson = new Gson();
+//                List<String> destinationLists;
+//                destinationLists=gson.fromJson(listToString,List.class);
+//                destinationLists.add(0,destinationName);
+//                String json = gson.toJson(destinationLists);
+//                editor.putString("Destination", json);
+                editor.clear();
+                editor.commit();
+                Log.e("clear","완료");
             }
 
         });

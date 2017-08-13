@@ -139,15 +139,11 @@ public class SearchActivity extends AppCompatActivity implements PlaceSelectionL
         Toast.makeText(getApplicationContext(),place.getName(),Toast.LENGTH_SHORT).show();
         Toast.makeText(getApplicationContext(),place.getAddress(),Toast.LENGTH_SHORT).show();
         Toast.makeText(getApplicationContext(),place.getPhoneNumber(),Toast.LENGTH_SHORT).show();
-//        Toast.makeText(getApplicationContext(),place.getId(),Toast.LENGTH_SHORT).show();
-//        locationTextView.setText(getString(R.string.formatted_place_data, place
-//                .getName(), place.getAddress(), place.getPhoneNumber(), place
-//                .getWebsiteUri(), place.getRating(), place.getId()));
         changeToLongitudeLatitude(place.getAddress());
-//                changeToLongitudeLatitude("서울 영등포구 도림로53길 9");
+//      changeToLongitudeLatitude("서울 영등포구 도림로53길 9");
         Intent intent = new Intent(SearchActivity.this, ReadyActivity.class);
         intent.putExtra("destination", place.getName());
-        intent.putExtra("longtitude",longtitude);
+        intent.putExtra("longitude",longtitude);
         intent.putExtra("latitude",latitude);
         startActivityForResult(intent, 1);
 

@@ -128,7 +128,6 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MenuActivity.this, BluetoothActivity.class);
-//                intent.putExtra("destination", names);
                 startActivityForResult(intent, 1);
             }
 
@@ -147,21 +146,22 @@ public class MenuActivity extends AppCompatActivity {
 //        {
 //            Log.e("test",destinationLists.get(i));
 //        }
-        List<String> abc = new ArrayList<String>();
+
         SharedPreferences sharedPreferences = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-        String listToString = sharedPreferences.getString("Destination", "a");
-        Gson gson = new Gson();
-        destinationLists=gson.fromJson(listToString,List.class);
-        for(int i=0; i<destinationLists.size(); i++) {
-            Log.e("destination", destinationLists.get(i));
-        }
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String listToString = sharedPreferences.getString("Destination", null);
+        if(listToString != null) {
+            Log.e("test","null이 아님");
+            Gson gson = new Gson();
+            List<String> destinationLists;
+            destinationLists = gson.fromJson(listToString, List.class);
 
-        for(int i=0; i<destinationLists.size();i++)
-        {
-            names[i] = destinationLists.get(i);
-            
-        }
+            for (int i = 0; i < destinationLists.size(); i++) {
+                Log.e("destination", destinationLists.get(i));
+                names[i] = destinationLists.get(i);
+            }
 
+        }
         gv = (GridView) findViewById(R.id.gridView);
 
         //Adapter
@@ -173,8 +173,6 @@ public class MenuActivity extends AppCompatActivity {
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                //Toast.makeText(getApplicationContext(),names[position],Toast.LENGTH_SHORT).show();
-                //startActivity(new Intent(MenuActivity.this, ReadyActivity.class));
                 changeToLongitudeLatitude(names[position]);
 //                changeToLongitudeLatitude("서울 영등포구 도림로53길 9");
                 Intent intent = new Intent(MenuActivity.this, ReadyActivity.class);
