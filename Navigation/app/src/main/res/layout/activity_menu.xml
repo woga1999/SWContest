@@ -123,12 +123,31 @@
         android:hint="장소/주소"
         android:paddingLeft="70dp" />
 
-    <GridView
-        android:id="@+id/gridView"
+    <Button
+        android:id="@+id/bluetooth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="#ACACAC"
+        android:layout_toEndOf="@+id/search"
+        android:text="블루투스 연동" />
+
+    <GridView
+        android:id="@+id/gridView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
         android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:paddingBottom="0dp"
+
+        android:background="#FFFFFF"
+        android:horizontalSpacing="0dp"
+        android:verticalSpacing="0dp"
+        android:listSelector="@android:color/transparent"
         android:numColumns="3" >
     </GridView>
 

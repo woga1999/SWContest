@@ -8,64 +8,86 @@
     tools:context="com.example.woga1.navigation.FavoriteActivity">
 
 
-
     <LinearLayout
+        android:id="@+id/home"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:orientation="horizontal">
+
         <ImageView
+            android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:layout_gravity="center"
+            android:layout_margin="10dp"
             android:layout_weight="1"
-            android:background="@drawable/ic_home_black_24dp"
-        />
+            android:background="@drawable/ic_home_black_24dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="5"
             android:text="집"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/homeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="16"
-            android:textSize="20dp"/>
+            android:layout_weight="15"
+            android:textSize="20dp" />
+
         <ImageButton
+            android:id="@+id/homeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="@drawable/ic_check_black_24dp"/>
+            android:background="@drawable/ic_check_black_24dp" />
     </LinearLayout>
+
     <LinearLayout
+        android:id="@+id/company"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:orientation="horizontal">
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:layout_gravity="center"
+            android:layout_margin="10dp"
             android:layout_weight="1"
-            android:background="@drawable/ic_work_black_24dp"
-            />
+            android:background="@drawable/ic_work_black_24dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="회사"
             android:layout_gravity="center"
-            android:layout_weight="16"
-            android:textSize="20dp"/>
+            android:layout_weight="5"
+            android:text="회사"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/companyName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="15"
+            android:textSize="20dp" />
+
         <ImageButton
+            android:id="@+id/companyButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:background="@drawable/ic_check_black_24dp"/>
+            android:background="@drawable/ic_check_black_24dp" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/listview1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <!--<ListView-->d:layout_height="wrap_content" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -93,4 +115,11 @@
             android:layout_weight="1"
             android:background="@drawable/ic_check_black_24dp"/>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="edit삭제" />
+
 </LinearLayout>

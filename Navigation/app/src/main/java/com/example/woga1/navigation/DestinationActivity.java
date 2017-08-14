@@ -26,7 +26,7 @@ public class DestinationActivity extends AppCompatActivity {
 //최근목적지를 나타내는 Activity
 
 //    static final String[] LIST_MENU = {"홍대", "건대", "세종대학교","어린이대공원역"} ;
-    private String longtitude;
+    private String longitude;
     private String latitude;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +83,7 @@ public class DestinationActivity extends AppCompatActivity {
                 changeToLongitudeLatitude(myStrings[position]);
                 Intent intents = new Intent(DestinationActivity.this, ReadyActivity.class);
                 intents.putExtra("destination", strText);
-                intents.putExtra("longtitude",longtitude);
+                intents.putExtra("longitude",longitude);
                 intents.putExtra("latitude",latitude);
                 //Toast.makeText(getApplicationContext(),names[position], Toast.LENGTH_SHORT).show();
                 Toast.makeText(getApplicationContext(),strText, Toast.LENGTH_SHORT).show();
@@ -134,7 +134,7 @@ public class DestinationActivity extends AppCompatActivity {
 
 
                 latitude= String.valueOf(endLat);
-                longtitude= String.valueOf(endLon);
+                longitude= String.valueOf(endLon);
 //                Toast.makeText(getApplicationContext(),"start- 위도: "+String.valueOf(startLat)+" 경도: "+String.valueOf(startLon)+"  end- 위도:"+String.valueOf(endLat)+" 경도: "+String.valueOf(endLon), Toast.LENGTH_LONG).show();
                 //tv.setText(list.get(0).toString());
                 //          list.get(0).getCountryName();  // 국가명
