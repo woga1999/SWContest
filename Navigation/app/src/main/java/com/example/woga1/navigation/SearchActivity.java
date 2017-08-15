@@ -69,7 +69,6 @@ public class SearchActivity extends AppCompatActivity implements PlaceSelectionL
         search.setOnClickListener(new EditText.OnClickListener(){
             @Override
             public void onClick(View view) {
-//                startActivity(new Intent(SearchActivity.this, AddressSearchActivity.class));
                 try {
                     Intent intent = new PlaceAutocomplete.IntentBuilder
                             (PlaceAutocomplete.MODE_FULLSCREEN)

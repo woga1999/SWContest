@@ -296,8 +296,8 @@ public class ReadyActivity extends AppCompatActivity {
         tpolyline = new TMapPolyLine();
         TMapMarkerItem tItem = new TMapMarkerItem();
         TMapData tmapdata = new TMapData();
-        tmapview.setLocationPoint(tpoint1.getLongitude(),tpoint1.getLatitude());
-
+//        tmapview.setLocationPoint(tpoint1.getLongitude(),tpoint1.getLatitude());
+        tmapview.setMapPosition(TMapView.POSITION_NAVI);
 
         tItem.setTMapPoint(tpoint1);
         tItem.setName("뚝섬유원지");

@@ -70,10 +70,6 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        DestinationList destinationList = DestinationList.getInstance();
-//        destinationList.addDestination("신도림역");
-//        destinationList.addDestinationDetail("2222");
-        Toast.makeText(getApplicationContext(),destinationList.getDestination("신도림역"),Toast.LENGTH_SHORT).show();
         EditText search = (EditText) findViewById(R.id.search);
 //        imageGridView = (GridView) findViewById(R.id.gridView);
 
@@ -300,12 +296,12 @@ public class MenuActivity extends AppCompatActivity {
         // Activity being restarted from stopped state
     }
 
-    private ArrayList<Player> getImageandText()
+    private ArrayList<GridViewVO> getImageandText()
     {
-        ArrayList<Player> players = new ArrayList<Player>();
+        ArrayList<GridViewVO> players = new ArrayList<GridViewVO>();
         for(int i=0; i<15;i++)
         {
-            players.add(new Player(names[i],images[i]));
+            players.add(new GridViewVO(names[i],images[i]));
         }
 
         return players;

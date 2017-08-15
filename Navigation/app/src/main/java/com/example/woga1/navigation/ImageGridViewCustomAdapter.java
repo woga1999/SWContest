@@ -18,20 +18,20 @@ import java.util.ArrayList;
 public class ImageGridViewCustomAdapter extends BaseAdapter{
     //Menu의 그리드뷰에 이미지랑 텍스트 넣는  Activity
     private Context context;
-    public ArrayList<Player> players;
+    public ArrayList<GridViewVO> gridViewVO;
 
-    public ImageGridViewCustomAdapter(Context context, ArrayList<Player> players){
+    public ImageGridViewCustomAdapter(Context context, ArrayList<GridViewVO> gridViewVO){
         this.context = context;
-        this.players = players;
+        this.gridViewVO = gridViewVO;
     }
     @Override
     public int getCount() {
-        return players.size();
+        return gridViewVO.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return players.get(position);
+        return gridViewVO.get(position);
     }
 
     @Override
@@ -48,9 +48,9 @@ public class ImageGridViewCustomAdapter extends BaseAdapter{
         }
 
         ImageView image = (ImageView)item.findViewById(R.id.imageView_gridItem);
-        image.setImageResource(players.get(position).getImg());
+        image.setImageResource(gridViewVO.get(position).getImg());
         TextView txt = (TextView)item.findViewById(R.id.textView_gridItem);
-        txt.setText(players.get(position).getName());
+        txt.setText(gridViewVO.get(position).getName());
         return item;
     }
 }

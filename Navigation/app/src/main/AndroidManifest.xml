@@ -38,9 +38,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RoadActivity" />
-        <activity android:name=".MapActivity" />
-        <activity android:name=".Search2Activity" />
         <activity android:name=".MainActivity" />
         <activity
             android:name=".MenuActivity"
@@ -52,7 +49,6 @@
             android:name=".ReadyActivity"
             android:parentActivityName=".MenuActivity" />
         <activity android:name=".NavigationActivity" />
-        <activity android:name=".BackActivity" />
         <activity android:name=".FavoriteActivity" />
         <activity android:name=".NearActivity" />
         <activity android:name=".DestinationActivity" />
@@ -60,9 +56,6 @@
             android:name=".StopNavigation"
             android:theme="@android:style/Theme.DeviceDefault.Light.Dialog" />
         <activity android:name=".DetailSearchActivity" />
-        <activity
-            android:name=".AddressSearchActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".BluetoothActivity" />
         <activity android:name=".NoticeActivity" />
         <activity

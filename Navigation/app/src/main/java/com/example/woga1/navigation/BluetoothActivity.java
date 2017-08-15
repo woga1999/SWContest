@@ -25,7 +25,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class BluetoothActivity extends AppCompatActivity {
-
+    //블루투스 연결 Activity
     private final int REQUEST_BLUETOOTH_ENABLE = 100;
 
     private TextView mConnectionStatus;
