@@ -19,9 +19,9 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
-        android:background="@drawable/good"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:background="@drawable/uicon"
         android:layout_gravity="center"/>
     <ImageView
         android:id="@+id/imageView3"

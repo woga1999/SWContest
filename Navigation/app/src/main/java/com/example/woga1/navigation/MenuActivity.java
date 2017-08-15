@@ -4,14 +4,19 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -157,6 +162,15 @@ public class MenuActivity extends AppCompatActivity {
 
         });
 
+        button5.setOnClickListener(new EditText.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MenuActivity.this, NoticeActivity.class);
+                startActivityForResult(intent, 1);
+            }
+
+        });
+
 //        SharedPreferences test = getSharedPreferences("pref", MODE_PRIVATE);
 //        String firstData = test.getString("First", "a");
 ////        Toast.makeText(getApplicationContext(),firstData,Toast.LENGTH_SHORT).show();
@@ -208,28 +222,83 @@ public class MenuActivity extends AppCompatActivity {
         });
 
 
-        Log.d( TAG, "Initalizing Bluetooth adapter...");
-        //1.블루투스 사용 가능한지 검사합니다.
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (mBluetoothAdapter == null) {
-            showErrorDialog("This device is not implement Bluetooth.");
-            return;
+//        Log.d( TAG, "Initalizing Bluetooth adapter...");
+//        //1.블루투스 사용 가능한지 검사합니다.
+//        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+//        if (mBluetoothAdapter == null) {
+//            showErrorDialog("This device is not implement Bluetooth.");
+//            return;
+//        }
+//
+//        if (!mBluetoothAdapter.isEnabled()) {
+//            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//            startActivityForResult(intent, REQUEST_BLUETOOTH_ENABLE);
+//        }
+//        else {
+//            Log.d(TAG, "Initialisation successful.");
+//
+//            //2. 페어링 되어 있는 블루투스 장치들의 목록을 보여줍니다.
+//            //3. 목록에서 블루투스 장치를 선택하면 선택한 디바이스를 인자로 하여
+//            //   doConnect 함수가 호출됩니다.
+//            showPairedDevicesListDialog();
+//        }
+//        chkGpsService();
+        alertCheckGPS();
+
+        if( !isNetworkConnected(this) ){
+            Toast.makeText(getApplicationContext(),"YEs",Toast.LENGTH_LONG).show();
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("네트워크 연결 오류").setMessage("네트워크 연결 상태 확인 후 다시 시도해 주십시요.")
+                    .setPositiveButton("확인", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick( DialogInterface dialog, int which )
+                        {
+                            finish();
+                        }
+                    }).show();
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"NO",Toast.LENGTH_LONG).show();
         }
 
-        if (!mBluetoothAdapter.isEnabled()) {
-            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(intent, REQUEST_BLUETOOTH_ENABLE);
-        }
-        else {
-            Log.d(TAG, "Initialisation successful.");
 
-            //2. 페어링 되어 있는 블루투스 장치들의 목록을 보여줍니다.
-            //3. 목록에서 블루투스 장치를 선택하면 선택한 디바이스를 인자로 하여
-            //   doConnect 함수가 호출됩니다.
-            showPairedDevicesListDialog();
+
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.e("onStart","true");
+        alertCheckGPS();
+        if( !isNetworkConnected(this) ){
+            Toast.makeText(getApplicationContext(),"YEs",Toast.LENGTH_LONG).show();
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("네트워크 연결 오류").setMessage("네트워크 연결 상태 확인 후 다시 시도해 주십시요.")
+                    .setPositiveButton("확인", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick( DialogInterface dialog, int which )
+                        {
+                            finish();
+                        }
+                    }).show();
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"NO",Toast.LENGTH_LONG).show();
         }
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();  // Always call the superclass method first
+//        Log.e("onRestart","true");
+//        alertCheckGPS();
+        // Activity being restarted from stopped state
+    }
 
     private ArrayList<Player> getImageandText()
     {
@@ -606,6 +675,91 @@ public class MenuActivity extends AppCompatActivity {
                 showQuitDialog( "You need to enable bluetooth");
             }
         }
+    }
+
+    private boolean chkGpsService() {
+
+        //GPS가 켜져 있는지 확인함.
+        String gpsEnabled = android.provider.Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+
+        if (!(gpsEnabled.matches(".*gps.*") && gpsEnabled.matches(".*network.*"))) {
+            //gps가 사용가능한 상태가 아니면
+            new AlertDialog.Builder(this).setTitle("GPS 설정").setMessage("GPS가 꺼져 있습니다. \nGPS를 활성화 하시겠습니까?").setPositiveButton("GPS 켜기", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int which) {
+                    //GPS 설정 화면을 띄움
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
+            }).setNegativeButton("닫기", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                }
+            }).create().show();
+
+        } else if ((gpsEnabled.matches(".*gps.*") && gpsEnabled.matches(".*network.*"))) {
+            Toast.makeText(getApplicationContext(), "정보를 읽어오는 중입니다.", Toast.LENGTH_LONG).show();
+//                Intent  intent = new Intent(this, CurrentLocatinActivity.class); //현재 위치 화면 띄우기 위해 인텐트 실행.
+//                startActivity(intent);
+        }
+        return false;
+    }
+
+    public boolean isNetworkConnected(Context context){
+        boolean isConnected = false;
+
+        ConnectivityManager manager =
+                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        if (mobile.isConnected() || wifi.isConnected()){
+            isConnected = true;
+        }else{
+            isConnected = false;
+        }
+        return isConnected;
+    }
+
+
+
+
+
+    private void alertCheckGPS() { //gps 꺼져있으면 켤 껀지 체크
+//
+//        Intent intent = new Intent(NoticeActivity.this, gpsCheck.class);
+//        startActivityForResult(intent, 1);
+        LocationManager locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        if(!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Handlear을 이용하시려면 \n[위치] 권한을 허용해 주세요")
+                    .setCancelable(false)
+                    .setPositiveButton("확인",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    moveConfigGPS();
+                                }
+                            });
+//                    .setNegativeButton("취소",
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    dialog.cancel();
+//                                }
+//                            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(),"OK",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    // GPS 설정화면으로 이동
+    private void moveConfigGPS() {
+        Intent gpsOptionsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        startActivity(gpsOptionsIntent);
     }
 
 }

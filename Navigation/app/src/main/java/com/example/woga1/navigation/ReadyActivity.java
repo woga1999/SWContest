@@ -12,6 +12,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
@@ -121,8 +123,67 @@ public class ReadyActivity extends AppCompatActivity {
             }
 
         });
+        alertCheckGPS();
+        if( !isNetworkConnected(this) ){
+            Toast.makeText(getApplicationContext(),"YEs",Toast.LENGTH_LONG).show();
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("네트워크 연결 오류").setMessage("네트워크 연결 상태 확인 후 다시 시도해 주십시요.")
+                    .setPositiveButton("확인", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick( DialogInterface dialog, int which )
+                        {
+                            finish();
+                        }
+                    }).show();
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"NO",Toast.LENGTH_LONG).show();
+        }
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.e("onStart","true");
+        alertCheckGPS();
+        if( !isNetworkConnected(this) ){
+            Toast.makeText(getApplicationContext(),"YEs",Toast.LENGTH_LONG).show();
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("네트워크 연결 오류").setMessage("네트워크 연결 상태 확인 후 다시 시도해 주십시요.")
+                    .setPositiveButton("확인", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick( DialogInterface dialog, int which )
+                        {
+                            finish();
+                        }
+                    }).show();
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"NO",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public boolean isNetworkConnected(Context context){
+        boolean isConnected = false;
+
+        ConnectivityManager manager =
+                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        if (mobile.isConnected() || wifi.isConnected()){
+            isConnected = true;
+        }else{
+            isConnected = false;
+        }
+        return isConnected;
+    }
+
     public void one()
     {
         SharedPreferences sharedPreferences = getSharedPreferences("pref", Activity.MODE_PRIVATE);
@@ -256,7 +317,8 @@ public class ReadyActivity extends AppCompatActivity {
         tmapview.setSKPMapApiKey("cad2cc9b-a3d5-3c32-8709-23279b7247f9");
         tmapview.setCompassMode(true);
         tmapview.setIconVisibility(true); //현재위치 파랑마커표시
-        tmapview.setZoomLevel(11);
+//        tmapview.setZoomLevel(11);
+        setMapView(totalDistance);
         tmapview.setMapType(TMapView.MAPTYPE_STANDARD);
         tmapview.setLanguage(TMapView.LANGUAGE_KOREAN);
         tmapview.setTrackingMode(true); //화면중심을 단말의 현재위치로 이동시켜주는 트래킹 모드
@@ -289,6 +351,7 @@ public class ReadyActivity extends AppCompatActivity {
 //        relativeLayout.addView(tmapview);
 //        setContentView(relativeLayout);
         double distance = totalDistance/1000;
+
 //        Toast.makeText(this, String.valueOf(distance)+"km"+String.valueOf(totalTime)+"초", Toast.LENGTH_SHORT).show();
 
         tmapdata.findPathDataWithType(TMapData.TMapPathType.CAR_PATH, tpoint1, tpoint2,  new TMapData.FindPathDataListenerCallback() {
@@ -303,33 +366,19 @@ public class ReadyActivity extends AppCompatActivity {
         mapview.addView(tmapview);
     }
 
-    private void alertCheckGPS() { //gps 꺼져있으면 켤 껀지 체크
-        LocationManager locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        if(!locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("현재 GPS가 꺼져있습니다.켜시겠습니까?")
-                    .setCancelable(false)
-                    .setPositiveButton("확인",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    moveConfigGPS();
-                                }
-                            })
-                    .setNegativeButton("취소",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-    }
 
-    // GPS 설정화면으로 이동
-    private void moveConfigGPS() {
-        Intent gpsOptionsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        startActivity(gpsOptionsIntent);
+    // 경로안내 시작 누르기 전에, 전체경로를 보여주는 지도 셋팅부분
+    public void setMapView(int total_distance) {
+        int set_zoom_level = 0;                                             // 7-19 레벨 설정가능
+        if (total_distance < 1000) set_zoom_level = 17;                    // 1km
+        else if (total_distance < 5000) set_zoom_level = 14;               // 5km
+        else if (total_distance < 10000) set_zoom_level = 12;              // 10km
+        else if (total_distance < 30000) set_zoom_level = 11;              // 30km
+        else if (total_distance < 70000) set_zoom_level = 10;              // 70km
+        else if (total_distance < 150000) set_zoom_level = 9;              // 150km
+        else set_zoom_level = 7;                                            // 그 이상
+
+        tmapview.setZoomLevel(set_zoom_level);
     }
 
     public ArrayList<TMapPoint> getJsonData(final TMapPoint startPoint, final TMapPoint endPoint)
@@ -522,5 +571,40 @@ public class ReadyActivity extends AppCompatActivity {
                 //          list.get(0).getLongitude();    // 경도
             }
         }
+    }
+
+    private void alertCheckGPS() { //gps 꺼져있으면 켤 껀지 체크
+//        Intent intent = new Intent(NoticeActivity.this, gpsCheck.class);
+//        startActivityForResult(intent, 1);
+        LocationManager locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        if(!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Handlear을 이용하시려면 \n[위치] 권한을 허용해 주세요")
+                    .setCancelable(false)
+                    .setPositiveButton("확인",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    moveConfigGPS();
+                                }
+                            });
+//                    .setNegativeButton("취소",
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    dialog.cancel();
+//                                }
+//                            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(),"OK",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    // GPS 설정화면으로 이동
+    private void moveConfigGPS() {
+        Intent gpsOptionsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        startActivity(gpsOptionsIntent);
     }
 }

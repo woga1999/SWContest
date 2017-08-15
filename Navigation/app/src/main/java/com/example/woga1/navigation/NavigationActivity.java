@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -93,8 +95,65 @@ public class NavigationActivity extends Activity {
         //alertCheckGPS();
 //        execute();
         execute(Double.parseDouble(longitude), Double.parseDouble(latitude));
+        alertCheckGPS();
+        if( !isNetworkConnected(this) ){
+            Toast.makeText(getApplicationContext(),"YEs",Toast.LENGTH_LONG).show();
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("네트워크 연결 오류").setMessage("네트워크 연결 상태 확인 후 다시 시도해 주십시요.")
+                    .setPositiveButton("확인", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick( DialogInterface dialog, int which )
+                        {
+                            finish();
+                        }
+                    }).show();
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"NO",Toast.LENGTH_LONG).show();
+        }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.e("onStart","true");
+        alertCheckGPS();
+        if( !isNetworkConnected(this) ){
+            Toast.makeText(getApplicationContext(),"YEs",Toast.LENGTH_LONG).show();
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("네트워크 연결 오류").setMessage("네트워크 연결 상태 확인 후 다시 시도해 주십시요.")
+                    .setPositiveButton("확인", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick( DialogInterface dialog, int which )
+                        {
+                            finish();
+                        }
+                    }).show();
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"NO",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public boolean isNetworkConnected(Context context){
+        boolean isConnected = false;
+
+        ConnectivityManager manager =
+                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        if (mobile.isConnected() || wifi.isConnected()){
+            isConnected = true;
+        }else{
+            isConnected = false;
+        }
+        return isConnected;
+    }
     public void execute(double longitude, double latitude) {
         //sendBroadcast(new Intent("com.skt.intent.action.GPS_TURN_ON"));
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
@@ -175,34 +234,6 @@ public class NavigationActivity extends Activity {
         mapview.addView(tmapview);
     }
 
-    private void alertCheckGPS() { //gps 꺼져있으면 켤 껀지 체크
-        LocationManager locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        if(!locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("현재 GPS가 꺼져있습니다.켜시겠습니까?")
-                    .setCancelable(false)
-                    .setPositiveButton("확인",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    moveConfigGPS();
-                                }
-                            })
-                    .setNegativeButton("취소",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-    }
-
-    // GPS 설정화면으로 이동
-    private void moveConfigGPS() {
-        Intent gpsOptionsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        startActivity(gpsOptionsIntent);
-    }
 
     public ArrayList<TMapPoint> getJsonData(final TMapPoint startPoint, final TMapPoint endPoint)
     {
@@ -348,5 +379,40 @@ public class NavigationActivity extends Activity {
             e.printStackTrace();
         }
         return passList;
+    }
+
+    private void alertCheckGPS() { //gps 꺼져있으면 켤 껀지 체크
+//        Intent intent = new Intent(NoticeActivity.this, gpsCheck.class);
+//        startActivityForResult(intent, 1);
+        LocationManager locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        if(!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Handlear을 이용하시려면 \n[위치] 권한을 허용해 주세요")
+                    .setCancelable(false)
+                    .setPositiveButton("확인",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    moveConfigGPS();
+                                }
+                            });
+//                    .setNegativeButton("취소",
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    dialog.cancel();
+//                                }
+//                            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(),"OK",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    // GPS 설정화면으로 이동
+    private void moveConfigGPS() {
+        Intent gpsOptionsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        startActivity(gpsOptionsIntent);
     }
 }
