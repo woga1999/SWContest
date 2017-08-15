@@ -11,10 +11,23 @@
         <!--android:text="로딩"-->
         <!--android:layout_gravity="center_horizontal"-->
         <!--android:textSize="30dp" />-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"></LinearLayout>
 
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:id="@+id/imageView2"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:background="@drawable/good"
+        android:layout_gravity="center"/>
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
         android:layout_gravity="center"
-        android:background="@mipmap/dsd" />
+        android:background="@drawable/handleartext" />
+
 </LinearLayout>

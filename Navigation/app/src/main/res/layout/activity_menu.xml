@@ -47,7 +47,7 @@
             android:layout_height="70dp"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/ic_directions_car_black_24dp"
+            android:background="@drawable/ic_bluetooth_black_24dp"
             android:text="" />
 
         <Button
@@ -100,7 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="차 아이콘"
+            android:text="블루투스"
             android:textColor="#000000" />
 
         <TextView
@@ -123,14 +123,6 @@
         android:hint="장소/주소"
         android:paddingLeft="70dp" />
 
-    <Button
-        android:id="@+id/bluetooth"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:background="#ACACAC"
-        android:layout_toEndOf="@+id/search"
-        android:text="블루투스 연동" />
 
     <GridView
         android:id="@+id/gridView"

@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,31 +57,7 @@ public class BluetoothActivity extends AppCompatActivity {
         mInputEditText = (EditText)findViewById(R.id.input_string_edittext);
         ListView mMessageListview = (ListView) findViewById(R.id.message_listview);
 
-        mConversationArrayAdapter = new ArrayAdapter<>( this,
-                android.R.layout.simple_list_item_1 );
-        mMessageListview.setAdapter(mConversationArrayAdapter);
 
-
-        Log.d( TAG, "Initalizing Bluetooth adapter...");
-        //1.블루투스 사용 가능한지 검사합니다.
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (mBluetoothAdapter == null) {
-            showErrorDialog("This device is not implement Bluetooth.");
-            return;
-        }
-
-        if (!mBluetoothAdapter.isEnabled()) {
-            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(intent, REQUEST_BLUETOOTH_ENABLE);
-        }
-        else {
-            Log.d(TAG, "Initialisation successful.");
-
-            //2. 페어링 되어 있는 블루투스 장치들의 목록을 보여줍니다.
-            //3. 목록에서 블루투스 장치를 선택하면 선택한 디바이스를 인자로 하여
-            //   doConnect 함수가 호출됩니다.
-            showPairedDevicesListDialog();
-        }
     }
     @Override
     protected void onDestroy() {
@@ -94,7 +71,7 @@ public class BluetoothActivity extends AppCompatActivity {
 
     //runs while listening for incoming connections.
     private class ConnectTask extends AsyncTask<Void, Void, Boolean> {
-
+        //블루투스 연결중
         private BluetoothSocket mBluetoothSocket = null;
         private BluetoothDevice mBluetoothDevice = null;
 
@@ -173,7 +150,7 @@ public class BluetoothActivity extends AppCompatActivity {
      * It handles all incoming and outgoing transmissions.
      */
     private class ConnectedTask extends AsyncTask<Void, String, Boolean> {
-
+        //블루투스 연결완료
         private InputStream mInputStream = null;
         private OutputStream mOutputStream = null;
         private BluetoothSocket mBluetoothSocket = null;
@@ -303,6 +280,7 @@ public class BluetoothActivity extends AppCompatActivity {
 
     public void showPairedDevicesListDialog()
     {
+        //paried된 디바이스 목록 보여줌
         Set<BluetoothDevice> devices = mBluetoothAdapter.getBondedDevices();
         final BluetoothDevice[] pairedDevices = devices.toArray(new BluetoothDevice[0]);
 
@@ -338,21 +316,22 @@ public class BluetoothActivity extends AppCompatActivity {
 
     public void showErrorDialog(String message)
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Quit");
-        builder.setCancelable(false);
-        builder.setMessage(message);
-        builder.setPositiveButton("OK",  new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                if ( isConnectionError  ) {
-                    isConnectionError = false;
-                    finish();
-                }
-            }
-        });
-        builder.create().show();
+        Toast.makeText(getApplicationContext(),"블루투스 연결 실패",Toast.LENGTH_SHORT).show();
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("Quit");
+//        builder.setCancelable(false);
+//        builder.setMessage(message);
+//        builder.setPositiveButton("OK",  new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//                if ( isConnectionError  ) {
+//                    isConnectionError = false;
+//                    finish();
+//                }
+//            }
+//        });
+//        builder.create().show();
     }
 
 
@@ -384,7 +363,7 @@ public class BluetoothActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        //블루투스 연결
         if(requestCode == REQUEST_BLUETOOTH_ENABLE){
             if (resultCode == RESULT_OK){
                 //BlueTooth is now Enabled
