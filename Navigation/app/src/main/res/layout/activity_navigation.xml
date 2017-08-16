@@ -88,17 +88,17 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/gpsFloating"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_above="@+id/destination"
             android:layout_alignParentStart="true"
             android:elevation="10dp"
             android:scaleType="fitXY"
-            app:backgroundTint="#617E8C" />
+            app:backgroundTint="#F4F4F4" />
 
         <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center"
             android:background="@drawable/ic_my_location_black_24dp"
             android:elevation="8dp"
@@ -116,17 +116,17 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/zoomOutFloating"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_above="@+id/destination"
             android:layout_alignParentStart="true"
             android:elevation="10dp"
             android:scaleType="fitXY"
-            app:backgroundTint="#617E8C" />
+            app:backgroundTint="#F4F4F4" />
 
         <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center"
             android:background="@drawable/ic_remove_black_24dp"
             android:elevation="8dp"
@@ -144,17 +144,17 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/zoominFloating"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_above="@+id/destination"
             android:layout_alignParentStart="true"
             android:elevation="10dp"
             android:scaleType="fitXY"
-            app:backgroundTint="#617E8C" />
+            app:backgroundTint="#F4F4F4" />
 
         <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center"
             android:background="@drawable/ic_add_black_24dp"
             android:elevation="8dp"

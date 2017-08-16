@@ -1,28 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.woga1.navigation.ReadyActivity"
-    android:weightSum="21">
+    tools:context="com.example.woga1.navigation.ReadyActivity">
 
+
+    <LinearLayout
+        android:id="@+id/addressLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:background="#F4F4F4"
+        android:layout_weight="2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.75"
+                android:gravity="center"
+                android:text="출발지"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/startPointAddress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textColor="#000000"
+                android:layout_weight="0.25"
+                android:textSize="15dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.75"
+                android:gravity="center"
+                android:text="도착지"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/departmentAddress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textColor="#000000"
+                android:textSize="15dp"
+                android:layout_weight="0.25" />
+        </LinearLayout>
+    </LinearLayout>
 
     <RelativeLayout
+        android:layout_weight="10"
         android:id="@+id/mapview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/linearLayout2">
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
     </RelativeLayout>
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:orientation="horizontal"
+    android:background="#F4F4F4"
+    android:layout_weight="1.2">
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.2"
+        android:text="추천길안내"
+        android:textSize="13dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="#FF8880"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.4"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.4"/>
+</LinearLayout>
+
     <LinearLayout
+        android:id="@+id/arrivingLayout"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout2">
+        android:background="@drawable/address">
 
         <Button
             android:id="@+id/anotherCourse"
@@ -37,10 +123,10 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:background="#FF5722"
+            android:background="#E84E40"
             android:text="안내시작" />
 
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

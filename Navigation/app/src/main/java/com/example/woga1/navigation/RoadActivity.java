@@ -229,6 +229,7 @@ public class RoadActivity extends Activity implements TMapGpsManager.onLocationC
 
     public Location nowLocation() {
         Location myLocation = null;
+        //현재위치 받아오기
                 if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         } else {

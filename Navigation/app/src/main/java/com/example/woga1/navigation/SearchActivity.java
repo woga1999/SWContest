@@ -132,7 +132,7 @@ public class SearchActivity extends AppCompatActivity implements PlaceSelectionL
 
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, names) ;
 
-        ListView listview = (ListView) findViewById(R.id.listview1) ;
+        ListView listview = (ListView) findViewById(R.id.destinationListView) ;
         listview.setAdapter(adapter) ;
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -141,7 +141,13 @@ public class SearchActivity extends AppCompatActivity implements PlaceSelectionL
 
                 // get TextView's Text.
                 String strText = (String) parent.getItemAtPosition(position) ;
-
+                changeToLongitudeLatitude(names[position]);
+//                changeToLongitudeLatitude("서울 영등포구 도림로53길 9");
+                Intent intent = new Intent(SearchActivity.this, ReadyActivity.class);
+                intent.putExtra("destination", names[position]);
+                intent.putExtra("longitude",longitude);
+                intent.putExtra("latitude",latitude);
+                startActivityForResult(intent, 1);
                 // TODO : use strText
             }
         }) ;
@@ -160,9 +166,6 @@ public class SearchActivity extends AppCompatActivity implements PlaceSelectionL
         intent.putExtra("destination", place.getName());
         intent.putExtra("longitude",longitude);
         intent.putExtra("latitude",latitude);
-        Log.e("long",place.getName().toString());
-        Log.e("long",longitude);
-        Log.e("long",latitude);
         startActivityForResult(intent, 1);
 
         if (!TextUtils.isEmpty(place.getAttributions())){

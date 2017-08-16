@@ -44,7 +44,10 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".SearchActivity"
-            android:parentActivityName=".MenuActivity" />
+            android:parentActivityName=".MenuActivity" >
+
+
+        </activity>
         <activity
             android:name=".ReadyActivity"
             android:parentActivityName=".MenuActivity" />

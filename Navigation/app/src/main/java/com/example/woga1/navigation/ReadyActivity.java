@@ -9,8 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -24,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -94,6 +93,11 @@ public class ReadyActivity extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.custom_readybar);
 
         one();
+
+        TextView startPointAddress = (TextView) findViewById(R.id.startPointAddress);
+        TextView departmentAddress = (TextView) findViewById(R.id.departmentAddress);
+        startPointAddress.setText("세종대학교");
+        departmentAddress.setText(destinationName);
 
         Button startNavigation = (Button) findViewById(R.id.startNavigation);
         ImageButton backImageButton = (ImageButton) findViewById(R.id.backimageButton);
@@ -553,51 +557,6 @@ public class ReadyActivity extends AppCompatActivity {
         return passList;
     }
 
-    private void changeToLongitudeLatitude(String destinations)
-    {
-        final Geocoder geocoder = new Geocoder(this);
-        List<Address> list = null;
-        List<Address> list1 = null;
-        String start = "세종대학교";
-        String destination = destinations;
-        try {
-            list = geocoder.getFromLocationName(
-                    start, // 지역 이름
-                    10); // 읽을 개수
-            list1 = geocoder.getFromLocationName(destination, 10);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e("test","입출력 오류 - 서버에서 주소변환시 에러발생");
-        }
-
-        if (list != null || list1 !=null) {
-            if (list.size() == 0) {
-                Toast.makeText(getApplicationContext(),"해당되는 주소 정보는 없습니다", Toast.LENGTH_LONG).show();
-                //tv.setText("해당되는 주소 정보는 없습니다");
-            }
-            else if(list1.size() ==0) {
-                Toast.makeText(getApplicationContext(),"해당되는 주소 정보는 없습니다", Toast.LENGTH_LONG).show();
-            }
-            else
-            {
-                Address addr = list.get(0);
-                double startLat = addr.getLatitude();
-                double startLon = addr.getLongitude();
-                Address addr1 = list1.get(0);
-                double endLat = addr1.getLatitude();
-                double endLon = addr1.getLongitude();
-
-
-                latitude= String.valueOf(endLat);
-                longitude= String.valueOf(endLon);
-//                Toast.makeText(getApplicationContext(),"start- 위도: "+String.valueOf(startLat)+" 경도: "+String.valueOf(startLon)+"  end- 위도:"+String.valueOf(endLat)+" 경도: "+String.valueOf(endLon), Toast.LENGTH_LONG).show();
-                //tv.setText(list.get(0).toString());
-                //          list.get(0).getCountryName();  // 국가명
-                //          list.get(0).getLatitude();        // 위도
-                //          list.get(0).getLongitude();    // 경도
-            }
-        }
-    }
 
     private void alertCheckGPS() { //gps 꺼져있으면 켤 껀지 체크
 //        Intent intent = new Intent(NoticeActivity.this, gpsCheck.class);
