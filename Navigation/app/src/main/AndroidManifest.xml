@@ -45,7 +45,7 @@
         <activity
             android:name=".SearchActivity"
             android:parentActivityName=".MenuActivity" >
-
+            
         </activity>
         <activity
             android:name=".ReadyActivity"
