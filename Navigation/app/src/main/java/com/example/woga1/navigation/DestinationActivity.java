@@ -77,19 +77,23 @@ public class DestinationActivity extends AppCompatActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
+                if(myStrings[position].equals(""))
+                {
+                    Log.e("position", "빈칸");
+                }
+                else {
+                    // get TextView's Text.
+                    String strText = (String) parent.getItemAtPosition(position);
+                    changeToLongitudeLatitude(myStrings[position]);
+                    Intent intents = new Intent(DestinationActivity.this, ReadyActivity.class);
+                    intents.putExtra("destination", strText);
+                    intents.putExtra("longitude", longitude);
+                    intents.putExtra("latitude", latitude);
+                    //Toast.makeText(getApplicationContext(),names[position], Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), strText, Toast.LENGTH_SHORT).show();
+                    startActivityForResult(intents, 1);
 
-                // get TextView's Text.
-                String strText = (String) parent.getItemAtPosition(position) ;
-                changeToLongitudeLatitude(myStrings[position]);
-                Intent intents = new Intent(DestinationActivity.this, ReadyActivity.class);
-                intents.putExtra("destination", strText);
-                intents.putExtra("longitude",longitude);
-                intents.putExtra("latitude",latitude);
-                //Toast.makeText(getApplicationContext(),names[position], Toast.LENGTH_SHORT).show();
-                Toast.makeText(getApplicationContext(),strText, Toast.LENGTH_SHORT).show();
-                startActivityForResult(intents, 1);
-
-
+                }
 
 
                 // TODO : use strText

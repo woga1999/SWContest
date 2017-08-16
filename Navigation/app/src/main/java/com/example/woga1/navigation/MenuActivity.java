@@ -18,7 +18,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -215,13 +214,20 @@ public class MenuActivity extends AppCompatActivity {
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                changeToLongitudeLatitude(names[position]);
+                if(names[position]=="")
+                {
+                    Log.e("position", "빈칸");
+                }
+                else {
+                    Log.e("position", names[position]);
+                    changeToLongitudeLatitude(names[position]);
 //                changeToLongitudeLatitude("서울 영등포구 도림로53길 9");
-                Intent intent = new Intent(MenuActivity.this, ReadyActivity.class);
-                intent.putExtra("destination", names[position]);
-                intent.putExtra("longitude",longitude);
-                intent.putExtra("latitude",latitude);
-                startActivityForResult(intent, 1);
+                    Intent intent = new Intent(MenuActivity.this, ReadyActivity.class);
+                    intent.putExtra("destination", names[position]);
+                    intent.putExtra("longitude", longitude);
+                    intent.putExtra("latitude", latitude);
+                    startActivityForResult(intent, 1);
+                }
             }
         });
 
@@ -230,15 +236,20 @@ public class MenuActivity extends AppCompatActivity {
 //        //1.블루투스 사용 가능한지 검사합니다.
 //        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 //        if (mBluetoothAdapter == null) {
+//            Log.e("aaa","1");
 //            showErrorDialog("This device is not implement Bluetooth.");
 //            return;
 //        }
 //
 //        if (!mBluetoothAdapter.isEnabled()) {
+//            //블루투스 허용되지 않았을 때
+//            Log.e("aaa","2");
 //            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 //            startActivityForResult(intent, REQUEST_BLUETOOTH_ENABLE);
 //        }
 //        else {
+//            //블루투스 허용되어 있을 때
+//            Log.e("aaa","3");
 //            Log.d(TAG, "Initialisation successful.");
 //
 //            //2. 페어링 되어 있는 블루투스 장치들의 목록을 보여줍니다.
@@ -386,16 +397,13 @@ public class MenuActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        Log.e("onDestroy","true");
         super.onDestroy();
-
-        if ( mConnectedTask != null ) {
-
-            mConnectedTask.cancel(true);
-        }
     }
 
     //runs while listening for incoming connections.
     private class ConnectTask extends AsyncTask<Void, Void, Boolean> {
+
         //블루투스 연결중
         private BluetoothSocket mBluetoothSocket = null;
         private BluetoothDevice mBluetoothDevice = null;
@@ -416,9 +424,9 @@ public class MenuActivity extends AppCompatActivity {
             } catch (IOException e) {
                 Log.e( TAG, "socket create failed " + e.getMessage());
             }
-
+            Log.e("ConnectTask","true");
 //            mConnectionStatus.setText("connecting...");
-//            Toast.makeText(getApplicationContext(),"connected to "+mConnectedDeviceName,Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"connected to "+mConnectedDeviceName,Toast.LENGTH_SHORT).show();
         }
 
 
@@ -427,7 +435,7 @@ public class MenuActivity extends AppCompatActivity {
 
             // Always cancel discovery because it will slow down a connection
             mBluetoothAdapter.cancelDiscovery();
-
+            Log.e("doInBackground","true");
             // Make a connection to the BluetoothSocket
             try {
                 // This is a blocking call and will only return on a
@@ -451,7 +459,7 @@ public class MenuActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Boolean isSucess) {
-
+            Log.e("onPostExecute","true");
             if ( isSucess ) {
                 connected(mBluetoothSocket);
             }
@@ -492,8 +500,9 @@ public class MenuActivity extends AppCompatActivity {
             }
 
             Log.d( TAG, "connected to "+mConnectedDeviceName);
-            mConnectionStatus.setText( "connected to "+mConnectedDeviceName);
+//            mConnectionStatus.setText( "connected to "+mConnectedDeviceName);
             Toast.makeText(getApplicationContext(),"connected to "+mConnectedDeviceName,Toast.LENGTH_SHORT).show();
+            Log.e("ConnectedTask","true");
         }
 
 
@@ -502,7 +511,7 @@ public class MenuActivity extends AppCompatActivity {
 
             byte [] readBuffer = new byte[1024];
             int readBufferPosition = 0;
-
+            Log.e("doInBackground1024","true");
             // Keep listening to the InputStream while connected
             while (true) {
 
@@ -550,14 +559,14 @@ public class MenuActivity extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(String... recvMessage) {
-
+            Log.e("onProgressUpdate","true");
             mConversationArrayAdapter.insert(mConnectedDeviceName + ": " + recvMessage[0], 0);
         }
 
         @Override
         protected void onPostExecute(Boolean isSucess) {
             super.onPostExecute(isSucess);
-
+            Log.e("onPostExecute","true");
             if ( !isSucess ) {
 
 
@@ -571,12 +580,12 @@ public class MenuActivity extends AppCompatActivity {
         @Override
         protected void onCancelled(Boolean aBoolean) {
             super.onCancelled(aBoolean);
-
+            Log.e("onCancelled","true");
             closeSocket();
         }
 
         void closeSocket(){
-
+            Log.e("closeSocket","true");
             try {
 
                 mBluetoothSocket.close();
@@ -590,7 +599,7 @@ public class MenuActivity extends AppCompatActivity {
         }
 
         void write(String msg){
-
+            Log.e("write","true");
             //msg += "\n";
 
             try {
@@ -607,13 +616,14 @@ public class MenuActivity extends AppCompatActivity {
 
     public void showPairedDevicesListDialog()
     {
+        //연결된 디바이스 목록 보여줌
+        Log.e("showPairedDevicesLis","true");
         //paried된 디바이스 목록 보여줌
         Set<BluetoothDevice> devices = mBluetoothAdapter.getBondedDevices();
         final BluetoothDevice[] pairedDevices = devices.toArray(new BluetoothDevice[0]);
 
         if ( pairedDevices.length == 0 ){
-            showQuitDialog( "No devices have been paired.\n"
-                    +"You must pair it with another device.");
+            showQuitDialog( "연결 가능한 디바이스가 없습니다.");
             return;
         }
 
@@ -643,29 +653,32 @@ public class MenuActivity extends AppCompatActivity {
 
     public void showErrorDialog(String message)
     {
-        Toast.makeText(getApplicationContext(),"블루투스 연결 실패",Toast.LENGTH_SHORT).show();
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("Quit");
-//        builder.setCancelable(false);
-//        builder.setMessage(message);
-//        builder.setPositiveButton("OK",  new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//                dialog.dismiss();
-//                if ( isConnectionError  ) {
-//                    isConnectionError = false;
-//                    Toast.makeText(getApplicationContext(),"블루투스 연결 실패",Toast.LENGTH_SHORT).show();
-////                    finish();
-//                }
-//            }
-//        });
-//        builder.create().show();
+        Log.e("showErrorDialog","true");
+//        Toast.makeText(getApplicationContext(),"블루투스 연결 실패",Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Quit");
+        builder.setCancelable(false);
+        builder.setMessage(message);
+        builder.setPositiveButton("OK",  new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+                if ( isConnectionError  ) {
+                    isConnectionError = false;
+                    Toast.makeText(getApplicationContext(),"블루투스 연결 실패",Toast.LENGTH_SHORT).show();
+//                    finish();
+                }
+            }
+        });
+        builder.create().show();
     }
 
 
     public void showQuitDialog(String message)
     {
+        //블루투스 연결가능한 매체 갯수가 0개이거나 블루투스 연결 거부 했을 때
+        Log.e("showQuitDialog","true");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Quit");
         builder.setCancelable(false);
@@ -680,14 +693,14 @@ public class MenuActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    void sendMessage(String msg){
-
-        if ( mConnectedTask != null ) {
-            mConnectedTask.write(msg);
-            Log.d(TAG, "send message: " + msg);
-            mConversationArrayAdapter.insert("Me:  " + msg, 0);
-        }
-    }
+//    void sendMessage(String msg){
+////메시지보내기
+//        if ( mConnectedTask != null ) {
+//            mConnectedTask.write(msg);
+//            Log.d(TAG, "send message: " + msg);
+//            mConversationArrayAdapter.insert("Me:  " + msg, 0);
+//        }
+//    }
 
 
     @Override
@@ -695,45 +708,18 @@ public class MenuActivity extends AppCompatActivity {
         //블루투스 연결
         if(requestCode == REQUEST_BLUETOOTH_ENABLE){
             if (resultCode == RESULT_OK){
-                //BlueTooth is now Enabled
+                //허용이 안되어 있다가 허용으로 바꿨을 때
                 showPairedDevicesListDialog();
             }
             if(resultCode == RESULT_CANCELED){
-                showQuitDialog( "You need to enable bluetooth");
+                showQuitDialog( "Handlear을 이용하시려면 \n[블루투스] 를 허용해 주세요");
             }
         }
     }
 
-    private boolean chkGpsService() {
-
-        //GPS가 켜져 있는지 확인함.
-        String gpsEnabled = android.provider.Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-
-        if (!(gpsEnabled.matches(".*gps.*") && gpsEnabled.matches(".*network.*"))) {
-            //gps가 사용가능한 상태가 아니면
-            new AlertDialog.Builder(this).setTitle("GPS 설정").setMessage("GPS가 꺼져 있습니다. \nGPS를 활성화 하시겠습니까?").setPositiveButton("GPS 켜기", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int which) {
-                    //GPS 설정 화면을 띄움
-                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivity(intent);
-                }
-            }).setNegativeButton("닫기", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-
-                }
-            }).create().show();
-
-        } else if ((gpsEnabled.matches(".*gps.*") && gpsEnabled.matches(".*network.*"))) {
-            Toast.makeText(getApplicationContext(), "정보를 읽어오는 중입니다.", Toast.LENGTH_LONG).show();
-//                Intent  intent = new Intent(this, CurrentLocatinActivity.class); //현재 위치 화면 띄우기 위해 인텐트 실행.
-//                startActivity(intent);
-        }
-        return false;
-    }
 
     public boolean isNetworkConnected(Context context){
+        //네트워크 연결
         boolean isConnected = false;
 
         ConnectivityManager manager =
