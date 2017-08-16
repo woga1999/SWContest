@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_OWNER_DATA"/>
     <uses-permission android:name="android.permission.READ_OWNER_DATA"/>
     <uses-permission android:name="android.permision.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
     <application
@@ -26,7 +27,6 @@
         </activity>
         <activity android:name=".RoadActivity"/>
         <activity android:name=".MapActivity"/>
-        <activity android:name=".Search2Activity"/>
     </application>
 
 </manifest>
