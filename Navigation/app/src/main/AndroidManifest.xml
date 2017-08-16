@@ -23,7 +23,8 @@
         android:label="Handlear"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:largeHeap="true">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBi3rThxI8SHZkuWTAFjPj6ehLV1yJjrHo" />
@@ -45,7 +46,7 @@
         <activity
             android:name=".SearchActivity"
             android:parentActivityName=".MenuActivity" >
-            
+
         </activity>
         <activity
             android:name=".ReadyActivity"

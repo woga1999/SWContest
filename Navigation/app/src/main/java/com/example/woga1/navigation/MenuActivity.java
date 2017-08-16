@@ -54,7 +54,6 @@ public class MenuActivity extends AppCompatActivity {
     private String longitude;
     private String latitude;
 
-
     private final int REQUEST_BLUETOOTH_ENABLE = 100;
 
     private TextView mConnectionStatus;
@@ -342,6 +341,7 @@ public class MenuActivity extends AppCompatActivity {
 
     private ArrayList<GridViewVO> getImageandText()
     {
+
         ArrayList<GridViewVO> players = new ArrayList<GridViewVO>();
         for(int i=0; i<15;i++)
         {
