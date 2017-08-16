@@ -19,7 +19,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/uicon"
+        android:icon="@drawable/handlearicon"
         android:label="Handlear"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"

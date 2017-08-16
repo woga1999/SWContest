@@ -7,20 +7,13 @@
     android:orientation="vertical"
     tools:context="com.example.woga1.navigation.NavigationActivity">
 
+
+
     <RelativeLayout
         android:id="@+id/mapview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/destination">
-
-        <Button
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/ic_my_location_black_24dp" />
 
     </RelativeLayout>
 
@@ -78,35 +71,94 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/ic_power_settings_new_black_24dp"
-            android:onClick="showPopup"
-            />
+            android:onClick="showPopup"/>
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/button10"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="89dp"
-        android:background="@drawable/ic_add_black_24dp"
+
+    <FrameLayout
+        android:id="@+id/gpsFrameLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="11dp"
+        android:layout_above="@+id/destination"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="14dp">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/gpsFloating"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_above="@+id/destination"
+            android:layout_alignParentStart="true"
+            android:elevation="10dp"
+            android:scaleType="fitXY"
+            app:backgroundTint="#617E8C" />
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_my_location_black_24dp"
+            android:elevation="8dp"
+            android:scaleType="fitXY" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/zoomOutFrameLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/zoonInFrameLayout"
+        android:layout_marginLeft="15dp">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/zoomOutFloating"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_above="@+id/destination"
+            android:layout_alignParentStart="true"
+            android:elevation="10dp"
+            android:scaleType="fitXY"
+            app:backgroundTint="#617E8C" />
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_remove_black_24dp"
+            android:elevation="8dp"
+            android:scaleType="fitXY" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/zoonInFrameLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="80dp">
 
-    <Button
-        android:id="@+id/button9"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignStart="@+id/button10"
-        android:layout_below="@+id/button10"
-        android:background="@null"
-        android:text="9" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/zoominFloating"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_above="@+id/destination"
+            android:layout_alignParentStart="true"
+            android:elevation="10dp"
+            android:scaleType="fitXY"
+            app:backgroundTint="#617E8C" />
 
-    <Button
-        android:id="@+id/button8"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignStart="@+id/button9"
-        android:layout_below="@+id/button9"
-        android:background="@drawable/ic_remove_black_24dp" />
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_add_black_24dp"
+            android:elevation="8dp"
+            android:scaleType="fitXY" />
+    </FrameLayout>
 
 </RelativeLayout>

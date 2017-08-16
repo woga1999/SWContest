@@ -256,7 +256,7 @@ public class MenuActivity extends AppCompatActivity {
                     }).show();
         }
         else{
-            Toast.makeText(getApplicationContext(),"NO",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"네트워크 연결완료",Toast.LENGTH_LONG).show();
         }
 
 
@@ -268,7 +268,32 @@ public class MenuActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.e("onStart","true");
+//        alertCheckGPS();
+//        if( !isNetworkConnected(this) ){
+//            Toast.makeText(getApplicationContext(),"YEs",Toast.LENGTH_LONG).show();
+//            new AlertDialog.Builder(this)
+//                    .setIcon(android.R.drawable.ic_dialog_alert)
+//                    .setTitle("네트워크 연결 오류").setMessage("네트워크 연결 상태 확인 후 다시 시도해 주십시요.")
+//                    .setPositiveButton("확인", new DialogInterface.OnClickListener()
+//                    {
+//                        @Override
+//                        public void onClick( DialogInterface dialog, int which )
+//                        {
+//                            finish();
+//                        }
+//                    }).show();
+//        }
+//        else{
+//            Toast.makeText(getApplicationContext(),"NO",Toast.LENGTH_LONG).show();
+//        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();  // Always call the superclass method first
+        Log.e("onRestart","true");
         alertCheckGPS();
+        // Activity being restarted from stopped state
         if( !isNetworkConnected(this) ){
             Toast.makeText(getApplicationContext(),"YEs",Toast.LENGTH_LONG).show();
             new AlertDialog.Builder(this)
@@ -284,16 +309,8 @@ public class MenuActivity extends AppCompatActivity {
                     }).show();
         }
         else{
-            Toast.makeText(getApplicationContext(),"NO",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"네트워크 연결완료",Toast.LENGTH_LONG).show();
         }
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();  // Always call the superclass method first
-//        Log.e("onRestart","true");
-//        alertCheckGPS();
-        // Activity being restarted from stopped state
     }
 
     private ArrayList<GridViewVO> getImageandText()
@@ -748,7 +765,7 @@ public class MenuActivity extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText(getApplicationContext(),"OK",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"GPS 연결완료",Toast.LENGTH_LONG).show();
         }
     }
 
