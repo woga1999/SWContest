@@ -311,7 +311,8 @@ public class ReadyActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         tmapview = new TMapView(this);
         TMapGpsManager tmapgps = new TMapGpsManager(this);
-        tmapgps.setProvider(tmapgps.NETWORK_PROVIDER);
+        tmapgps.setProvider(tmapgps.GPS_PROVIDER);
+        //tmapgps.setProvider(tmapgps.NETWORK_PROVIDER);
         tmapgps.OpenGps();
         TMapPoint point = tmapgps.getLocation();
         TMapPoint tpoint1 = new TMapPoint(37.550447, 127.073118);
