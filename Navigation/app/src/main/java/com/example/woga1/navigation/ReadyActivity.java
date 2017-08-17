@@ -1,16 +1,15 @@
 package com.example.woga1.navigation;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
-import android.location.Geocoder;
+import android.location.Criteria;
+import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -29,63 +28,50 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.skp.Tmap.TMapData;
 import com.skp.Tmap.TMapGpsManager;
-import com.skp.Tmap.TMapMarkerItem;
 import com.skp.Tmap.TMapPoint;
 import com.skp.Tmap.TMapPolyLine;
 import com.skp.Tmap.TMapView;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.woga1.navigation.R.id.mapview;
 import static com.skp.Tmap.TMapView.TILETYPE_HDTILE;
 public class ReadyActivity extends AppCompatActivity {
     //Navigation전 화면으로 나오는 Activity  경로안내 Activity
 //    static final String[] names = {"신도림역","초지역","화정역","","","","","","","","",""} ;
 
-    RelativeLayout relativeLayout = null;
-    TMapView tmapview;
+    TMapView tmapview = null;
+    TMapGpsManager tmapgps = null;
     public TMapPolyLine tpolyline;
-    ArrayList<TMapPoint> passList = new ArrayList<TMapPoint>();
-    ArrayList<Integer> trunTypeList = new ArrayList<Integer>();
-    ArrayList<String> des = new ArrayList<String>();
     int totalDistance;
-    int totalTime;
-    RelativeLayout mapview = null;
-    String description;
-    String longitude;
-    String  latitude;
+    RelativeLayout mapView = null;
+    double startLatitiude, startLongitude;
+    String endLongitude;
+    String  endLatitude;
     String destinationName;
-    private static final String TAG = "RoadTracker";
-
+    private static final String TAG = "ReadyActivity";
+    public Location nowPlace = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable());
 
-
+        tmapgps = new TMapGpsManager(this);
+        tmapgps.setMinDistance(0);
+        tmapgps.setMinTime(100);
+        tmapgps.OpenGps();
         Intent intent = getIntent();
         destinationName = intent.getExtras().getString("destination");
-        longitude  = intent.getExtras().getString("longitude");
-        latitude = intent.getExtras().getString("latitude");
-
+        endLongitude  = intent.getExtras().getString("longitude");
+        endLatitude = intent.getExtras().getString("latitude");
+        nowPlace = nowLocation();
+        startLatitiude = nowPlace.getLatitude();
+        startLongitude = nowPlace.getLongitude();
 
         setContentView(R.layout.activity_ready);
 
@@ -103,17 +89,15 @@ public class ReadyActivity extends AppCompatActivity {
                 //startActivity(new Intent(ReadyActivity.this, NavigationActivity.class));
                 Intent intent = new Intent(ReadyActivity.this, NavigationActivity.class);
                 intent.putExtra("destination", destinationName);
-                intent.putExtra("longitude",longitude);
-                intent.putExtra("latitude",latitude);
+                intent.putExtra("endLongitude",endLongitude);
+                intent.putExtra("endLatitude",endLatitude);
+                intent.putExtra("startLatitude", String.valueOf(startLatitiude));
+                intent.putExtra("startLongitude", String.valueOf(startLongitude));
                 startActivityForResult(intent, 1);
             }
         });
-        relativeLayout = new RelativeLayout(this);
-        mapview = (RelativeLayout) findViewById(R.id.mapview);
-        //sendBroadcast(new Intent("com.skt.intent.action.GPS_TURN_ON")); //GPS를 켜놓지 않아도 현재위치를 받아와서 출발지로 인식한다.
-        //alertCheckGPS();
-//        execute();
-        execute(Double.parseDouble(longitude), Double.parseDouble(latitude));
+        mapView = (RelativeLayout) findViewById(mapview);
+        execute(startLatitiude,startLongitude, Double.parseDouble(endLatitude),Double.parseDouble(endLongitude));
 
 
         backImageButton.setOnClickListener(new EditText.OnClickListener(){
@@ -125,7 +109,7 @@ public class ReadyActivity extends AppCompatActivity {
         });
         alertCheckGPS();
         if( !isNetworkConnected(this) ){
-            Toast.makeText(getApplicationContext(),"YEs",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"YES",Toast.LENGTH_LONG).show();
             new AlertDialog.Builder(this)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle("네트워크 연결 오류").setMessage("네트워크 연결 상태 확인 후 다시 시도해 주십시요.")
@@ -143,69 +127,100 @@ public class ReadyActivity extends AppCompatActivity {
         }
 
     }
+    public void execute(double startLat, double startLon, double endLatitude, double endLongitude) {
+        //위도 경도를 받아서 지도상에 띄움
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.e("onStart","true");
-//        alertCheckGPS();
-//        if( !isNetworkConnected(this) ){
-//            Toast.makeText(getApplicationContext(),"YEs",Toast.LENGTH_LONG).show();
-//            new AlertDialog.Builder(this)
-//                    .setIcon(android.R.drawable.ic_dialog_alert)
-//                    .setTitle("네트워크 연결 오류").setMessage("네트워크 연결 상태 확인 후 다시 시도해 주십시요.")
-//                    .setPositiveButton("확인", new DialogInterface.OnClickListener()
-//                    {
-//                        @Override
-//                        public void onClick( DialogInterface dialog, int which )
-//                        {
-//                            finish();
-//                        }
-//                    }).show();
-//        }
-//        else{
-//            Toast.makeText(getApplicationContext(),"NO",Toast.LENGTH_LONG).show();
-//        }
+        tmapview = new TMapView(this);
+        TMapPoint startPoint = new TMapPoint(startLat, startLon);
+        TMapPoint endPoint = new TMapPoint(endLatitude, endLongitude);
+
+        tpolyline = new TMapPolyLine();
+        TMapData tmapdata = new TMapData();
+        tmapview.setLocationPoint(startPoint.getLongitude(),startPoint.getLatitude());
+        tmapview.setMapPosition(TMapView.POSITION_NAVI);
+
+
+        tmapview.setTileType(TILETYPE_HDTILE);
+        tmapview.setSKPMapApiKey("cad2cc9b-a3d5-3c32-8709-23279b7247f9");
+        tmapview.setCompassMode(true);
+//        tmapview.setZoomLevel(11);
+        totalDistance = (int)pointDistance(startLat, startLon, endLatitude, endLongitude);
+        setMapView(totalDistance);
+        tmapview.setMapType(TMapView.MAPTYPE_STANDARD);
+        tmapview.setLanguage(TMapView.LANGUAGE_KOREAN);
+        tmapview.setTrackingMode(true); //화면중심을 단말의 현재위치로 이동시켜주는 트래킹 모드
+        tmapview.setPathRotate(true); //나침반 회전 시 출,도착 아이콘을 같이 회전시킬지 여부를 결정합니다.
+
+
+        tmapdata.findPathDataWithType(TMapData.TMapPathType.CAR_PATH, startPoint, endPoint,  new TMapData.FindPathDataListenerCallback() {
+            @Override
+            public void onFindPathData(TMapPolyLine polyLine) {
+//폴리 라인을 그리고 시작, 끝지점의 거리를 산출하여 로그에 표시한다
+                tmapview.addTMapPath(polyLine);
+                double wayDistance = polyLine.getDistance();
+                Log.d(TAG, "Distance: " + wayDistance + "M");
+            }
+        });
+        mapView.addView(tmapview);
+    }
+    public double pointDistance(double lat1, double lon1, double lat2, double lon2){
+
+        double theta, dist;
+        theta = lon1 - lon2;
+        dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1))
+                * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+
+        dist = dist * 60 * 1.1515;
+        dist = dist * 1.609344;    // 단위 mile 에서 km 변환.
+        dist = dist * 1000.0;      // 단위  km 에서 m 로 변환
+
+        return dist;
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();  // Always call the superclass method first
-        Log.e("onRestart","true");
-        alertCheckGPS();
-        // Activity being restarted from stopped state
-        if( !isNetworkConnected(this) ){
-            Toast.makeText(getApplicationContext(),"YEs",Toast.LENGTH_LONG).show();
-            new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle("네트워크 연결 오류").setMessage("네트워크 연결 상태 확인 후 다시 시도해 주십시요.")
-                    .setPositiveButton("확인", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick( DialogInterface dialog, int which )
-                        {
-                            finish();
-                        }
-                    }).show();
-        }
-        else{
-            Toast.makeText(getApplicationContext(),"네트워크 연결완료",Toast.LENGTH_LONG).show();
-        }
+    // 주어진 도(degree) 값을 라디언으로 변환
+    private double deg2rad(double deg){
+        return (double)(deg * Math.PI / (double)180d);
     }
 
+    // 주어진 라디언(radian) 값을 도(degree) 값으로 변환
+    private double rad2deg(double rad){
+        return (double)(rad * (double)180d / Math.PI);
+    }
     public boolean isNetworkConnected(Context context){
         boolean isConnected = false;
 
         ConnectivityManager manager =
                 (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+//        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+//        NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (networkInfo != null) {
 
-        if (mobile.isConnected() || wifi.isConnected()){
-            isConnected = true;
-        }else{
+                        if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI && networkInfo.isConnectedOrConnecting()) {
+                               // wifi 연결중
+                            isConnected = true;
+                            } else if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE && networkInfo.isConnectedOrConnecting()) {
+                                // 모바일 네트워크 연결중
+                            isConnected = true;
+                           }
+                       else
+                        {
+                            isConnected = false;
+                                // 네트워크 오프라인 상태.
+                            }
+                    } else {
+                       // 네트워크 null.. 모뎀이 없는 경우??
             isConnected = false;
-        }
+                   }
+
+
+//        if (mobile.isConnected() || wifi.isConnected()){
+//            isConnected = true;
+//        }else{
+//            isConnected = false;
+//        }
         return isConnected;
     }
 
@@ -227,21 +242,21 @@ public class ReadyActivity extends AppCompatActivity {
             latitudeLists = gson.fromJson(latitudeListToString, List.class);
             longitudeLists = gson.fromJson(longitudeListToString, List.class);
         }
-        if(latitude==null)
+        if(endLatitude==null)
         {
             Log.e("latitude","null이다");
             for(int i=0; i<destinationLists.size(); i++)
             {
                 if(destinationName.equals(destinationLists.get(i)))
                 {
-                    latitude = latitudeLists.get(i);
-                    longitude = longitudeLists.get(i);
+                    endLatitude = latitudeLists.get(i);
+                    endLongitude = longitudeLists.get(i);
                 }
             }
         }
         destinationLists.add(0,destinationName);
-        latitudeLists.add(0,latitude);
-        longitudeLists.add(0,longitude);
+        latitudeLists.add(0,endLatitude);
+        longitudeLists.add(0,endLongitude);
 
         String json = gson.toJson(destinationLists);
         editor.putString("Destination", json);
@@ -277,11 +292,11 @@ public class ReadyActivity extends AppCompatActivity {
         editor.putString("Longitude", json);
         editor.commit(); //완료한다.
 
-        for(int i=0; i<destinationLists.size(); i++) {
-            Log.e("destination~", destinationLists.get(i));
-            Log.e("destination~", latitudeLists.get(i));
-            Log.e("destination~", longitudeLists.get(i));
-        }
+//        for(int i=0; i<destinationLists.size(); i++) {
+//            Log.e("destination~", destinationLists.get(i));
+//            Log.e("destination~", latitudeLists.get(i));
+//            Log.e("destination~", longitudeLists.get(i));
+//        }
 
 //        Toast.makeText(getApplicationContext(),,Toast.LENGTH_SHORT).show();
 //        if(destinationLists.isEmpty())
@@ -304,94 +319,6 @@ public class ReadyActivity extends AppCompatActivity {
 //        }
     }
 
-    public void execute(double longitude, double latitude) {
-        //위도 경도를 받아서 지도상에 띄움
-
-        //sendBroadcast(new Intent("com.skt.intent.action.GPS_TURN_ON"));
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        tmapview = new TMapView(this);
-        TMapGpsManager tmapgps = new TMapGpsManager(this);
-        tmapgps.setProvider(tmapgps.GPS_PROVIDER);
-        //tmapgps.setProvider(tmapgps.NETWORK_PROVIDER);
-        tmapgps.OpenGps();
-        TMapPoint point = tmapgps.getLocation();
-        TMapPoint tpoint1 = new TMapPoint(37.550447, 127.073118);
-        TMapPoint tpoint2 = new TMapPoint(latitude, longitude);
-//        TMapPoint tpoint2 = new TMapPoint(35.666565, 127.069235);
-
-        tpolyline = new TMapPolyLine();
-        TMapMarkerItem tItem = new TMapMarkerItem();
-        TMapData tmapdata = new TMapData();
-//        tmapview.setLocationPoint(tpoint1.getLongitude(),tpoint1.getLatitude());
-        tmapview.setMapPosition(TMapView.POSITION_NAVI);
-
-        tItem.setTMapPoint(tpoint1);
-        tItem.setName("뚝섬유원지");
-//        tItem.setName("신도림역");
-
-        tItem.setVisible(TMapMarkerItem.VISIBLE);
-        TMapMarkerItem tItem2 = new TMapMarkerItem();
-        tItem2.setTMapPoint(tpoint2);
-        tItem2.setName("세종대학교");
-        passList= getJsonData(tpoint1,tpoint2);
-        tmapview.addMarkerItem("1", tItem);
-        //tmapview.addMarkerItem("2", tItem2);
-
-//        TMapTapi tmaptapi = new TMapTapi(this);
-//        tmaptapi.setSKPMapAuthentication ("cad2cc9b-a3d5-3c32-8709-23279b7247f9");
-        tmapview.setTileType(TILETYPE_HDTILE);
-        tmapview.setSKPMapApiKey("cad2cc9b-a3d5-3c32-8709-23279b7247f9");
-        tmapview.setCompassMode(true);
-        tmapview.setIconVisibility(true); //현재위치 파랑마커표시
-//        tmapview.setZoomLevel(11);
-        setMapView(totalDistance);
-        tmapview.setMapType(TMapView.MAPTYPE_STANDARD);
-        tmapview.setLanguage(TMapView.LANGUAGE_KOREAN);
-        tmapview.setTrackingMode(true); //화면중심을 단말의 현재위치로 이동시켜주는 트래킹 모드
-        tmapview.setPathRotate(true); //나침반 회전 시 출,도착 아이콘을 같이 회전시킬지 여부를 결정합니다.
-
-        //tpolyline = tmapdata.findPathDataWithType(TMapData.TMapPathType.CAR_PATH, tpoint1, tpoint2, passList, 0);
-        tmapview.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonClickCallback() {
-            @Override
-            public void onCalloutRightButton(TMapMarkerItem markerItem) {
-            }
-        });
-        for(int i=0; i<passList.size(); i++)
-        {
-            TMapPoint passpoint = new TMapPoint(passList.get(i).getLatitude(), passList.get(i).getLongitude());
-
-            TMapMarkerItem item = new TMapMarkerItem();
-            item.setCanShowCallout(true); //풍선뷰 사용여부
-            if(des.get(i) != null) {
-                item.setCalloutTitle(des.get(i));
-            }
-            item.setTMapPoint(passpoint);
-            tmapview.addMarkerItem(String.valueOf(i), item);
-
-        }
-
-        String LineID = tpolyline.getID();
-        tmapview.addTMapPolyLine(LineID, tpolyline);
-//        mapview.addView(tmapview);
-//        setContentView(mapview);
-//        relativeLayout.addView(tmapview);
-//        setContentView(relativeLayout);
-        double distance = totalDistance/1000;
-
-//        Toast.makeText(this, String.valueOf(distance)+"km"+String.valueOf(totalTime)+"초", Toast.LENGTH_SHORT).show();
-
-        tmapdata.findPathDataWithType(TMapData.TMapPathType.CAR_PATH, tpoint1, tpoint2,  new TMapData.FindPathDataListenerCallback() {
-            @Override
-            public void onFindPathData(TMapPolyLine polyLine) {
-//폴리 라인을 그리고 시작, 끝지점의 거리를 산출하여 로그에 표시한다
-                tmapview.addTMapPath(polyLine);
-                double wayDistance = polyLine.getDistance();
-                Log.d(TAG, "Distance: " + wayDistance + "M");
-            }
-        });
-        mapview.addView(tmapview);
-    }
-
 
     // 경로안내 시작 누르기 전에, 전체경로를 보여주는 지도 셋팅부분
     public void setMapView(int total_distance) {
@@ -407,197 +334,39 @@ public class ReadyActivity extends AppCompatActivity {
         tmapview.setZoomLevel(set_zoom_level);
     }
 
-    public ArrayList<TMapPoint> getJsonData(final TMapPoint startPoint, final TMapPoint endPoint)
-    {
-        Thread thread = new Thread() {
-            @Override
-            public void run() {
-                HttpClient httpClient = new DefaultHttpClient();
 
-                String urlString = "https://apis.skplanetx.com/tmap/routes?version=1&format=json&appKey=cad2cc9b-a3d5-3c32-8709-23279b7247f9";
-                //String urlString = "https://apis.skplanetx.com/tmap/routes/pedestrian?callback=&bizAppId=&version=1&format=json&appKey=e2a7df79-5bc7-3f7f-8bca-2d335a0526e7";
+    public Location nowLocation() {
+        Location myLocation = null;
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        } else {
 
-                TMapPolyLine jsonPolyline = new TMapPolyLine();
-                jsonPolyline.setLineColor(Color.RED);
-                jsonPolyline.setLineWidth(2);
+            tmapgps = new TMapGpsManager(this);
+            tmapgps.setMinDistance(0);
+            tmapgps.setMinTime(100);
+            tmapgps.OpenGps();
+            LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            myLocation = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-                // &format={xml 또는 json}
-                try{
-                    URI uri = new URI(urlString);
-
-                    HttpPost httpPost = new HttpPost();
-                    httpPost.setURI(uri);
-
-                    List<BasicNameValuePair> nameValuePairs = new ArrayList<BasicNameValuePair>();
-                    nameValuePairs.add(new BasicNameValuePair("startX", Double.toString(startPoint.getLongitude())));
-                    nameValuePairs.add(new BasicNameValuePair("startY", Double.toString(startPoint.getLatitude())));
-
-                    nameValuePairs.add(new BasicNameValuePair("endX", Double.toString(endPoint.getLongitude())));
-                    nameValuePairs.add(new BasicNameValuePair("endY", Double.toString(endPoint.getLatitude())));
-
-                    nameValuePairs.add(new BasicNameValuePair("startName", "출발지"));
-                    nameValuePairs.add(new BasicNameValuePair("endName", "도착지"));
-
-                    nameValuePairs.add(new BasicNameValuePair("reqCoordType", "WGS84GEO"));
-                    nameValuePairs.add(new BasicNameValuePair("resCoordType", "WGS84GEO"));
-
-                    httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-                    HttpResponse response = httpClient.execute(httpPost);
-
-                    int code = response.getStatusLine().getStatusCode();
-                    String message = response.getStatusLine().getReasonPhrase();
-                    Log.d(TAG, "run: " + message);
-                    String responseString;
-                    if(response.getEntity() != null)
-                        responseString = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
-                    else
-                        return;
-                    String strData = "";
-
-                    Log.d(TAG, "0\n");
-                    JSONObject jAr = new JSONObject(responseString);
-                    //JSONArray jAr2 = new JSONArray(responseString);
-                    Log.d(TAG, "1\n");
-                    JSONArray features = jAr.getJSONArray("features");
-                    passList = new ArrayList<>();
-
-                    for(int i=0; i<features.length(); i++)
-                    {
-                        JSONObject root = features.getJSONObject(i);
-                        JSONObject properties = root.getJSONObject("properties");
-                        if(i == 0){
-                            //JSONObject properties = root.getJSONObject("properties");
-                            totalDistance += properties.getInt("totalDistance");
-                            totalTime += properties.getInt("totalTime");
-                        }
-                        else
-                        {
-                            String description = properties.getString("description");
-                            des.add(description);
-                        }
-                        JSONObject geometry = root.getJSONObject("geometry");
-                        JSONArray coordinates = geometry.getJSONArray("coordinates");
-
-                        String geoType = geometry.getString("type");
-                        if(geoType.equals("Point"))
-                        {
-                            double lonJson = coordinates.getDouble(0);
-                            double latJson = coordinates.getDouble(1);
-
-                            Log.d(TAG, "-");
-                            Log.d(TAG, lonJson+","+latJson+"\n");
-                            TMapPoint point = new TMapPoint(latJson, lonJson);
-                            passList.add(point);
-
-                        }
-                        if(geoType.equals("LineString"))
-                        {
-                            if(i==0) {
-                                for (int j = 0; j < coordinates.length(); j++) {
-                                    JSONArray JLinePoint = coordinates.getJSONArray(j);
-                                    double lonJson = JLinePoint.getDouble(0);
-                                    double latJson = JLinePoint.getDouble(1);
-
-                                    Log.d(TAG, "-");
-                                    Log.d(TAG, lonJson + "," + latJson + "\n");
-                                    TMapPoint point = new TMapPoint(latJson, lonJson);
-                                    passList.add(point);
-                                }
-                            }
-                        }
-                    }
-
-                    //DashPathEffect dashPath2 = new DashPathEffect(new float[]{0,0}, 0); //실선
-
-                    /*
-                    JSONObject test = features.getJSONObject(0);
-                    JSONObject properties = test.getJSONObject("properties");
-                    Log.d(TAG, "3\n");
-                    //JSONObject index = properties.getJSONObject("index");
-                    String nodeType = properties.getString("nodeType");
-                    Log.d(TAG, "4 " + nodeType+"\n");
-                    if(nodeType.equals("POINT")){
-                        String turnType = properties.getString("turnType");
-                        Log.d(TAG, "5 " + turnType+"\n");
-                    }
-                    */
-
-                    // 하위 객체에서 데이터를 추출
-                    //strData += features.getString("name") + "\n";
-
-
-                } catch (URISyntaxException e) {
-                    Log.e(TAG, e.getLocalizedMessage());
-                    e.printStackTrace();
-                } catch (ClientProtocolException e) {
-                    Log.e(TAG, e.getLocalizedMessage());
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    Log.e(TAG, e.getLocalizedMessage());
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+            if (myLocation == null) {
+                myLocation = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                if(myLocation != null)
+                {
+                    Log.d("myLocation: ", String.valueOf(myLocation.getLatitude()));
                 }
-
             }
-        };
-        thread.start();
-
-        try{
-            thread.join();
-        }catch (InterruptedException e){
-            e.printStackTrace();
+            else if(myLocation != null){
+                myLocation = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                Criteria criteria = new Criteria();
+                criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+                String provider = lm.getBestProvider(criteria, true);
+                myLocation = lm.getLastKnownLocation(provider);
+                Log.d("myLocation: ", String.valueOf(myLocation.getLatitude()));
+            }
         }
-        return passList;
+        return myLocation;
     }
 
-    private void changeToLongitudeLatitude(String destinations)
-    {
-        final Geocoder geocoder = new Geocoder(this);
-        List<Address> list = null;
-        List<Address> list1 = null;
-        String start = "세종대학교";
-        String destination = destinations;
-        try {
-            list = geocoder.getFromLocationName(
-                    start, // 지역 이름
-                    10); // 읽을 개수
-            list1 = geocoder.getFromLocationName(destination, 10);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e("test","입출력 오류 - 서버에서 주소변환시 에러발생");
-        }
-
-        if (list != null || list1 !=null) {
-            if (list.size() == 0) {
-                Toast.makeText(getApplicationContext(),"해당되는 주소 정보는 없습니다", Toast.LENGTH_LONG).show();
-                //tv.setText("해당되는 주소 정보는 없습니다");
-            }
-            else if(list1.size() ==0) {
-                Toast.makeText(getApplicationContext(),"해당되는 주소 정보는 없습니다", Toast.LENGTH_LONG).show();
-            }
-            else
-            {
-                Address addr = list.get(0);
-                double startLat = addr.getLatitude();
-                double startLon = addr.getLongitude();
-                Address addr1 = list1.get(0);
-                double endLat = addr1.getLatitude();
-                double endLon = addr1.getLongitude();
-
-
-                latitude= String.valueOf(endLat);
-                longitude= String.valueOf(endLon);
-//                Toast.makeText(getApplicationContext(),"start- 위도: "+String.valueOf(startLat)+" 경도: "+String.valueOf(startLon)+"  end- 위도:"+String.valueOf(endLat)+" 경도: "+String.valueOf(endLon), Toast.LENGTH_LONG).show();
-                //tv.setText(list.get(0).toString());
-                //          list.get(0).getCountryName();  // 국가명
-                //          list.get(0).getLatitude();        // 위도
-                //          list.get(0).getLongitude();    // 경도
-            }
-        }
-    }
 
     private void alertCheckGPS() { //gps 꺼져있으면 켤 껀지 체크
 //        Intent intent = new Intent(NoticeActivity.this, gpsCheck.class);
@@ -632,5 +401,57 @@ public class ReadyActivity extends AppCompatActivity {
     private void moveConfigGPS() {
         Intent gpsOptionsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
         startActivity(gpsOptionsIntent);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.e("onStart","true");
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();  // Always call the superclass method first
+        Log.e("onRestart","true");
+        tmapgps.OpenGps();
+        alertCheckGPS();
+        // Activity being restarted from stopped state
+        if( !isNetworkConnected(this) ){
+            Toast.makeText(getApplicationContext(),"YEs",Toast.LENGTH_LONG).show();
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("네트워크 연결 오류").setMessage("네트워크 연결 상태 확인 후 다시 시도해 주십시요.")
+                    .setPositiveButton("확인", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick( DialogInterface dialog, int which )
+                        {
+                            finish();
+                        }
+                    }).show();
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"네트워크 연결완료",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // GPS중단
+        tmapgps.CloseGps();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+
+
+        super.onDestroy();
+        // Thread 종료
     }
 }
