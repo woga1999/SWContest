@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -20,7 +19,6 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -314,7 +312,7 @@ public class MenuActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();  // Always call the superclass method first
         Log.e("onRestart","true");
-        alertCheckGPS();
+        //alertCheckGPS();
         // Activity being restarted from stopped state
         if( !isNetworkConnected(this) ){
             Toast.makeText(getApplicationContext(),"YEs",Toast.LENGTH_LONG).show();

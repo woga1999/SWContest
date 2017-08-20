@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
@@ -38,6 +37,7 @@ import java.util.List;
 
 import static com.example.woga1.navigation.R.id.mapview;
 import static com.skp.Tmap.TMapView.TILETYPE_HDTILE;
+
 public class ReadyActivity extends AppCompatActivity {
     //Navigation전 화면으로 나오는 Activity  경로안내 Activity
 //    static final String[] names = {"신도림역","초지역","화정역","","","","","","","","",""} ;
@@ -46,14 +46,16 @@ public class ReadyActivity extends AppCompatActivity {
     TMapGpsManager tmapgps = null;
     public TMapPolyLine tpolyline;
     int totalDistance;
+    int totalTime;
     RelativeLayout mapView = null;
-    double startLatitiude, startLongitude;
+    double startLatitiude = 0;
+    double startLongitude=0;
     String endLongitude;
     String  endLatitude;
     String destinationName;
     private static final String TAG = "ReadyActivity";
     public Location nowPlace = null;
-
+    String start;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,9 +65,7 @@ public class ReadyActivity extends AppCompatActivity {
         actionBar.setBackgroundDrawable(new ColorDrawable());
 
         tmapgps = new TMapGpsManager(this);
-        tmapgps.setMinDistance(0);
-        tmapgps.setMinTime(100);
-        tmapgps.OpenGps();
+
         Intent intent = getIntent();
         destinationName = intent.getExtras().getString("destination");
         endLongitude  = intent.getExtras().getString("longitude");
@@ -75,16 +75,24 @@ public class ReadyActivity extends AppCompatActivity {
         startLongitude = nowPlace.getLongitude();
 
         setContentView(R.layout.activity_ready);
-
+        TMapData tMapData = new TMapData();
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.custom_readybar);
-
-        one();
-
+//        tMapData.reverseGeocoding(startLatitiude, startLongitude, "A03",
+//                new TMapData.reverseGeocodingListenerCallback() {
+//                    @Override
+//                    public void onReverseGeocoding(TMapAddressInfo addressInfo) {
+//                        start = addressInfo.strFullAddress;
+//                        Log.e("선택한 위치의 주소는 " ,addressInfo.strFullAddress);
+//                    }
+//                });
+        callSharedPreference();
+        TextView totalDis = (TextView)findViewById(R.id.distance);
+        TextView totaltime = (TextView)findViewById(R.id.time);
         TextView startPointAddress = (TextView) findViewById(R.id.startPointAddress);
         TextView departmentAddress = (TextView) findViewById(R.id.departmentAddress);
-        startPointAddress.setText("세종대학교");
+        startPointAddress.setText("현재 위치");
         departmentAddress.setText(destinationName);
 
         Button startNavigation = (Button) findViewById(R.id.startNavigation);
@@ -97,15 +105,17 @@ public class ReadyActivity extends AppCompatActivity {
                 intent.putExtra("destination", destinationName);
                 intent.putExtra("endLongitude",endLongitude);
                 intent.putExtra("endLatitude",endLatitude);
-                intent.putExtra("startLatitude", String.valueOf(startLatitiude));
-                intent.putExtra("startLongitude", String.valueOf(startLongitude));
+//                intent.putExtra("startLatitude", String.valueOf(startLatitiude));
+//                intent.putExtra("startLongitude", String.valueOf(startLongitude));
                 startActivityForResult(intent, 1);
             }
         });
         mapView = (RelativeLayout) findViewById(mapview);
         execute(startLatitiude,startLongitude, Double.parseDouble(endLatitude),Double.parseDouble(endLongitude));
-
-
+        Log.e("Totaldistance", String.valueOf(totalDistance));
+        double instant = totalDistance/(double)1000;
+        totalDis.setText(String.valueOf(instant)+"km");
+        totaltime.setText(String.valueOf(totalTime/60)+"분");
         backImageButton.setOnClickListener(new EditText.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -113,44 +123,46 @@ public class ReadyActivity extends AppCompatActivity {
             }
 
         });
-        alertCheckGPS();
-        if( !isNetworkConnected(this) ){
-            Toast.makeText(getApplicationContext(),"YES",Toast.LENGTH_LONG).show();
-            new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle("네트워크 연결 오류").setMessage("네트워크 연결 상태 확인 후 다시 시도해 주십시요.")
-                    .setPositiveButton("확인", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick( DialogInterface dialog, int which )
-                        {
-                            finish();
-                        }
-                    }).show();
-        }
-        else{
-            Toast.makeText(getApplicationContext(),"네트워크 연결완료",Toast.LENGTH_LONG).show();
-        }
+//        alertCheckGPS();
+//        if( !isNetworkConnected(this) ){
+//            Toast.makeText(getApplicationContext(),"YES",Toast.LENGTH_LONG).show();
+//            new AlertDialog.Builder(this)
+//                    .setIcon(android.R.drawable.ic_dialog_alert)
+//                    .setTitle("네트워크 연결 오류").setMessage("네트워크 연결 상태 확인 후 다시 시도해 주십시요.")
+//                    .setPositiveButton("확인", new DialogInterface.OnClickListener()
+//                    {
+//                        @Override
+//                        public void onClick( DialogInterface dialog, int which )
+//                        {
+//                            finish();
+//                        }
+//                    }).show();
+//        }
+//        else{
+//            Toast.makeText(getApplicationContext(),"네트워크 연결완료",Toast.LENGTH_LONG).show();
+//        }
 
     }
-    public void execute(double startLat, double startLon, double endLatitude, double endLongitude) {
+    public void execute(double startLat, double startLon, double endLatitude, double endLongitude)  {
         //위도 경도를 받아서 지도상에 띄움
 
         tmapview = new TMapView(this);
         TMapPoint startPoint = new TMapPoint(startLat, startLon);
         TMapPoint endPoint = new TMapPoint(endLatitude, endLongitude);
+        PathData pathData = new PathData(startPoint, endPoint);
 
-        tpolyline = new TMapPolyLine();
-        TMapData tmapdata = new TMapData();
+
+       TMapData tmapdata = new TMapData();
+
         tmapview.setLocationPoint(startPoint.getLongitude(),startPoint.getLatitude());
         tmapview.setMapPosition(TMapView.POSITION_NAVI);
-
-
         tmapview.setTileType(TILETYPE_HDTILE);
         tmapview.setSKPMapApiKey("cad2cc9b-a3d5-3c32-8709-23279b7247f9");
         tmapview.setCompassMode(true);
 //        tmapview.setZoomLevel(11);
-        totalDistance = (int)pointDistance(startLat, startLon, endLatitude, endLongitude);
+        totalDistance= pathData.getTotalDistance();
+       // totalDistance = (int)pointDistance(startLat, startLon, endLatitude, endLongitude);
+        totalTime = pathData.getTotalTime();
         setMapView(totalDistance);
         tmapview.setMapType(TMapView.MAPTYPE_STANDARD);
         tmapview.setLanguage(TMapView.LANGUAGE_KOREAN);
@@ -230,7 +242,7 @@ public class ReadyActivity extends AppCompatActivity {
         return isConnected;
     }
 
-    public void one()
+    public void callSharedPreference()
     {
         SharedPreferences sharedPreferences = getSharedPreferences("pref", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -353,7 +365,7 @@ public class ReadyActivity extends AppCompatActivity {
             tmapgps.OpenGps();
             LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             myLocation = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
+            myLocation = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             if (myLocation == null) {
                 myLocation = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 if(myLocation != null)
@@ -362,12 +374,11 @@ public class ReadyActivity extends AppCompatActivity {
                 }
             }
             else if(myLocation != null){
-                myLocation = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                Criteria criteria = new Criteria();
-                criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-                String provider = lm.getBestProvider(criteria, true);
-                myLocation = lm.getLastKnownLocation(provider);
-                Log.d("myLocation: ", String.valueOf(myLocation.getLatitude()));
+//                Criteria criteria = new Criteria();
+//                criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+//                String provider = lm.getBestProvider(criteria, true);
+//                myLocation = lm.getLastKnownLocation(provider);
+//                Log.d("myLocation: ", String.valueOf(myLocation.getLatitude()));
             }
         }
         return myLocation;

@@ -41,11 +41,11 @@ public class PathData {
     int totalDistance = 0;
     int totalTime = 0;
     private Context context;
-
-    public PathData(Context context){
-        this.context = context;
-    }
-    public ArrayList<TMapPoint> getJsonData(final TMapPoint startPoint, final TMapPoint endPoint)
+//
+//    public PathData(Context context){
+//        this.context = context;
+//    }
+    public PathData(final TMapPoint startPoint, final TMapPoint endPoint)
     {
         Thread thread = new Thread() {
             @Override
@@ -177,7 +177,6 @@ public class PathData {
         }catch (InterruptedException e){
             e.printStackTrace();
         }
-        return passList;
     }
 
     public ArrayList<Integer> getTurnType()
@@ -191,4 +190,5 @@ public class PathData {
     public int getTotalDistance(){
         return totalDistance;
     }
+    public int getTotalTime() {return totalTime;}
 }

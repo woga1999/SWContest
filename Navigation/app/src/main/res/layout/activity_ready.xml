@@ -92,10 +92,12 @@
         android:textStyle="bold"
         android:textColor="#FF8880"/>
     <TextView
+        android:id="@+id/distance"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.4"/>
     <TextView
+        android:id="@+id/time"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.4"/>
