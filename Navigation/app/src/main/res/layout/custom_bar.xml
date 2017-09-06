@@ -20,6 +20,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_weight="0.04"
-        android:src="@drawable/handleartext" />
+        android:src="@drawable/nexonfootballgodic" />
 
 </LinearLayout>

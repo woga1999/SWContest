@@ -46,11 +46,12 @@ import java.util.UUID;
 public class MenuActivity extends AppCompatActivity {
     //거의 Main화면이다. 맨처음 나오는 Activity
     String[] names = {"","","","","","","","","","","","","","",""} ;
+    //
     List<String> destinationLists;
     public Location nowPlace = null;
-    static final int[] images={R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,
-            R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,
-            R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,};
+    static final int[] images={R.drawable.appicona,R.drawable.appicona,R.drawable.appicona,R.drawable.appicona,R.drawable.appicona,
+            R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder
+    ,R.drawable.mapholder,    R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder};
     private GridView gv;
     private String longitude;
     private String latitude;

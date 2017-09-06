@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -47,8 +46,8 @@ public class ImageGridViewCustomAdapter extends BaseAdapter{
             item = layoutInflater.inflate(R.layout.custom_grid_item,parent,false);
         }
 
-        ImageView image = (ImageView)item.findViewById(R.id.imageView_gridItem);
-        image.setImageResource(gridViewVO.get(position).getImg());
+//        ImageView image = (ImageView)item.findViewById(R.id.imageView_gridItem);
+//        image.setImageResource(gridViewVO.get(position).getImg());
         TextView txt = (TextView)item.findViewById(R.id.textView_gridItem);
         txt.setText(gridViewVO.get(position).getName());
         return item;
