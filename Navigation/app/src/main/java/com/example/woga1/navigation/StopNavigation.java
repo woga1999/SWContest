@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
+import com.example.woga1.navigation.Activity.MenuActivity;
+
 public class StopNavigation extends Activity {
     //네비게이션 화면에서 사용종료시키는 팝업창
 

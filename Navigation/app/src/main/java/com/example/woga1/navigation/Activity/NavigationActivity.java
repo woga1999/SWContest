@@ -1,9 +1,7 @@
-package com.example.woga1.navigation;
+package com.example.woga1.navigation.Activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -22,6 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.woga1.navigation.R;
+import com.example.woga1.navigation.StopNavigation;
 import com.skp.Tmap.TMapData;
 import com.skp.Tmap.TMapGpsManager;
 import com.skp.Tmap.TMapMarkerItem;
@@ -166,7 +166,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         tmapview.setSKPMapApiKey(tmapAPI);
         tmapview.setCompassMode(true);
         tmapview.setIconVisibility(true); //현재위치 파랑마커표시
-        tmapview.setZoomLevel(19);
+        tmapview.setZoomLevel(17);
         tmapview.setMapType(TMapView.MAPTYPE_STANDARD);
         tmapview.setLanguage(TMapView.LANGUAGE_KOREAN);
         tmapview.setTrackingMode(true); //화면중심을 단말의 현재위치로 이동시켜주는 트래킹 모드
@@ -388,7 +388,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         tmapview.setSKPMapApiKey(tmapAPI);
         tmapview.setCompassMode(true);
         tmapview.setIconVisibility(true); //현재위치 파랑마커표시
-        tmapview.setZoomLevel(19);
+        tmapview.setZoomLevel(18);
         tmapview.setMapType(TMapView.MAPTYPE_STANDARD);
         tmapview.setLanguage(TMapView.LANGUAGE_KOREAN);
         tmapview.setTrackingMode(true); //화면중심을 단말의 현재위치로 이동시켜주는 트래킹 모드
@@ -623,40 +623,6 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         return (double)(rad * (double)180d / Math.PI);
     }
 
-    private void alertCheckGPS() { //gps 꺼져있으면 켤 껀지 체크
-//        Intent intent = new Intent(NoticeActivity.this, gpsCheck.class);
-//        startActivityForResult(intent, 1);
-        LocationManager locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        if(!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Handlear을 이용하시려면 \n[위치] 권한을 허용해 주세요")
-                    .setCancelable(false)
-                    .setPositiveButton("확인",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    moveConfigGPS();
-                                }
-                            });
-//                    .setNegativeButton("취소",
-//                            new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    dialog.cancel();
-//                                }
-//                            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-        else
-        {
-            Toast.makeText(getApplicationContext(),"GPS 연결완료",Toast.LENGTH_LONG).show();
-        }
-    }
-
-    // GPS 설정화면으로 이동
-    private void moveConfigGPS() {
-        Intent gpsOptionsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        startActivity(gpsOptionsIntent);
-    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -667,32 +633,11 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     protected void onRestart() {
         super.onRestart();  // Always call the superclass method first
         Log.e("onRestart","true");
-        tmapgps.OpenGps();
-        alertCheckGPS();
-        // Activity being restarted from stopped state
-        if( !isNetworkConnected(this) ){
-            Toast.makeText(getApplicationContext(),"YEs",Toast.LENGTH_LONG).show();
-            new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle("네트워크 연결 오류").setMessage("네트워크 연결 상태 확인 후 다시 시도해 주십시요.")
-                    .setPositiveButton("확인", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick( DialogInterface dialog, int which )
-                        {
-                            finish();
-                        }
-                    }).show();
-        }
-        else{
-            Toast.makeText(getApplicationContext(),"네트워크 연결완료",Toast.LENGTH_LONG).show();
-        }
     }
+
     @Override
     protected void onPause() {
         super.onPause();
-        // GPS중단
-//        tmapgps.CloseGps();
     }
 
     @Override

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.woga1.navigation.SearchActivity">
+    tools:context="com.example.woga1.navigation.Activity.SearchActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

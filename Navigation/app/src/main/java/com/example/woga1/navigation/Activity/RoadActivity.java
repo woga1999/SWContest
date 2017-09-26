@@ -1,4 +1,4 @@
-package com.example.woga1.navigation;
+package com.example.woga1.navigation.Activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.woga1.navigation.R;
 import com.skp.Tmap.TMapData;
 import com.skp.Tmap.TMapGpsManager;
 import com.skp.Tmap.TMapMarkerItem;
@@ -52,6 +53,7 @@ import static com.skp.Tmap.TMapView.TILETYPE_HDTILE;
  */
 
 public class RoadActivity extends Activity implements TMapGpsManager.onLocationChangedCallback {
+    //연습용
     TextView textview = null;
     TMapGpsManager tmapgps = null;
     RelativeLayout relativeLayout = null;

@@ -1,9 +1,7 @@
-package com.example.woga1.navigation;
+package com.example.woga1.navigation.Activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -23,8 +21,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.woga1.navigation.PathData;
+import com.example.woga1.navigation.R;
 import com.google.gson.Gson;
 import com.skp.Tmap.TMapData;
 import com.skp.Tmap.TMapGpsManager;
@@ -56,10 +55,14 @@ public class ReadyActivity extends AppCompatActivity {
     private static final String TAG = "ReadyActivity";
     public Location nowPlace = null;
     String start;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+       // 블루투스용
+        // ((MenuActivity)MenuActivity.mContext).sendMessage("100 14.");
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable());
@@ -79,14 +82,7 @@ public class ReadyActivity extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.custom_readybar);
-//        tMapData.reverseGeocoding(startLatitiude, startLongitude, "A03",
-//                new TMapData.reverseGeocodingListenerCallback() {
-//                    @Override
-//                    public void onReverseGeocoding(TMapAddressInfo addressInfo) {
-//                        start = addressInfo.strFullAddress;
-//                        Log.e("선택한 위치의 주소는 " ,addressInfo.strFullAddress);
-//                    }
-//                });
+
         callSharedPreference();
         TextView totalDis = (TextView)findViewById(R.id.distance);
         TextView totaltime = (TextView)findViewById(R.id.time);
@@ -123,26 +119,8 @@ public class ReadyActivity extends AppCompatActivity {
             }
 
         });
-//        alertCheckGPS();
-//        if( !isNetworkConnected(this) ){
-//            Toast.makeText(getApplicationContext(),"YES",Toast.LENGTH_LONG).show();
-//            new AlertDialog.Builder(this)
-//                    .setIcon(android.R.drawable.ic_dialog_alert)
-//                    .setTitle("네트워크 연결 오류").setMessage("네트워크 연결 상태 확인 후 다시 시도해 주십시요.")
-//                    .setPositiveButton("확인", new DialogInterface.OnClickListener()
-//                    {
-//                        @Override
-//                        public void onClick( DialogInterface dialog, int which )
-//                        {
-//                            finish();
-//                        }
-//                    }).show();
-//        }
-//        else{
-//            Toast.makeText(getApplicationContext(),"네트워크 연결완료",Toast.LENGTH_LONG).show();
-//        }
-
     }
+
     public void execute(double startLat, double startLon, double endLatitude, double endLongitude)  {
         //위도 경도를 받아서 지도상에 띄움
 
@@ -174,6 +152,7 @@ public class ReadyActivity extends AppCompatActivity {
             @Override
             public void onFindPathData(TMapPolyLine polyLine) {
 //폴리 라인을 그리고 시작, 끝지점의 거리를 산출하여 로그에 표시한다
+
                 tmapview.addTMapPath(polyLine);
                 double wayDistance = polyLine.getDistance();
                 Log.d(TAG, "Distance: " + wayDistance + "M");
@@ -384,41 +363,6 @@ public class ReadyActivity extends AppCompatActivity {
         return myLocation;
     }
 
-
-    private void alertCheckGPS() { //gps 꺼져있으면 켤 껀지 체크
-//        Intent intent = new Intent(NoticeActivity.this, gpsCheck.class);
-//        startActivityForResult(intent, 1);
-        LocationManager locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        if(!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Handlear을 이용하시려면 \n[위치] 권한을 허용해 주세요")
-                    .setCancelable(false)
-                    .setPositiveButton("확인",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    moveConfigGPS();
-                                }
-                            });
-//                    .setNegativeButton("취소",
-//                            new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    dialog.cancel();
-//                                }
-//                            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-        else
-        {
-            Toast.makeText(getApplicationContext(),"GPS 연결완료",Toast.LENGTH_LONG).show();
-        }
-    }
-
-    // GPS 설정화면으로 이동
-    private void moveConfigGPS() {
-        Intent gpsOptionsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        startActivity(gpsOptionsIntent);
-    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -430,33 +374,12 @@ public class ReadyActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();  // Always call the superclass method first
         Log.e("onRestart","true");
-        tmapgps.OpenGps();
-        alertCheckGPS();
-        // Activity being restarted from stopped state
-        if( !isNetworkConnected(this) ){
-            Toast.makeText(getApplicationContext(),"YEs",Toast.LENGTH_LONG).show();
-            new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle("네트워크 연결 오류").setMessage("네트워크 연결 상태 확인 후 다시 시도해 주십시요.")
-                    .setPositiveButton("확인", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick( DialogInterface dialog, int which )
-                        {
-                            finish();
-                        }
-                    }).show();
-        }
-        else{
-            Toast.makeText(getApplicationContext(),"네트워크 연결완료",Toast.LENGTH_LONG).show();
-        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         // GPS중단
-        tmapgps.CloseGps();
     }
 
     @Override

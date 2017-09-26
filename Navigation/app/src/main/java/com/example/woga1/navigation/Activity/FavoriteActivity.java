@@ -1,4 +1,4 @@
-package com.example.woga1.navigation;
+package com.example.woga1.navigation.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.woga1.navigation.R;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -54,8 +55,13 @@ public class FavoriteActivity extends AppCompatActivity implements PlaceSelectio
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.custom_favoritebar);
 
-        ImageButton backImageButton = (ImageButton) findViewById(R.id.backimageButton);
 
+//        Button delete = (Button) findViewById(R.id.delete);
+        Button homeButton = (Button) findViewById(R.id.homeButton);
+        Button companyButton = (Button) findViewById(R.id.companyButton);
+        LinearLayout home = (LinearLayout) findViewById(R.id.home);
+        LinearLayout company = (LinearLayout) findViewById(R.id.company);
+        ImageButton backImageButton = (ImageButton) findViewById(R.id.backimageButton);
         backImageButton.setOnClickListener(new EditText.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,13 +92,8 @@ public class FavoriteActivity extends AppCompatActivity implements PlaceSelectio
             companyNametextView.setText(sharedPreferences.getString("companyName", "").toString());
         }
 
-        ImageButton homeButton = (ImageButton) findViewById(R.id.homeButton);
-        ImageButton companyButton = (ImageButton) findViewById(R.id.companyButton);
-        LinearLayout home = (LinearLayout) findViewById(R.id.home);
-        LinearLayout company = (LinearLayout) findViewById(R.id.company);
 
-        Button delete = (Button) findViewById(R.id.delete);
-        homeButton.setOnClickListener(new ImageButton.OnClickListener() {
+        homeButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (sharedPreferences.getString("homeName", "").toString() == "") {
@@ -137,7 +138,7 @@ public class FavoriteActivity extends AppCompatActivity implements PlaceSelectio
             }
 
         });
-        companyButton.setOnClickListener(new ImageButton.OnClickListener() {
+        companyButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (sharedPreferences.getString("companyName", "").toString() == "") {
@@ -184,14 +185,14 @@ public class FavoriteActivity extends AppCompatActivity implements PlaceSelectio
             }
 
         });
-        delete.setOnClickListener(new EditText.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editor.clear();
-                editor.commit();
-            }
-
-        });
+//        delete.setOnClickListener(new EditText.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                editor.clear();
+//                editor.commit();
+//            }
+//
+//        });
 
 
     }

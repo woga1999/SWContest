@@ -1,4 +1,4 @@
-package com.example.woga1.navigation;
+package com.example.woga1.navigation.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,13 +19,14 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.woga1.navigation.R;
+
 import java.io.IOException;
 import java.util.List;
 
 public class DestinationActivity extends AppCompatActivity {
-//최근목적지를 나타내는 Activity
-
-//    static final String[] LIST_MENU = {"홍대", "건대", "세종대학교","어린이대공원역"} ;
+    //최근목적지를 나타내는 Activity
+    //    static final String[] LIST_MENU = {"홍대", "건대", "세종대학교","어린이대공원역"} ;
     private String longitude;
     private String latitude;
     @Override

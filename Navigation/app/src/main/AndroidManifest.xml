@@ -3,14 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.woga1.navigation">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_OWNER_DATA"/>
-    <uses-permission android:name="android.permission.READ_OWNER_DATA"/>
-    <uses-permission android:name="android.permision.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+    <uses-permission android:name="android.permission.WRITE_OWNER_DATA" />
+    <uses-permission android:name="android.permission.READ_OWNER_DATA" />
+    <uses-permission android:name="android.permision.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -23,14 +24,13 @@
         android:label="Handlear"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:largeHeap="true">
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBi3rThxI8SHZkuWTAFjPj6ehLV1yJjrHo" />
 
         <activity
-            android:name=".LoadingActivity"
+            android:name=".Activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -39,32 +39,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".Activity.MainActivity" />
         <activity
-            android:name=".MenuActivity"
+            android:name=".Activity.MenuActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".SearchActivity"
-            android:parentActivityName=".MenuActivity" >
-
-        </activity>
+            android:name=".Activity.SearchActivity"
+            android:parentActivityName=".Activity.MenuActivity"></activity>
         <activity
-            android:name=".ReadyActivity"
-            android:parentActivityName=".MenuActivity" />
-        <activity android:name=".NavigationActivity" />
-        <activity android:name=".FavoriteActivity" />
-        <activity android:name=".NearActivity" />
-        <activity android:name=".DestinationActivity" />
+            android:name=".Activity.ReadyActivity"
+            android:parentActivityName=".Activity.MenuActivity" />
+        <activity android:name=".Activity.NavigationActivity" />
+        <activity android:name=".Activity.FavoriteActivity" />
+        <activity android:name=".Activity.NearActivity" />
+        <activity android:name=".Activity.DestinationActivity" />
         <activity
             android:name=".StopNavigation"
             android:theme="@android:style/Theme.DeviceDefault.Light.Dialog" />
-        <activity android:name=".DetailSearchActivity" />
-        <activity android:name=".BluetoothActivity" />
-        <activity android:name=".NoticeActivity" />
+        <activity android:name=".Activity.DetailSearchActivity" />
+        <activity android:name=".Activity.BluetoothActivity" />
+        <activity android:name=".Activity.NoticeActivity" />
         <activity
             android:name=".gpsCheck"
             android:theme="@android:style/Theme.DeviceDefault.Light.Dialog" />
-        <activity android:name=".RoadActivity"/>
+        <activity android:name=".Activity.RoadActivity" />
+        <activity android:name=".Activity.POIActivity"></activity>
     </application>
 
 </manifest>

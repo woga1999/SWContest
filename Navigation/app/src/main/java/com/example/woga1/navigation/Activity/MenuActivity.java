@@ -1,4 +1,4 @@
-package com.example.woga1.navigation;
+package com.example.woga1.navigation.Activity;
 
 import android.Manifest;
 import android.app.Activity;
@@ -33,6 +33,9 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.woga1.navigation.GridViewVO;
+import com.example.woga1.navigation.ImageGridViewCustomAdapter;
+import com.example.woga1.navigation.R;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -49,7 +52,7 @@ public class MenuActivity extends AppCompatActivity {
     //
     List<String> destinationLists;
     public Location nowPlace = null;
-    static final int[] images={R.drawable.appicona,R.drawable.appicona,R.drawable.appicona,R.drawable.appicona,R.drawable.appicona,
+    static final int[] images={R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,
             R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder
     ,R.drawable.mapholder,    R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder,R.drawable.mapholder};
     private GridView gv;
@@ -68,10 +71,14 @@ public class MenuActivity extends AppCompatActivity {
     static boolean isConnectionError = false;
     private static final String TAG = "BluetoothClient";
 
+    public static Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        alertCheckGPS();
+        mContext = this;
 //        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 //            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 //        }
@@ -92,7 +99,6 @@ public class MenuActivity extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.custom_bar);
 
         search.setMovementMethod(null);
-
 
 
 
@@ -137,6 +143,7 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MenuActivity.this, FavoriteActivity.class));
+
             }
 
         });
@@ -144,7 +151,7 @@ public class MenuActivity extends AppCompatActivity {
         button2.setOnClickListener(new EditText.OnClickListener(){
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MenuActivity.this, NearActivity.class));
+                startActivity(new Intent(MenuActivity.this, POIActivity.class));
             }
 
         });
@@ -171,8 +178,9 @@ public class MenuActivity extends AppCompatActivity {
         button5.setOnClickListener(new EditText.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MenuActivity.this, NoticeActivity.class);
-                startActivityForResult(intent, 1);
+
+//                Intent intent = new Intent(MenuActivity.this, NoticeActivity.class);
+//                startActivityForResult(intent, 1);
             }
 
         });
@@ -235,31 +243,27 @@ public class MenuActivity extends AppCompatActivity {
         });
 
 
-//        Log.d( TAG, "Initalizing Bluetooth adapter...");
-//        //1.블루투스 사용 가능한지 검사합니다.
-//        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-//        if (mBluetoothAdapter == null) {
-//            Log.e("aaa","1");
-//            showErrorDialog("This device is not implement Bluetooth.");
-//            return;
-//        }
-//
-//        if (!mBluetoothAdapter.isEnabled()) {
-//            //블루투스 허용되지 않았을 때
-//            Log.e("aaa","2");
-//            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//            startActivityForResult(intent, REQUEST_BLUETOOTH_ENABLE);
-//        }
-//        else {
-//            //블루투스 허용되어 있을 때
-//            Log.e("aaa","3");
-//            Log.d(TAG, "Initialisation successful.");
-//
-//            //2. 페어링 되어 있는 블루투스 장치들의 목록을 보여줍니다.
-//            //3. 목록에서 블루투스 장치를 선택하면 선택한 디바이스를 인자로 하여
-//            //   doConnect 함수가 호출됩니다.
-//            showPairedDevicesListDialog();
-//        }
+        Log.d( TAG, "Initalizing Bluetooth adapter...");
+        //1.블루투스 사용 가능한지 검사합니다.
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (mBluetoothAdapter == null) {
+            showErrorDialog("This device is not implement Bluetooth.");
+            return;
+        }
+
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(intent, REQUEST_BLUETOOTH_ENABLE);
+        }
+        else {
+            Log.d(TAG, "Initialisation successful.");
+
+            //2. 페어링 되어 있는 블루투스 장치들의 목록을 보여줍니다.
+            //3. 목록에서 블루투스 장치를 선택하면 선택한 디바이스를 인자로 하여
+            //   doConnect 함수가 호출됩니다.
+            showPairedDevicesListDialog();
+        }
+
 //        chkGpsService();
         alertCheckGPS();
 
@@ -405,10 +409,10 @@ public class MenuActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    //블루투스 연결중
     //runs while listening for incoming connections.
     private class ConnectTask extends AsyncTask<Void, Void, Boolean> {
 
-        //블루투스 연결중
         private BluetoothSocket mBluetoothSocket = null;
         private BluetoothDevice mBluetoothDevice = null;
 
@@ -428,9 +432,8 @@ public class MenuActivity extends AppCompatActivity {
             } catch (IOException e) {
                 Log.e( TAG, "socket create failed " + e.getMessage());
             }
-            Log.e("ConnectTask","true");
+
 //            mConnectionStatus.setText("connecting...");
-            Toast.makeText(getApplicationContext(),"connected to "+mConnectedDeviceName,Toast.LENGTH_SHORT).show();
         }
 
 
@@ -439,7 +442,7 @@ public class MenuActivity extends AppCompatActivity {
 
             // Always cancel discovery because it will slow down a connection
             mBluetoothAdapter.cancelDiscovery();
-            Log.e("doInBackground","true");
+
             // Make a connection to the BluetoothSocket
             try {
                 // This is a blocking call and will only return on a
@@ -463,7 +466,7 @@ public class MenuActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Boolean isSucess) {
-            Log.e("onPostExecute","true");
+
             if ( isSucess ) {
                 connected(mBluetoothSocket);
             }
@@ -471,11 +474,11 @@ public class MenuActivity extends AppCompatActivity {
 
                 isConnectionError = true;
                 Log.d( TAG,  "Unable to connect device");
-                showErrorDialog("Unable to connect device");
+                Toast.makeText(getApplicationContext(),"Unable to connect device",Toast.LENGTH_SHORT).show();
+//                showErrorDialog("Unable to connect device");
             }
         }
     }
-
 
     public void connected( BluetoothSocket socket ) {
         mConnectedTask = new ConnectedTask(socket);
@@ -483,12 +486,13 @@ public class MenuActivity extends AppCompatActivity {
     }
 
 
+    //블루투스 연결완료
     /**
      * This thread runs during a connection with a remote device.
      * It handles all incoming and outgoing transmissions.
      */
     private class ConnectedTask extends AsyncTask<Void, String, Boolean> {
-        //블루투스 연결완료
+
         private InputStream mInputStream = null;
         private OutputStream mOutputStream = null;
         private BluetoothSocket mBluetoothSocket = null;
@@ -505,8 +509,6 @@ public class MenuActivity extends AppCompatActivity {
 
             Log.d( TAG, "connected to "+mConnectedDeviceName);
 //            mConnectionStatus.setText( "connected to "+mConnectedDeviceName);
-            Toast.makeText(getApplicationContext(),"connected to "+mConnectedDeviceName,Toast.LENGTH_SHORT).show();
-            Log.e("ConnectedTask","true");
         }
 
 
@@ -515,7 +517,7 @@ public class MenuActivity extends AppCompatActivity {
 
             byte [] readBuffer = new byte[1024];
             int readBufferPosition = 0;
-            Log.e("doInBackground1024","true");
+
             // Keep listening to the InputStream while connected
             while (true) {
 
@@ -563,14 +565,14 @@ public class MenuActivity extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(String... recvMessage) {
-            Log.e("onProgressUpdate","true");
+
             mConversationArrayAdapter.insert(mConnectedDeviceName + ": " + recvMessage[0], 0);
         }
 
         @Override
         protected void onPostExecute(Boolean isSucess) {
             super.onPostExecute(isSucess);
-            Log.e("onPostExecute","true");
+
             if ( !isSucess ) {
 
 
@@ -584,12 +586,12 @@ public class MenuActivity extends AppCompatActivity {
         @Override
         protected void onCancelled(Boolean aBoolean) {
             super.onCancelled(aBoolean);
-            Log.e("onCancelled","true");
+
             closeSocket();
         }
 
         void closeSocket(){
-            Log.e("closeSocket","true");
+
             try {
 
                 mBluetoothSocket.close();
@@ -603,8 +605,8 @@ public class MenuActivity extends AppCompatActivity {
         }
 
         void write(String msg){
-            Log.e("write","true");
-            //msg += "\n";
+
+            msg += "\n";
 
             try {
                 mOutputStream.write(msg.getBytes());
@@ -613,14 +615,15 @@ public class MenuActivity extends AppCompatActivity {
                 Log.e(TAG, "Exception during send", e );
             }
 
-            mInputEditText.setText(" ");
+//            mInputEditText.setText(" ");
         }
     }
 
 
+    //연결된 디바이스 목록 보여줌
     public void showPairedDevicesListDialog()
     {
-        //연결된 디바이스 목록 보여줌
+
         Log.e("showPairedDevicesLis","true");
         //paried된 디바이스 목록 보여줌
         Set<BluetoothDevice> devices = mBluetoothAdapter.getBondedDevices();
@@ -654,7 +657,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
 
-
+    //블루투스 연결 실패
     public void showErrorDialog(String message)
     {
         Log.e("showErrorDialog","true");
@@ -678,10 +681,10 @@ public class MenuActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-
+    //블루투스 연결가능한 매체 갯수가 0개이거나 블루투스 연결 거부 했을 때
     public void showQuitDialog(String message)
     {
-        //블루투스 연결가능한 매체 갯수가 0개이거나 블루투스 연결 거부 했을 때
+
         Log.e("showQuitDialog","true");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Quit");
@@ -697,19 +700,20 @@ public class MenuActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-//    void sendMessage(String msg){
-////메시지보내기
-//        if ( mConnectedTask != null ) {
-//            mConnectedTask.write(msg);
-//            Log.d(TAG, "send message: " + msg);
-//            mConversationArrayAdapter.insert("Me:  " + msg, 0);
-//        }
-//    }
+    public void sendMessage(String msg){
+//메시지보내기
+        if ( mConnectedTask != null ) {
+            mConnectedTask.write(msg);
+            Log.d(TAG, "send message: " + msg);
+//            mConversationArrayAdapter.insert("Me:  " + "100 14.", 0);
+        }
+    }
 
 
+    //블루투스 연결
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //블루투스 연결
+
         if(requestCode == REQUEST_BLUETOOTH_ENABLE){
             if (resultCode == RESULT_OK){
                 //허용이 안되어 있다가 허용으로 바꿨을 때
@@ -721,9 +725,8 @@ public class MenuActivity extends AppCompatActivity {
         }
     }
 
-
+    //네트워크 연결
     public boolean isNetworkConnected(Context context){
-        //네트워크 연결
         boolean isConnected = false;
 
         ConnectivityManager manager =
@@ -742,7 +745,7 @@ public class MenuActivity extends AppCompatActivity {
 
 
 
-
+    //gps체크
     private void alertCheckGPS() { //gps 꺼져있으면 켤 껀지 체크
 //
 //        Intent intent = new Intent(NoticeActivity.this, gpsCheck.class);

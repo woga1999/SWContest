@@ -1,8 +1,9 @@
-package com.example.woga1.navigation;
+package com.example.woga1.navigation.Activity;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -16,7 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.woga1.navigation.R;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,6 +29,7 @@ import java.util.UUID;
 public class BluetoothActivity extends AppCompatActivity {
     //블루투스 연결 Activity
     private final int REQUEST_BLUETOOTH_ENABLE = 100;
+    public static Context mContext;
 
     private TextView mConnectionStatus;
     private EditText mInputEditText;
@@ -42,7 +45,12 @@ public class BluetoothActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         setContentView(R.layout.activity_bluetooth);
+
+        mConnectionStatus = (TextView)findViewById(R.id.connection_status_textview);
+        mInputEditText = (EditText)findViewById(R.id.input_string_edittext);
+        ListView mMessageListview = (ListView) findViewById(R.id.message_listview);
 
         Button sendButton = (Button)findViewById(R.id.send_button);
         sendButton.setOnClickListener(new View.OnClickListener(){
@@ -53,9 +61,6 @@ public class BluetoothActivity extends AppCompatActivity {
                 }
             }
         });
-        mConnectionStatus = (TextView)findViewById(R.id.connection_status_textview);
-        mInputEditText = (EditText)findViewById(R.id.input_string_edittext);
-        ListView mMessageListview = (ListView) findViewById(R.id.message_listview);
 
 
     }
@@ -79,7 +84,7 @@ public class BluetoothActivity extends AppCompatActivity {
             mBluetoothDevice = bluetoothDevice;
             mConnectedDeviceName = bluetoothDevice.getName();
 
-            //SPP
+            //UUID
             UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 
             // Get a BluetoothSocket for a connection with the
@@ -316,22 +321,22 @@ public class BluetoothActivity extends AppCompatActivity {
 
     public void showErrorDialog(String message)
     {
-        Toast.makeText(getApplicationContext(),"블루투스 연결 실패",Toast.LENGTH_SHORT).show();
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("Quit");
-//        builder.setCancelable(false);
-//        builder.setMessage(message);
-//        builder.setPositiveButton("OK",  new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.dismiss();
-//                if ( isConnectionError  ) {
-//                    isConnectionError = false;
-//                    finish();
-//                }
-//            }
-//        });
-//        builder.create().show();
+//        Toast.makeText(getApplicationContext(),"블루투스 연결 실패",Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Quit");
+        builder.setCancelable(false);
+        builder.setMessage(message);
+        builder.setPositiveButton("OK",  new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                if ( isConnectionError  ) {
+                    isConnectionError = false;
+                    finish();
+                }
+            }
+        });
+        builder.create().show();
     }
 
 
@@ -351,12 +356,13 @@ public class BluetoothActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    void sendMessage(String msg){
+    public  void sendMessage(String msg){
 
         if ( mConnectedTask != null ) {
             mConnectedTask.write(msg);
             Log.d(TAG, "send message: " + msg);
             mConversationArrayAdapter.insert("Me:  " + msg, 0);
+//            Toast.makeText(getApplication(),"get",Toast.LENGTH_SHORT).show();
         }
     }
 

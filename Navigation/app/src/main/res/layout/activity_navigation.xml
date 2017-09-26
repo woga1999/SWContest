@@ -5,15 +5,89 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.woga1.navigation.NavigationActivity">
+    tools:context="com.example.woga1.navigation.Activity.NavigationActivity">
 
 
 
+    <ImageView
+        android:id="@+id/directionView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#f2f2f2"
+        android:layout_alignBottom="@+id/directionSign" />
+
+    <TextView
+        android:id="@+id/roadText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="도림로 방면"
+        android:textColor="#000000"
+        android:gravity="center_vertical"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/directionSign" />
+
+    <ImageView
+        android:id="@+id/directionSign"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/turnright" />
+
+    <TextView
+        android:id="@+id/distanceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="50m"
+
+        android:textStyle="bold"
+        android:paddingLeft="5dp"
+        android:textColor="#000000"
+        android:textSize="50dp"
+        android:layout_below="@+id/roadText"
+        android:layout_toEndOf="@+id/directionSign" />
+
+    <RelativeLayout
+        android:layout_width="60dp"
+        android:layout_height="45dp"
+        android:layout_above="@+id/mapview"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/roadText"
+        android:layout_toEndOf="@+id/roadText"
+        android:background="@drawable/secondinform" >
+
+        <ImageView
+            android:id="@+id/secondDirectionSign"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@drawable/turnright"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="11dp" />
+        <TextView
+            android:id="@+id/secondDistanceText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="50m"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:textColor="#5D5D5D"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:layout_alignBottom="@+id/secondDirectionSign"
+            android:layout_toEndOf="@+id/secondDirectionSign"
+            android:layout_alignTop="@+id/secondDirectionSign" />
+    </RelativeLayout>
     <RelativeLayout
         android:id="@+id/mapview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/destination">
+        android:layout_above="@+id/destination"
+        android:layout_below="@+id/directionView">
 
     </RelativeLayout>
 
@@ -26,6 +100,7 @@
         android:gravity="center"
         android:text="서울특별시 광진구 군자동"
         android:textColor="#000000"
+        android:textStyle="bold"
         android:textSize="20dp"
         android:layout_above="@+id/linearLayout"
         android:layout_toEndOf="@+id/mapview"
@@ -36,48 +111,145 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:background="#8C8C8C"
+        android:background="#595959"
         android:padding="16dp"
         android:id="@+id/linearLayout">
 
-        <ImageButton
-            android:id="@+id/imageButton"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:background="@drawable/refresh" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/kmTitle"
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="남은거리"
+            android:textColor="#FFFFFF"
+            android:textSize="10dp"
+            android:layout_weight="0.5"/>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@drawable/ic_refresh_black_24dp"
-            android:layout_weight="0.05"
-            />
-
+            android:layout_weight="2"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/km"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:text="22km"
+                android:paddingLeft="10dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="23dp" />
+        </LinearLayout>
         <TextView
-            android:id="@+id/km"
-            android:layout_width="wrap_content"
+            android:id="@+id/minTItle"
+            android:layout_width="15dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_alignParentTop="false"
+            android:layout_gravity="center"
             android:gravity="center"
-            android:text="22km"
+            android:text="소요시간"
             android:textColor="#FFFFFF"
-            android:textSize="25dp"
-            android:layout_weight="1"/>
-        <TextView
-            android:id="@+id/min"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:gravity="center"
-            android:text="55분"
-            android:textColor="#FFFFFF"
-            android:textSize="25dp"
-            android:layout_weight="1"/>
-        <ImageButton
-            android:id="@+id/imageButton2"
+            android:textSize="10dp"
+            android:layout_weight="0.5"/>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@drawable/ic_power_settings_new_black_24dp"
-            android:onClick="showPopup"/>
-
+            android:layout_weight="2"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/min"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:text="55분"
+                android:paddingLeft="10dp"
+                android:textColor="#FFFFFF"
+                android:textSize="23dp"
+                android:layout_weight="2.5"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center|right"
+                android:background="@drawable/powerbutton"
+                android:onClick="showPopup"
+                />
+        </LinearLayout>
     </LinearLayout>
+    <FrameLayout
+        android:id="@+id/SoundCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/zoonInFrameLayout"
+        android:layout_alignStart="@+id/gpsFrameLayout">
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/SoundCheckFloating"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:elevation="10dp"
+            android:scaleType="fitXY"
+            app:backgroundTint="#F4F4F4" />
 
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:background="@drawable/speakeron"
+            android:elevation="8dp"
+            android:scaleType="fitXY"/>
+
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/roundSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_alignTop="@+id/gpsFrameLayout"
+        android:layout_alignParentEnd="true">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/roundFloating"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_above="@+id/destination"
+            android:layout_alignParentStart="true"
+            android:elevation="10dp"
+            android:scaleType="fitXY"
+            app:backgroundTint="#F4F4F4" />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_local_gas_station_black_24dp"
+            android:elevation="8dp"
+            android:scaleType="fitXY"
+            android:onClick="btnNowLocation"/>
+
+    </FrameLayout>
     <FrameLayout
         android:id="@+id/gpsFrameLayout"
         android:layout_width="wrap_content"
@@ -144,7 +316,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="80dp">
+        android:layout_marginTop="110dp">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/zoominFloating"
