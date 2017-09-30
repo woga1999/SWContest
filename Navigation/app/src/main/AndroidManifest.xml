@@ -33,11 +33,7 @@
             android:name=".LoadingActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
         <activity
@@ -51,9 +47,17 @@
         <activity
             android:name=".ReadyActivity"
             android:parentActivityName=".MenuActivity" />
-        <activity android:name=".NavigationActivity" />
+        <activity android:name=".NavigationActivity" >
+
+        </activity>
         <activity android:name=".FavoriteActivity" />
-        <activity android:name=".NearActivity" />
+        <activity android:name=".NearActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".DestinationActivity" />
         <activity
             android:name=".StopNavigation"
