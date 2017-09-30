@@ -69,6 +69,7 @@ public class ReadyActivity extends AppCompatActivity {
 
         tmapgps = new TMapGpsManager(this);
 
+
         Intent intent = getIntent();
         destinationName = intent.getExtras().getString("destination");
         endLongitude  = intent.getExtras().getString("longitude");
@@ -76,7 +77,8 @@ public class ReadyActivity extends AppCompatActivity {
         nowPlace = nowLocation();
         startLatitiude = nowPlace.getLatitude();
         startLongitude = nowPlace.getLongitude();
-
+//        startLatitiude = 37.517278;
+//        startLongitude = 127.040598;
         setContentView(R.layout.activity_ready);
         TMapData tMapData = new TMapData();
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));

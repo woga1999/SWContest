@@ -11,11 +11,8 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.woga1.navigation.R;
@@ -48,19 +45,19 @@ public class BluetoothActivity extends AppCompatActivity {
         mContext = this;
         setContentView(R.layout.activity_bluetooth);
 
-        mConnectionStatus = (TextView)findViewById(R.id.connection_status_textview);
-        mInputEditText = (EditText)findViewById(R.id.input_string_edittext);
-        ListView mMessageListview = (ListView) findViewById(R.id.message_listview);
-
-        Button sendButton = (Button)findViewById(R.id.send_button);
-        sendButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                String sendMessage = mInputEditText.getText().toString();
-                if ( sendMessage.length() > 0 ) {
-                    sendMessage(sendMessage);
-                }
-            }
-        });
+//        mConnectionStatus = (TextView)findViewById(R.id.connection_status_textview);
+//        mInputEditText = (EditText)findViewById(R.id.input_string_edittext);
+//        ListView mMessageListview = (ListView) findViewById(R.id.message_listview);
+//
+//        Button sendButton = (Button)findViewById(R.id.send_button);
+//        sendButton.setOnClickListener(new View.OnClickListener(){
+//            public void onClick(View v){
+//                String sendMessage = mInputEditText.getText().toString();
+//                if ( sendMessage.length() > 0 ) {
+//                    sendMessage(sendMessage);
+//                }
+//            }
+//        });
 
 
     }

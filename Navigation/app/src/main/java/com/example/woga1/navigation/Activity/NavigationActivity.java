@@ -78,49 +78,6 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     public Location nowPlace = null;
     private String tmapAPI = "cad2cc9b-a3d5-3c32-8709-23279b7247f9";
     private static final String TAG = "NavigationActivity";
-    @Override
-    public void onLocationChange(Location location) {
-
-        nowPlace = location;
-        gpsLat = nowPlace.getLatitude();
-        gpsLon = nowPlace.getLongitude();
-        int m = totalDistance - (int)currentDistance(startPlaceLat,startPlaceLon,nowPlace.getLatitude(),nowPlace.getLongitude());
-        double speed = location.getSpeed();
-        double hour = (m/1000)/location.getSpeed();
-        tmapview.setLocationPoint(nowPlace.getLongitude(), nowPlace.getLatitude());
-        tmapview.setTrackingMode(true);
-        int min = (totalTime/60) - (int)hour * 60;
-        totalDis.setText(String.valueOf(m/1000)+"km");
-        time.setText(String.valueOf(min)+"분");
-        tmapview.setCompassMode(true);
-        tmapview.setMarkerRotate(true);
-        //textview.setText(String.valueOf(speed));
-        //boolean isIn100M = check100M(nowPlace, index);
-        double x = currentToPointDistance(nowPlace, index);
-        type = checkArea(nowPlace, index, x);
-        if(signalStopCheck == false)
-        {
-
-            if(x>100)
-            {
-                oneMoreAlarm = true;
-                signalTurnType(type);
-            }
-            else if(x<=100)
-            {
-                signalTurnType(type);
-            }
-        }
-        else if(x <= 100 && oneMoreAlarm == true)
-        {
-            signalStopCheck = false;
-            if(signalStopCheck == false)
-            {
-                signalTurnType(type);
-                count = 1;
-            }
-        }
-    }
 
 
     @Override
@@ -132,8 +89,8 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         final String name = intent.getExtras().getString("destination");
         longitude  = intent.getExtras().getString("endLongitude");
         latitude = intent.getExtras().getString("endLatitude");
-//        startLat = intent.getExtras().getString("startLatitude");
-//        startLon = intent.getExtras().getString("startLongitude");
+        startLat = intent.getExtras().getString("startLatitude");
+        startLon = intent.getExtras().getString("startLongitude");
         Toast.makeText(getApplicationContext(),name,Toast.LENGTH_SHORT).show();
         time = (TextView)findViewById(R.id.min);
         mapView = (RelativeLayout) findViewById(R.id.mapview);
@@ -153,8 +110,13 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
 //        gpsLat = Double.parseDouble(startLat);
 //        gpsLon = Double.parseDouble(startLon);
         nowPlace = nowLocation();
+//        startLatitiude = 37.517278;
+//        startLongitude = 127.040598;
+
         TMapPoint startPoint = new TMapPoint(nowPlace.getLatitude(), nowPlace.getLongitude());
         TMapPoint endPoint = new TMapPoint(Double.parseDouble(latitude), Double.parseDouble(longitude));
+//        TMapPoint startPoint = new TMapPoint(37.517278,127.040598);
+//        TMapPoint endPoint = new TMapPoint(37.5407625,127.07934279999995);
         TMapData tmapdata = new TMapData();
 //        relativeLayout = new RelativeLayout(this);
 
@@ -225,7 +187,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.guide_arrow_blue);
         tmapview.setIcon(bitmap);
         mapView.addView(tmapview);
-        //execute(startPoint, endPoint);
+        execute(startPoint, endPoint);
 //        alertCheckGPS();
 //        if( !isNetworkConnected(this) ){
 //            Toast.makeText(getApplicationContext(),"YES",Toast.LENGTH_LONG).show();
@@ -245,6 +207,51 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
 //            Toast.makeText(getApplicationContext(),"네트워크 연결완료",Toast.LENGTH_LONG).show();
 //        }
     }
+
+    @Override
+    public void onLocationChange(Location location) {
+
+        nowPlace = location;
+        gpsLat = nowPlace.getLatitude();
+        gpsLon = nowPlace.getLongitude();
+        int m = totalDistance - (int)currentDistance(startPlaceLat,startPlaceLon,nowPlace.getLatitude(),nowPlace.getLongitude());
+        double speed = location.getSpeed();
+        double hour = (m/1000)/location.getSpeed();
+        tmapview.setLocationPoint(nowPlace.getLongitude(), nowPlace.getLatitude());
+        tmapview.setTrackingMode(true);
+        int min = (totalTime/60) - (int)hour * 60;
+        totalDis.setText(String.valueOf(m/1000)+"km");
+        time.setText(String.valueOf(min)+"분");
+        tmapview.setCompassMode(true);
+        tmapview.setMarkerRotate(true);
+        //textview.setText(String.valueOf(speed));
+        //boolean isIn100M = check100M(nowPlace, index);
+        double x = currentToPointDistance(nowPlace, index);
+        type = checkArea(nowPlace, index, x);
+        if(signalStopCheck == false)
+        {
+
+            if(x>100)
+            {
+                oneMoreAlarm = true;
+                signalTurnType(type);
+            }
+            else if(x<=100)
+            {
+                signalTurnType(type);
+            }
+        }
+        else if(x <= 100 && oneMoreAlarm == true)
+        {
+            signalStopCheck = false;
+            if(signalStopCheck == false)
+            {
+                signalTurnType(type);
+                count = 1;
+            }
+        }
+    }
+
 
     public Location nowLocation() {
         Location myLocation = null;
@@ -403,19 +410,19 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
             Bitmap mark = null;
             if(turnTypeList.get(i) == 11)
             {
-                mark = BitmapFactory.decodeResource(getResources(),R.drawable.direction_11_resized);
+                mark = BitmapFactory.decodeResource(getResources(),R.drawable.go);
             }
             else if(turnTypeList.get(i) == 12)
             {
-                mark = BitmapFactory.decodeResource(getResources(),R.drawable.direction_12_resized);
+                mark = BitmapFactory.decodeResource(getResources(),R.drawable.left);
             }
             else if(turnTypeList.get(i) == 13)
             {
-                mark = BitmapFactory.decodeResource(getResources(),R.drawable.direction_13_resized);
+                mark = BitmapFactory.decodeResource(getResources(),R.drawable.right);
             }
             else if(turnTypeList.get(i) == 14)
             {
-                mark = BitmapFactory.decodeResource(getResources(),R.drawable.direction_14_resized);
+                mark = BitmapFactory.decodeResource(getResources(),R.drawable.uturn);
             }
             else{
                 mark = BitmapFactory.decodeResource(getResources(), R.drawable.tranparent);

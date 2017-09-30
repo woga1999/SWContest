@@ -13,15 +13,16 @@
         android:id="@+id/directionView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#f2f2f2"
-        android:layout_alignBottom="@+id/directionSign" />
+        android:background="#002a4d"
+        android:layout_alignBottom="@+id/directionSign"
+        />
 
     <TextView
         android:id="@+id/roadText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="도림로 방면"
-        android:textColor="#000000"
+        android:text="선릉로 방면"
+        android:textColor="#FFFFFF"
         android:gravity="center_vertical"
         android:textSize="25dp"
         android:textStyle="bold"
@@ -34,17 +35,18 @@
         android:layout_height="100dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/turnright" />
+        android:background="@drawable/turnright"
+        android:layout_marginBottom="10dp"/>
 
     <TextView
         android:id="@+id/distanceText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="50m"
+        android:text="35m"
 
         android:textStyle="bold"
         android:paddingLeft="5dp"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textSize="50dp"
         android:layout_below="@+id/roadText"
         android:layout_toEndOf="@+id/directionSign" />
@@ -72,10 +74,10 @@
             android:id="@+id/secondDistanceText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="50m"
+            android:text="78m"
             android:paddingLeft="5dp"
             android:paddingTop="5dp"
-            android:textColor="#5D5D5D"
+            android:textColor="#FFFFFF"
             android:textStyle="bold"
             android:textSize="30dp"
             android:layout_alignBottom="@+id/secondDirectionSign"
@@ -199,23 +201,24 @@
     </LinearLayout>
     <FrameLayout
         android:id="@+id/SoundCheck"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="#f2f2f2"
         android:layout_alignTop="@+id/zoonInFrameLayout"
         android:layout_alignStart="@+id/gpsFrameLayout">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/SoundCheckFloating"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentStart="true"
-            android:elevation="10dp"
-            android:scaleType="fitXY"
-            app:backgroundTint="#F4F4F4" />
+        <!--<android.support.design.widget.FloatingActionButton-->
+            <!--android:id="@+id/SoundCheckFloating"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:elevation="10dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--app:backgroundTint="#F4F4F4" />-->
 
         <ImageButton
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_gravity="center"
             android:background="@drawable/speakeron"
             android:elevation="8dp"
@@ -224,21 +227,23 @@
     </FrameLayout>
     <FrameLayout
         android:id="@+id/roundSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="#f2f2f2"
+        android:layout_marginRight="5dp"
         android:layout_marginLeft="15dp"
         android:layout_alignTop="@+id/gpsFrameLayout"
         android:layout_alignParentEnd="true">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/roundFloating"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_above="@+id/destination"
-            android:layout_alignParentStart="true"
-            android:elevation="10dp"
-            android:scaleType="fitXY"
-            app:backgroundTint="#F4F4F4" />
+        <!--<android.support.design.widget.FloatingActionButton-->
+            <!--android:id="@+id/roundFloating"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_above="@+id/destination"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:elevation="10dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--app:backgroundTint="#F4F4F4" />-->
 
         <ImageButton
             android:layout_width="30dp"
@@ -252,23 +257,24 @@
     </FrameLayout>
     <FrameLayout
         android:id="@+id/gpsFrameLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="#f2f2f2"
         android:layout_marginLeft="15dp"
         android:layout_marginStart="11dp"
         android:layout_above="@+id/destination"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="14dp">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/gpsFloating"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_above="@+id/destination"
-            android:layout_alignParentStart="true"
-            android:elevation="10dp"
-            android:scaleType="fitXY"
-            app:backgroundTint="#F4F4F4" />
+        <!--<android.support.design.widget.FloatingActionButton-->
+            <!--android:id="@+id/gpsFloating"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_above="@+id/destination"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:elevation="10dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--app:backgroundTint="#F4F4F4" />-->
 
         <ImageButton
             android:layout_width="30dp"
@@ -283,21 +289,24 @@
 
     <FrameLayout
         android:id="@+id/zoomOutFrameLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="#f2f2f2"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/zoonInFrameLayout"
         android:layout_marginLeft="15dp">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/zoomOutFloating"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_above="@+id/destination"
-            android:layout_alignParentStart="true"
-            android:elevation="10dp"
-            android:scaleType="fitXY"
-            app:backgroundTint="#F4F4F4" />
+        <!--<android.support.design.widget.FloatingActionButton-->
+            <!--android:id="@+id/zoomOutFloating"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_above="@+id/destination"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:elevation="10dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--app:backgroundTint="#F4F4F4" />-->
 
         <ImageButton
             android:layout_width="30dp"
@@ -311,22 +320,25 @@
 
     <FrameLayout
         android:id="@+id/zoonInFrameLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
+        android:background="#f2f2f2"
         android:layout_marginLeft="15dp"
+        android:layout_marginRight="5dp"
         android:layout_marginTop="110dp">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/zoominFloating"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_above="@+id/destination"
-            android:layout_alignParentStart="true"
-            android:elevation="10dp"
-            android:scaleType="fitXY"
-            app:backgroundTint="#F4F4F4" />
+        <!--<ImageButton-->
+            <!--android:id="@+id/zoominFloating"-->
+            <!--android:layout_width="40dp"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:layout_above="@+id/destination"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:elevation="10dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:background="#FFFFFF"/>-->
 
         <ImageButton
             android:layout_width="30dp"
@@ -337,5 +349,35 @@
             android:scaleType="fitXY"
             android:onClick="btnZoomIn"/>
     </FrameLayout>
+
+
+    <!--<FrameLayout-->
+        <!--android:id="@+id/zoonInFrameLayout"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_marginLeft="15dp"-->
+        <!--android:layout_marginTop="110dp">-->
+
+        <!--<android.support.design.widget.FloatingActionButton-->
+            <!--android:id="@+id/zoominFloating"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_above="@+id/destination"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:elevation="10dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--app:backgroundTint="#F4F4F4" />-->
+
+        <!--<ImageButton-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:background="@drawable/ic_add_black_24dp"-->
+            <!--android:elevation="8dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--android:onClick="btnZoomIn"/>-->
+    <!--</FrameLayout>-->
 
 </RelativeLayout>

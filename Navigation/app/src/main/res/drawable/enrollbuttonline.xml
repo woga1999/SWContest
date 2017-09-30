@@ -8,10 +8,10 @@
 
     <!-- 테두리 내부 여백 설정 -->
     <padding
-        android:bottom="1dp"
-        android:left="1dp"
-        android:right="1dp"
-        android:top="1dp" />
+        android:bottom="3dp"
+        android:left="3dp"
+        android:right="3dp"
+        android:top="3dp" />
     <corners
         android:bottomRightRadius="5dp"
         android:bottomLeftRadius="5dp"

@@ -10,54 +10,84 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="70dp"
         android:layout_alignParentTop="true"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/button1"
+        <LinearLayout
+            android:layout_margin="7dp"
             android:layout_width="0dp"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
             android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/test4"
-            android:text="" />
+            android:weightSum="1">
 
-        <Button
-            android:id="@+id/button2"
+            <ImageButton
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/ss"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_margin="7dp"
             android:layout_width="0dp"
-            android:layout_height="70dp"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/test4"
-            android:text="" />
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+            <ImageButton
+                android:id="@+id/button2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/gasstation"
+                />
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/button3"
+        <LinearLayout
+            android:layout_margin="7dp"
             android:layout_width="0dp"
-            android:layout_height="70dp"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/test4"
-            android:text="" />
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+            <ImageButton
+                android:id="@+id/button3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/mappointtest"
+                />
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/button4"
+        <LinearLayout
+            android:layout_margin="7dp"
             android:layout_width="0dp"
-            android:layout_height="70dp"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/test4"
-            android:text="" />
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+            <ImageButton
+                android:id="@+id/button4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/bluetooth"
+                />
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/button5"
+        <LinearLayout
+            android:layout_margin="7dp"
             android:layout_width="0dp"
-            android:layout_height="70dp"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/test4"
-            android:text="" />
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+            <ImageButton
+                android:id="@+id/button5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/notificationtest"
+                />
+        </LinearLayout>
 
     </LinearLayout>
     <LinearLayout
@@ -114,14 +144,43 @@
     </LinearLayout>
 
 
-    <EditText
+    <LinearLayout
         android:id="@+id/search"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:background="@drawable/searchbar"
-        android:hint="장소/주소"
-        android:paddingLeft="70dp" />
+        android:background="@drawable/enrollbuttonline">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#FFFFFF">
+            <ImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/ic_search_black_24dp"/>
+        </LinearLayout>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:background="#FFFFFF"
+            android:text="장소/주소"
+            android:gravity="left|center"
+            android:textColor="#8C8C8C"
+            android:textSize="18dp"
+            android:paddingLeft="10dp"/>
+    </LinearLayout>
+    <!--<EditText-->
+        <!--android:id="@+id/search"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:background="@drawable/searchbar"-->
+        <!--android:hint="장소/주소"-->
+        <!--android:paddingLeft="70dp" />-->
 
 
     <GridView

@@ -38,12 +38,13 @@
             android:textStyle="bold"
             android:textColor="#FFFFFF"
             android:background="#ACACAC"/>
-    </LinearLayout>
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FFFFFF">
 
-    </ListView>
+
+    </LinearLayout>
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.example.woga1.navigation.GasStationFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"  />
 
 </LinearLayout>

@@ -27,9 +27,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,51 +86,21 @@ public class MenuActivity extends AppCompatActivity {
 //        nowPlace =  myLocation();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);}
-        EditText search = (EditText) findViewById(R.id.search);
+        LinearLayout search = (LinearLayout) findViewById(R.id.search);
 //        imageGridView = (GridView) findViewById(R.id.gridView);
 
-        Button button1 = (Button) findViewById(R.id.button1);
-        Button button2 = (Button) findViewById(R.id.button2);
-        Button button3 = (Button) findViewById(R.id.button3);
-        Button button4 = (Button) findViewById(R.id.button4);
-        Button button5 = (Button) findViewById(R.id.button5);
+        ImageButton button1 = (ImageButton) findViewById(R.id.button1);
+        ImageButton button2 = (ImageButton) findViewById(R.id.button2);
+        ImageButton button3 = (ImageButton) findViewById(R.id.button3);
+        ImageButton button4 = (ImageButton) findViewById(R.id.button4);
+        ImageButton button5 = (ImageButton) findViewById(R.id.button5);
 
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.custom_bar);
 
-        search.setMovementMethod(null);
+//        search.setMovementMethod(null);
 
-
-
-
-//        ArrayList<Integer> imageList = new ArrayList<>();
-//        imageList.add(R.drawable.mapholder);
-//        imageList.add(R.drawable.mapholder);
-//        imageList.add(R.drawable.mapholder);
-//        imageList.add(R.drawable.mapholder);
-//        imageList.add(R.drawable.mapholder);
-//        imageList.add(R.drawable.mapholder);
-//        imageList.add(R.drawable.mapholder);
-//        imageList.add(R.drawable.mapholder);
-//        imageList.add(R.drawable.mapholder);
-//        imageList.add(R.drawable.mapholder);
-//        imageList.add(R.drawable.mapholder);
-//        imageList.add(R.drawable.mapholder);
-//        imageList.add(R.drawable.mapholder);
-//        imageList.add(R.drawable.mapholder);
-//        imageList.add(R.drawable.mapholder);
-
-//        ImageGridViewCustomAdapter customAdapter = new ImageGridViewCustomAdapter(this,imageList);
-//        imageGridView.setAdapter(customAdapter);
-//
-//        imageGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-//                Toast.makeText(MenuActivity.this,""+id,Toast.LENGTH_SHORT).show();
-//                startActivity(new Intent(MenuActivity.this, ReadyActivity.class));
-//            }
-//        });
 
         search.setOnClickListener(new EditText.OnClickListener(){
             @Override
@@ -185,20 +156,6 @@ public class MenuActivity extends AppCompatActivity {
 
         });
 
-//        SharedPreferences test = getSharedPreferences("pref", MODE_PRIVATE);
-//        String firstData = test.getString("First", "a");
-////        Toast.makeText(getApplicationContext(),firstData,Toast.LENGTH_SHORT).show();
-//
-//        SharedPreferences sharedPreferences = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-//        Gson gson = new Gson();
-//        String listToString = sharedPreferences.getString("First", "a");
-//        List<String> destinationLists;
-//        destinationLists=gson.fromJson(listToString,List.class);
-//        for(int i=0; i<destinationLists.size() ; i++)
-//        {
-//            Log.e("test",destinationLists.get(i));
-//        }
-
         SharedPreferences sharedPreferences = getSharedPreferences("pref", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         String listToString = sharedPreferences.getString("Destination", null);
@@ -243,29 +200,28 @@ public class MenuActivity extends AppCompatActivity {
         });
 
 
-        Log.d( TAG, "Initalizing Bluetooth adapter...");
-        //1.블루투스 사용 가능한지 검사합니다.
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (mBluetoothAdapter == null) {
-            showErrorDialog("This device is not implement Bluetooth.");
-            return;
-        }
-
-        if (!mBluetoothAdapter.isEnabled()) {
-            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(intent, REQUEST_BLUETOOTH_ENABLE);
-        }
-        else {
-            Log.d(TAG, "Initialisation successful.");
-
-            //2. 페어링 되어 있는 블루투스 장치들의 목록을 보여줍니다.
-            //3. 목록에서 블루투스 장치를 선택하면 선택한 디바이스를 인자로 하여
-            //   doConnect 함수가 호출됩니다.
-            showPairedDevicesListDialog();
-        }
+//        Log.d( TAG, "Initalizing Bluetooth adapter...");
+//        //1.블루투스 사용 가능한지 검사합니다.
+//        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+//        if (mBluetoothAdapter == null) {
+//            showErrorDialog("This device is not implement Bluetooth.");
+//            return;
+//        }
+//
+//        if (!mBluetoothAdapter.isEnabled()) {
+//            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//            startActivityForResult(intent, REQUEST_BLUETOOTH_ENABLE);
+//        }
+//        else {
+//            Log.d(TAG, "Initialisation successful.");
+//
+//            //2. 페어링 되어 있는 블루투스 장치들의 목록을 보여줍니다.
+//            //3. 목록에서 블루투스 장치를 선택하면 선택한 디바이스를 인자로 하여
+//            //   doConnect 함수가 호출됩니다.
+//            showPairedDevicesListDialog();
+//        }
 
 //        chkGpsService();
-        alertCheckGPS();
 
         if( !isNetworkConnected(this) ){
             Toast.makeText(getApplicationContext(),"YEs",Toast.LENGTH_LONG).show();
@@ -751,7 +707,8 @@ public class MenuActivity extends AppCompatActivity {
 //        Intent intent = new Intent(NoticeActivity.this, gpsCheck.class);
 //        startActivityForResult(intent, 1);
         LocationManager locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        if(!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+//        if(!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        if(!locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Handlear을 이용하시려면 \n[위치] 권한을 허용해 주세요")
                     .setCancelable(false)
