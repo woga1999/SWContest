@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -54,6 +55,9 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     //Navigation화면으로 나오는 Activity
     TMapGpsManager tmapgps = null;
     ImageButton stopButton;
+    ImageButton soundCheck;
+    ImageButton gpsButton;
+    ImageButton poiButton;
     TextView destinationText;
     TMapView tmapview;
     ArrayList<TMapPoint> passList = new ArrayList<TMapPoint>();
@@ -74,6 +78,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     int count = 0;
     boolean signalStopCheck = false;
     boolean oneMoreAlarm = false;
+    boolean speakerIsOn = true;
     public double startPlaceLat, startPlaceLon;
     public Location nowPlace = null;
     private String tmapAPI = "cad2cc9b-a3d5-3c32-8709-23279b7247f9";
@@ -97,12 +102,48 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         totalDis = (TextView)findViewById(R.id.km);
         destinationText = (TextView) findViewById(R.id.destination);
         destinationText.setText(name);
+        gpsButton = (ImageButton) findViewById(R.id.gpsButton);
         stopButton = (ImageButton) findViewById(R.id.imageButton2);
+        soundCheck = (ImageButton) findViewById(R.id.soundCheck);
+        poiButton = (ImageButton) findViewById(R.id.poiButton);
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(NavigationActivity.this, StopNavigation.class);
-//                intent.putExtra("data", "Test Popup");
+                startActivityForResult(intent, 1);
+
+            }
+        });
+
+        soundCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(speakerIsOn==true)
+                {
+                    soundCheck.setBackgroundResource(R.drawable.speakeroff);
+                    speakerIsOn=false;
+                }
+                else
+                {
+                    speakerIsOn=true;
+                    soundCheck.setBackgroundResource(R.drawable.speakeron);
+                }
+
+            }
+        });
+
+        gpsButton.setOnClickListener(new EditText.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                tmapview.setTrackingMode(true);
+                tmapview.setSightVisible(true);
+            }
+        });
+
+        poiButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(NavigationActivity.this, POIActivity.class);
                 startActivityForResult(intent, 1);
 
             }

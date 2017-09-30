@@ -13,7 +13,7 @@
         android:id="@+id/directionView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#002a4d"
+        android:background="#2f91f9"
         android:layout_alignBottom="@+id/directionSign"
         />
 
@@ -217,12 +217,13 @@
             <!--app:backgroundTint="#F4F4F4" />-->
 
         <ImageButton
+            android:id="@+id/soundCheck"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="center"
             android:background="@drawable/speakeron"
             android:elevation="8dp"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY" />
 
     </FrameLayout>
     <FrameLayout
@@ -246,13 +247,14 @@
             <!--app:backgroundTint="#F4F4F4" />-->
 
         <ImageButton
+            android:id="@+id/poiButton"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:background="@drawable/ic_local_gas_station_black_24dp"
             android:elevation="8dp"
-            android:scaleType="fitXY"
-            android:onClick="btnNowLocation"/>
+            android:onClick="btnNowLocation"
+            android:scaleType="fitXY" />
 
     </FrameLayout>
     <FrameLayout
@@ -262,9 +264,9 @@
         android:background="#f2f2f2"
         android:layout_marginLeft="15dp"
         android:layout_marginStart="11dp"
+        android:layout_marginBottom="16dp"
         android:layout_above="@+id/destination"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="14dp">
+        android:layout_alignParentStart="true">
 
         <!--<android.support.design.widget.FloatingActionButton-->
             <!--android:id="@+id/gpsFloating"-->
@@ -277,13 +279,14 @@
             <!--app:backgroundTint="#F4F4F4" />-->
 
         <ImageButton
+            android:id="@+id/gpsButton"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:background="@drawable/ic_my_location_black_24dp"
             android:elevation="8dp"
-            android:scaleType="fitXY"
-            android:onClick="btnNowLocation"/>
+            android:onClick="btnNowLocation"
+            android:scaleType="fitXY" />
 
     </FrameLayout>
 
