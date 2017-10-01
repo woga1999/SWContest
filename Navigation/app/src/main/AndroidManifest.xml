@@ -20,7 +20,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/handlearicon_white"
+        android:icon="@drawable/handlearicontest2"
         android:label="Handlear"
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -66,7 +66,9 @@
         <activity android:name=".Activity.RoadActivity" />
         <activity android:name=".Activity.POIActivity" />
         <activity android:name=".gasStationFragmentActivity" />
-        <activity android:name=".GasStationFragment"></activity>
+        <activity android:name=".Fragment.GasStationFragment" />
+        <activity android:name=".Fragment.RestaurantFragment" />
+        <activity android:name=".Fragment.MartFragment"></activity>
     </application>
 
 </manifest>

@@ -92,7 +92,7 @@ public class MenuActivity extends AppCompatActivity {
         ImageButton button1 = (ImageButton) findViewById(R.id.button1);
         ImageButton button2 = (ImageButton) findViewById(R.id.button2);
         ImageButton button3 = (ImageButton) findViewById(R.id.button3);
-        ImageButton button4 = (ImageButton) findViewById(R.id.button4);
+//        ImageButton button4 = (ImageButton) findViewById(R.id.button4);
         ImageButton button5 = (ImageButton) findViewById(R.id.button5);
 
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
@@ -137,21 +137,20 @@ public class MenuActivity extends AppCompatActivity {
 
         });
 
-        button4.setOnClickListener(new EditText.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MenuActivity.this, BluetoothActivity.class);
-                startActivityForResult(intent, 1);
-            }
-
-        });
+//        button4.setOnClickListener(new EditText.OnClickListener(){
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MenuActivity.this, BluetoothActivity.class);
+//                startActivityForResult(intent, 1);
+//            }
+//
+//        });
 
         button5.setOnClickListener(new EditText.OnClickListener(){
             @Override
             public void onClick(View view) {
-
-//                Intent intent = new Intent(MenuActivity.this, NoticeActivity.class);
-//                startActivityForResult(intent, 1);
+                Intent intent = new Intent(MenuActivity.this, NoticeActivity.class);
+                startActivityForResult(intent, 1);
             }
 
         });
@@ -166,6 +165,7 @@ public class MenuActivity extends AppCompatActivity {
             destinationLists = gson.fromJson(listToString, List.class);
 
             for (int i = 0; i < destinationLists.size(); i++) {
+//            for (int i = 0; i < 15; i++) {
                 Log.e("destination", destinationLists.get(i));
                 names[i] = destinationLists.get(i);
             }

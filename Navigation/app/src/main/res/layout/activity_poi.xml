@@ -11,40 +11,48 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:text="주유소/충전소"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textColor="#C90000"
-            android:background="#ACACAC"/>
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:text="음식점"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:background="#ACACAC"/>
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:text="마트/편의점"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:background="#ACACAC"/>
 
+        <Button
+            android:id="@+id/gasStationButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="#ACACAC"
+            android:gravity="center"
+            android:text="주유소/충전소"
+            android:textColor="#C90000"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/restaurantButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="#ACACAC"
+            android:gravity="center"
+            android:text="음식점"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/martButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="#ACACAC"
+            android:gravity="center"
+            android:text="마트/편의점"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
 
     </LinearLayout>
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.example.woga1.navigation.GasStationFragment"
+        android:name="android.support.v4.app.ListFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"  />
+        android:layout_height="match_parent"
+        tools:layout = "@layout/fragment_gas_station"
+
+        />
 
 </LinearLayout>

@@ -13,7 +13,7 @@
         android:id="@+id/directionView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#2f91f9"
+        android:background="#0e3f66"
         android:layout_alignBottom="@+id/directionSign"
         />
 
