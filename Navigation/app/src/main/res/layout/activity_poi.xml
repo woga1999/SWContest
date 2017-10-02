@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.woga1.navigation.Activity.POIActivity">
+    tools:context="com.example.woga1.navigation.Search.POIActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:background="#ACACAC"
+            android:background="#4d4d4d"
             android:gravity="center"
             android:text="주유소/충전소"
             android:textColor="#C90000"
@@ -28,7 +28,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:background="#ACACAC"
+            android:background="#4d4d4d"
             android:gravity="center"
             android:text="음식점"
             android:textColor="#FFFFFF"
@@ -39,7 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:background="#ACACAC"
+            android:background="#4d4d4d"
             android:gravity="center"
             android:text="마트/편의점"
             android:textColor="#FFFFFF"
@@ -48,7 +48,8 @@
     </LinearLayout>
     <fragment
         android:id="@+id/listFragment"
-        android:name="android.support.v4.app.ListFragment"
+        android:name="com.example.woga1.navigation.Search.GasStationFragment"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout = "@layout/fragment_gas_station"

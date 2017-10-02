@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.woga1.navigation.Activity.SearchActivity">
+    tools:context="com.example.woga1.navigation.Search.SearchActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -22,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="54dp"
         android:background="@null"
+        android:paddingLeft="10dp"
         android:hint="검색" />
 
     <LinearLayout
@@ -30,7 +31,7 @@
 
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/destination"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -39,31 +40,31 @@
             android:background="#4D4D4D"/>
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="#4D4D4D"
             android:text="즐겨찾기"
-            android:textColor="#FFFFFF"
-            android:background="#4D4D4D"/>
+            android:textColor="#FFFFFF" />
 
         <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="주소검색"
-            android:textColor="#FFFFFF"
-            android:background="#4D4D4D"/>
-
-        <Button
-            android:id="@+id/button4"
+            android:id="@+id/detailsearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="#4D4D4D"
+            android:text="주소검색"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/setpoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#4D4D4D"
             android:text="지도지정"
-            android:textColor="#FFFFFF"
-            android:background="#4D4D4D"/>
+            android:textColor="#FFFFFF" />
 
     </LinearLayout>
 

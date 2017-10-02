@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_width="300dp"
     android:layout_height="wrap_content"
-    tools:context="com.example.woga1.navigation.StopNavigation">
+    tools:context="com.example.woga1.navigation.Navigation.StopNavigation">
 
     <!-- 타이틀바 -->
     <LinearLayout

@@ -17,11 +17,11 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:background="@drawable/handlearicontest3"
+        android:background="@drawable/handlearicontransparent"
         android:layout_marginTop="50dp"
         android:layout_below="@+id/imageView3"
         android:layout_centerHorizontal="true"
-        android:contentDescription="@drawable/handlearicontest3"/>
+        android:contentDescription="@drawable/handlearicontransparent"/>
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="250dp"

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:orientation="vertical"
-    tools:context="com.example.woga1.navigation.Activity.FavoriteActivity">
+    tools:context="com.example.woga1.navigation.SaveData.FavoriteActivity">
 
 
     <LinearLayout

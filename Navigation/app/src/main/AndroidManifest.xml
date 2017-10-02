@@ -20,7 +20,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/handlearicontest2"
+        android:icon="@mipmap/handlearicon"
         android:label="Handlear"
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -31,7 +31,7 @@
             android:value="AIzaSyBi3rThxI8SHZkuWTAFjPj6ehLV1yJjrHo" />
 
         <activity
-            android:name=".Activity.SplashActivity"
+            android:name=".SplashActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -40,35 +40,32 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.MainActivity" />
+        <activity android:name=".MainActivity"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
-            android:name=".Activity.MenuActivity"
+            android:name=".MenuActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Activity.SearchActivity"
-            android:parentActivityName=".Activity.MenuActivity" />
+            android:name=".Search.SearchActivity"
+            android:parentActivityName=".MenuActivity" />
         <activity
-            android:name=".Activity.ReadyActivity"
-            android:parentActivityName=".Activity.MenuActivity" />
-        <activity android:name=".Activity.NavigationActivity" />
-        <activity android:name=".Activity.FavoriteActivity" />
-        <activity android:name=".Activity.NearActivity" />
-        <activity android:name=".Activity.DestinationActivity" />
+            android:name=".Navigation.ReadyActivity"
+            android:parentActivityName=".MenuActivity" />
+        <activity android:name=".Navigation.NavigationActivity" />
+        <activity android:name=".SaveData.FavoriteActivity" />
+        <activity android:name=".Search.NearActivity" />
+        <activity android:name=".SaveData.DestinationActivity" />
         <activity
-            android:name=".StopNavigation"
+            android:name=".Navigation.StopNavigation"
             android:theme="@android:style/Theme.DeviceDefault.Light.Dialog" />
-        <activity android:name=".Activity.DetailSearchActivity" />
-        <activity android:name=".Activity.BluetoothActivity" />
-        <activity android:name=".Activity.NoticeActivity" />
+        <activity android:name=".Search.DetailSearchActivity" />
+        <activity android:name=".SaveData.BluetoothActivity" />
+        <activity android:name=".SaveData.NoticeActivity" />
         <activity
             android:name=".gpsCheck"
             android:theme="@android:style/Theme.DeviceDefault.Light.Dialog" />
-        <activity android:name=".Activity.RoadActivity" />
-        <activity android:name=".Activity.POIActivity" />
-        <activity android:name=".gasStationFragmentActivity" />
-        <activity android:name=".Fragment.GasStationFragment" />
-        <activity android:name=".Fragment.RestaurantFragment" />
-        <activity android:name=".Fragment.MartFragment"></activity>
+        <activity android:name=".Navigation.RoadActivity" />
+        <activity android:name=".Search.POIActivity" />
     </application>
 
 </manifest>

@@ -5,6 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context="com.example.woga1.navigation.Fragment.RestaurantFragment">
+    tools:context="com.example.woga1.navigation.Search.RestaurantFragment">
 
 </android.support.constraint.ConstraintLayout>

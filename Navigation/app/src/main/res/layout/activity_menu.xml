@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.woga1.navigation.Activity.MenuActivity"
+    tools:context="com.example.woga1.navigation.MenuActivity"
     android:weightSum="1">
 
     <LinearLayout
@@ -24,11 +24,11 @@
             android:weightSum="1">
 
             <ImageButton
-                android:id="@+id/button1"
+                android:id="@+id/destination"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:background="@drawable/startest3"/>
+                android:background="@drawable/favoritebutton"/>
         </LinearLayout>
         <LinearLayout
             android:layout_margin="13dp"
@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:background="@drawable/gasstationtest3"
+                android:background="@drawable/gasstationbutton"
                 />
         </LinearLayout>
 
@@ -56,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:background="@drawable/mappointtest"
+                android:background="@drawable/mappointbutton"
                 />
         </LinearLayout>
 
@@ -86,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:background="@drawable/notificationtest2"
+                android:background="@drawable/notificationbutton"
                 />
         </LinearLayout>
 
@@ -96,7 +96,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:background="#4C4C4C"
-        android:layout_toEndOf="@+id/button1"
+        android:layout_toEndOf="@+id/destination"
         android:orientation="horizontal"
         android:layout_marginBottom="5dp">
 

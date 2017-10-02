@@ -51,8 +51,8 @@
             android:gravity="center">
             <Button
                 android:layout_width="40dp"
-                android:layout_height="35dp"
-                android:text="등록"
+                android:layout_height="30dp"
+                android:text="상세"
                 android:id="@+id/detailButton"
                 android:background="@drawable/enrollbuttonline"
                 android:textSize="16dp"

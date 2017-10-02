@@ -1,18 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.woga1.navigation.Activity.MainActivity">
+    android:orientation="vertical"
+    tools:context="com.example.woga1.navigation.MenuActivity"
+    android:weightSum="1">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="#4C4C4C"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_margin="13dp"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:weightSum="1">
+
+            <ImageButton
+                android:id="@+id/destination"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/favoritebutton"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_margin="13dp"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:id="@+id/poiButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/gasstationbutton" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_margin="13dp"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:id="@+id/destinationButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/mappointbutton" />
+        </LinearLayout>
+
+        <!--<LinearLayout-->
+        <!--android:layout_margin="7dp"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="60dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_weight="1">-->
+        <!--<ImageButton-->
+        <!--android:id="@+id/button4"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:background="@drawable/bluetoothtest3"-->
+        <!--/>-->
+        <!--</LinearLayout>-->
+
+        <LinearLayout
+            android:layout_margin="13dp"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:id="@+id/notificationButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/notificationbutton" />
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_alignParentTop="true"
+        android:background="#4C4C4C"
+        android:layout_toEndOf="@+id/destination"
+        android:orientation="horizontal"
+        android:layout_marginBottom="5dp">
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="즐겨찾기"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="주변검색"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="최근목적지"
+            android:textColor="#FFFFFF" />
+
+        <!--<TextView-->
+        <!--android:id="@+id/textView4"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center"-->
+        <!--android:text="블루투스"-->
+        <!--android:textColor="#FFFFFF" />-->
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="공지사항"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@drawable/enrollbuttonline">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#FFFFFF">
+            <ImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/ic_search_black_24dp"/>
+        </LinearLayout>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:background="#FFFFFF"
+            android:text="장소/주소"
+            android:gravity="left|center"
+            android:textColor="#8C8C8C"
+            android:textSize="18dp"
+            android:paddingLeft="10dp"/>
+    </LinearLayout>
+    <!--<EditText-->
+    <!--android:id="@+id/search"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:background="@drawable/searchbar"-->
+    <!--android:hint="장소/주소"-->
+    <!--android:paddingLeft="70dp" />-->
+
+
+    <GridView
+        android:id="@+id/gridView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="#6C6C6C"
+        android:horizontalSpacing="1dp"
+        android:verticalSpacing="1dp"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="3" >
+    </GridView>
+
+</LinearLayout>
