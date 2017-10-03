@@ -22,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.woga1.navigation.DisplayException;
 import com.example.woga1.navigation.MenuActivity;
 import com.example.woga1.navigation.R;
 import com.google.gson.Gson;
@@ -62,7 +63,7 @@ public class ReadyActivity extends AppCompatActivity {
         actionBar.setBackgroundDrawable(new ColorDrawable());
 
         tmapgps = new TMapGpsManager(this);
-
+        DisplayException textException = new DisplayException();
 
         Intent intent = getIntent();
         destinationName = intent.getExtras().getString("destination");
@@ -101,9 +102,8 @@ public class ReadyActivity extends AppCompatActivity {
         mapView = (RelativeLayout) findViewById(mapview);
         execute(startLatitiude,startLongitude, Double.parseDouble(endLatitude),Double.parseDouble(endLongitude));
         Log.e("Totaldistance", String.valueOf(totalDistance));
-        double instant = totalDistance/(double)1000;
-        totalDis.setText(String.valueOf(instant)+"km");
-        totaltime.setText(String.valueOf(totalTime/60)+"분");
+        totalDis.setText(textException.strDistance(totalDistance));
+        totaltime.setText(textException.strTime(totalTime));
         backImageButton.setOnClickListener(new EditText.OnClickListener(){
             @Override
             public void onClick(View view) {

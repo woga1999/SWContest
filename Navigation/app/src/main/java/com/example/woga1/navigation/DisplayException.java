@@ -13,23 +13,18 @@ public class DisplayException {
     public static double STATIC_CURRENT_LATITUDE = 0.0;
     public static boolean STATIC_CURRENT_GPS_CHECK = false;
 
-
-
-
-    // 소요시간
-    public String strTime(int totalTime, double speed, int meter){
+    //네비액티비티에서 쓸 남은 시간
+    public String remainTime(int totalTime, double speed, int meter) {
         String result = "";
-        double min = (meter/speed)/60;
-        int min2 = (totalTime/60) - (int)min;
+        double min = (meter / speed) / 60;
+        int min2 = (totalTime / 60) - (int) min;
         HashMap<String, String> previewTime = new HashMap();
 
-        if(min2>0 )
-        {
-            result = String.valueOf(min2)+"분";
+        if (min2 > 0) {
+            result = String.valueOf(min2) + "분";
             previewTime.put("Time", String.valueOf(min2));
-        }
-        else if(min2<0 ){
-            result = previewTime.get("Time")+"분";
+        } else if (min2 < 0) {
+            result = previewTime.get("Time") + "분";
         }
 
 //        hour = totalTime / 3600;
@@ -39,17 +34,19 @@ public class DisplayException {
 //        else result = hour+"시간 " + minute +"분";
 
         return result;
-    }   // strTime
+    }
 
-    // 통행요금
-    public String strWon(int fare){
+    public String strTime(int totalTime)
+    {
         String result = "";
+        int hour = totalTime / 3600;
+        int minute = totalTime % 3600 / 60;
 
-        if(fare >= 1000) result = fare/1000 + "," + fare%1000 + " 원";
-        else result = fare + " 원";
+        if( hour == 0 ) result = minute + "분";
+        else result = hour+"시간 " + minute +"분";
 
         return result;
-    }   // strWon
+    }
 
     // 거리
     public String strDistance(int distance){
@@ -77,11 +74,8 @@ public class DisplayException {
     }
 
 
-    /*==========
-        1. SearchDestinationActivity
-        2. POI명칭이 길때 구리역중앙.... 처럼 표시하기 위함
-    ==========*/
-    public String strPOIName(String name){
+
+    public String poiName(String name){
         String result = "";
         if( name.length() > 15 ) result = name.substring(0, 15) + "..";
         else result = name;
@@ -90,10 +84,6 @@ public class DisplayException {
     }
 
 
-
-    /*==========
-        [ 경도 위도로 거리 구하기 ]
-    ==========*/
     public double calDistance(double lat1, double lon1, double lat2, double lon2){
 
         double theta, dist;
