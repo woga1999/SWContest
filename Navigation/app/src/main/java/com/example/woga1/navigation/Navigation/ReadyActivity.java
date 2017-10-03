@@ -39,11 +39,9 @@ import static com.skp.Tmap.TMapView.TILETYPE_HDTILE;
 
 public class ReadyActivity extends AppCompatActivity {
     //Navigation전 화면으로 나오는 Activity  경로안내 Activity
-//    static final String[] names = {"신도림역","초지역","화정역","","","","","","","","",""} ;
 
     TMapView tmapview = null;
     TMapGpsManager tmapgps = null;
-    public TMapPolyLine tpolyline;
     int totalDistance;
     int totalTime;
     RelativeLayout mapView = null;
@@ -54,15 +52,11 @@ public class ReadyActivity extends AppCompatActivity {
     String destinationName;
     private static final String TAG = "ReadyActivity";
     public Location nowPlace = null;
-    String start;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-       // 블루투스용
-        // ((MenuActivity)MenuActivity.mContext).sendMessage("100 14.");
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable());
@@ -77,8 +71,6 @@ public class ReadyActivity extends AppCompatActivity {
         nowPlace = nowLocation();
         startLatitiude = nowPlace.getLatitude();
         startLongitude = nowPlace.getLongitude();
-//        startLatitiude = 37.517278;
-//        startLongitude = 127.040598;
         setContentView(R.layout.activity_ready);
         TMapData tMapData = new TMapData();
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
@@ -103,8 +95,6 @@ public class ReadyActivity extends AppCompatActivity {
                 intent.putExtra("destination", destinationName);
                 intent.putExtra("endLongitude",endLongitude);
                 intent.putExtra("endLatitude",endLatitude);
-//                intent.putExtra("startLatitude", String.valueOf(startLatitiude));
-//                intent.putExtra("startLongitude", String.valueOf(startLongitude));
                 startActivityForResult(intent, 1);
             }
         });
@@ -215,10 +205,6 @@ public class ReadyActivity extends AppCompatActivity {
                    }
 
 
-//        if (mobile.isConnected() || wifi.isConnected()){
-//            isConnected = true;
-//        }else{
-//            isConnected = false;
 //        }
         return isConnected;
     }
@@ -266,15 +252,8 @@ public class ReadyActivity extends AppCompatActivity {
 
         editor.commit();
 
-//        int d=destinationLists.size();
-//        String total2 = String.valueOf(d);
-//        Log.e("tests",total2);
-//        Log.e("test","사이즈0아님");
-//        Toast.makeText(getApplicationContext(),total2, Toast.LENGTH_LONG).show();
         for(int i=1; i<destinationLists.size(); i++)
         {
-//            Log.e("destination",destinationLists.get(i));
-//            Toast.makeText(getApplicationContext(),destinationLists.get(i), Toast.LENGTH_LONG).show();
             if(destinationName.equals(destinationLists.get(i)))
             {
                 destinationLists.remove(i);
@@ -291,31 +270,6 @@ public class ReadyActivity extends AppCompatActivity {
         editor.putString("Longitude", json);
         editor.commit(); //완료한다.
 
-//        for(int i=0; i<destinationLists.size(); i++) {
-//            Log.e("destination~", destinationLists.get(i));
-//            Log.e("destination~", latitudeLists.get(i));
-//            Log.e("destination~", longitudeLists.get(i));
-//        }
-
-//        Toast.makeText(getApplicationContext(),,Toast.LENGTH_SHORT).show();
-//        if(destinationLists.isEmpty())
-//        {
-//            Log.e("test","사이즈0");
-//            destinationLists.add(0,destinationName);
-//        }
-//        else {
-
-//        }
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        String json = gson.toJson(destinationLists);
-//        editor.putString("First", json);
-
-//        editor.clear();
-
-//        for(int i=0; i<destinationLists.size(); i++)//
-//        {
-//            Log.e("final",destinationLists.get(i));
-//        }
     }
 
 

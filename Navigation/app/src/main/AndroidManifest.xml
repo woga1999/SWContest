@@ -55,11 +55,11 @@
         <activity android:name=".SaveData.FavoriteActivity" />
         <activity android:name=".Search.NearActivity" />
         <activity android:name=".SaveData.DestinationActivity" />
+
         <activity
             android:name=".Navigation.StopNavigation"
             android:theme="@android:style/Theme.DeviceDefault.Light.Dialog" />
         <activity android:name=".Search.DetailSearchActivity" />
-        <activity android:name=".SaveData.BluetoothActivity" />
         <activity android:name=".SaveData.NoticeActivity" />
         <activity
             android:name=".gpsCheck"
