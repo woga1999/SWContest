@@ -36,16 +36,18 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="최근목적지"
+            android:textStyle="bold"
             android:textColor="#FFFFFF"
-            android:background="#4D4D4D"/>
+            android:background="#0e3f66"/>
 
         <Button
             android:id="@+id/favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#4D4D4D"
+            android:background="#0e3f66"
             android:text="즐겨찾기"
+            android:textStyle="bold"
             android:textColor="#FFFFFF" />
 
         <Button
@@ -53,8 +55,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#4D4D4D"
+            android:background="#0e3f66"
             android:text="주소검색"
+            android:textStyle="bold"
             android:textColor="#FFFFFF" />
 
         <Button
@@ -62,8 +65,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#4D4D4D"
+            android:background="#0e3f66"
             android:text="지도지정"
+            android:textStyle="bold"
             android:textColor="#FFFFFF" />
 
     </LinearLayout>

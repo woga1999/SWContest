@@ -1,6 +1,7 @@
 package com.example.woga1.navigation.Navigation;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,11 +11,15 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,9 +60,10 @@ import static com.skp.Tmap.TMapView.TILETYPE_HDTILE;
 public class NavigationActivity extends Activity implements TMapGpsManager.onLocationChangedCallback{
     //Navigation화면으로 나오는 Activity
     ImageButton stopButton;
-    ImageButton soundCheck;
-    ImageButton gpsButton;
+    ImageButton volumeControl;
+    ImageButton resetButton;
     ImageButton poiButton;
+    ImageView entireView;
     TextView destinationText;
     //----데이터파싱해서 분류별 리스트----//
     ArrayList<TMapPoint> passList = new ArrayList<TMapPoint>();
@@ -148,11 +154,14 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         Toast.makeText(getApplicationContext(),name,Toast.LENGTH_SHORT).show();
         time = (TextView)findViewById(min);
         mapView = (RelativeLayout) findViewById(R.id.mapview);
+        entireView = (ImageView) findViewById(R.id.entireView);
         totalDis = (TextView)findViewById(R.id.km);
         destinationText = (TextView) findViewById(R.id.destination);
         destinationText.setText(name);
-        stopButton = (ImageButton) findViewById(R.id.imageButton2);
-        soundCheck = (ImageButton) findViewById(R.id.soundCheck);
+        stopButton = (ImageButton) findViewById(R.id.stopButton);
+
+        resetButton = (ImageButton) findViewById(R.id.resetButton);
+        volumeControl = (ImageButton) findViewById(R.id.volumeControl);
         poiButton = (ImageButton) findViewById(R.id.poiButton);
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,20 +172,32 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
             }
         });
 
-        soundCheck.setOnClickListener(new View.OnClickListener() {
+        //데시벨 기준 조정
+        volumeControl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(speakerIsOn==true)
-                {
-                    soundCheck.setBackgroundResource(R.drawable.speakeroff);
-                    speakerIsOn=false;
-                }
-                else
-                {
-                    speakerIsOn=true;
-                    soundCheck.setBackgroundResource(R.drawable.speakeron);
-                }
+                Toast.makeText(getApplicationContext(), "volumeControl", Toast.LENGTH_SHORT).show();
+                showdDesibelStandard();
 
+
+            }
+        });
+
+        //resetButton 클릭이벤트
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "resetButton", Toast.LENGTH_SHORT).show();
+//                        entireView.setBackgroundColor(Color.parseColor("#80FF0000"));
+                        entireView.setBackgroundColor(Color.TRANSPARENT);
+                    }
+                }, 1000);
+//                entireView.setBackgroundColor(Color.TRANSPARENT);
+                entireView.setBackgroundColor(Color.parseColor("#80FF0000"));
             }
         });
         //주변 편의시설로 넘어가는
@@ -223,6 +244,33 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
 
     }
 
+    public void showdDesibelStandard()
+    {
+        final Dialog dialog = new Dialog(NavigationActivity.this);
+        dialog.setTitle("마이크 민감도 설정");
+        dialog.setContentView(R.layout.dialog);
+        Button b1 = (Button) dialog.findViewById(R.id.okButton);
+        Button b2 = (Button) dialog.findViewById(R.id.cancelButton);
+        NumberPicker np = (NumberPicker) dialog.findViewById(R.id.numberPicker);
+        np.setMaxValue(10);
+        np.setMinValue(0);
+        np.setWrapSelectorWheel(false);
+//        np.setOnValueChangedListener(this);
+        b1.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_SHORT).show();
+            }
+        });
+        b2.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Cancel", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
     public  void initTMap(){
         tmapview.setTileType(TILETYPE_HDTILE);
         tmapview.setSKPMapApiKey(tmapAPI);

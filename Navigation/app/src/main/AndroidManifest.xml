@@ -53,7 +53,9 @@
             android:parentActivityName=".MenuActivity" />
         <activity android:name=".Navigation.NavigationActivity" />
         <activity android:name=".SaveData.FavoriteActivity" />
-        <activity android:name=".Search.NearActivity" />
+        <activity android:name=".Search.NearActivity" >
+
+        </activity>
         <activity android:name=".SaveData.DestinationActivity" />
 
         <activity

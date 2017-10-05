@@ -15,7 +15,7 @@
             android:id="@+id/Button1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#4D4D4D"
+            android:background="#0e3f66"
             android:layout_weight="1"
             android:text="광역시/도"
             android:textColor="#FFFFFF"/>
@@ -24,7 +24,7 @@
             android:id="@+id/Button2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#4D4D4D"
+            android:background="#0e3f66"
             android:layout_weight="1"
             android:text="시/군/구"
             android:textColor="#FFFFFF" />
@@ -36,7 +36,7 @@
             android:layout_weight="1"
             android:text="도로/읍/면/동"
             android:textColor="#FFFFFF"
-            android:background="#4D4D4D"/>
+            android:background="#0e3f66"/>
     </LinearLayout>
 
     <ListView

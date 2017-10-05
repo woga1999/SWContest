@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigationActivity"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -123,7 +123,7 @@
             android:layout_weight="2">
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/resetButton"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center"
@@ -189,39 +189,30 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2">
+
             <ImageButton
-                android:id="@+id/imageButton2"
+                android:id="@+id/stopButton"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center|right"
                 android:background="@drawable/powerbutton"
-                android:onClick="showPopup"
-                />
+                android:onClick="showPopup" />
         </LinearLayout>
     </LinearLayout>
     <FrameLayout
-        android:id="@+id/SoundCheck"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="#f2f2f2"
         android:layout_alignTop="@+id/zoonInFrameLayout"
         android:layout_alignStart="@+id/gpsFrameLayout">
 
-        <!--<android.support.design.widget.FloatingActionButton-->
-            <!--android:id="@+id/SoundCheckFloating"-->
-            <!--android:layout_width="50dp"-->
-            <!--android:layout_height="50dp"-->
-            <!--android:layout_alignParentStart="true"-->
-            <!--android:elevation="10dp"-->
-            <!--android:scaleType="fitXY"-->
-            <!--app:backgroundTint="#F4F4F4" />-->
 
         <ImageButton
-            android:id="@+id/soundCheck"
+            android:id="@+id/volumeControl"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="center"
-            android:background="@drawable/speakeron"
+            android:background="@drawable/volumecontrol"
             android:elevation="8dp"
             android:scaleType="fitXY" />
 
@@ -236,15 +227,7 @@
         android:layout_alignTop="@+id/gpsFrameLayout"
         android:layout_alignParentEnd="true">
 
-        <!--<android.support.design.widget.FloatingActionButton-->
-            <!--android:id="@+id/roundFloating"-->
-            <!--android:layout_width="50dp"-->
-            <!--android:layout_height="50dp"-->
-            <!--android:layout_above="@+id/destination"-->
-            <!--android:layout_alignParentStart="true"-->
-            <!--android:elevation="10dp"-->
-            <!--android:scaleType="fitXY"-->
-            <!--app:backgroundTint="#F4F4F4" />-->
+
 
         <ImageButton
             android:id="@+id/poiButton"
@@ -268,15 +251,7 @@
         android:layout_above="@+id/destination"
         android:layout_alignParentStart="true">
 
-        <!--<android.support.design.widget.FloatingActionButton-->
-            <!--android:id="@+id/gpsFloating"-->
-            <!--android:layout_width="50dp"-->
-            <!--android:layout_height="50dp"-->
-            <!--android:layout_above="@+id/destination"-->
-            <!--android:layout_alignParentStart="true"-->
-            <!--android:elevation="10dp"-->
-            <!--android:scaleType="fitXY"-->
-            <!--app:backgroundTint="#F4F4F4" />-->
+
 
         <ImageButton
             android:id="@+id/gpsButton"
@@ -301,15 +276,7 @@
         android:layout_below="@+id/zoonInFrameLayout"
         android:layout_marginLeft="15dp">
 
-        <!--<android.support.design.widget.FloatingActionButton-->
-            <!--android:id="@+id/zoomOutFloating"-->
-            <!--android:layout_width="50dp"-->
-            <!--android:layout_height="50dp"-->
-            <!--android:layout_above="@+id/destination"-->
-            <!--android:layout_alignParentStart="true"-->
-            <!--android:elevation="10dp"-->
-            <!--android:scaleType="fitXY"-->
-            <!--app:backgroundTint="#F4F4F4" />-->
+
 
         <ImageButton
             android:layout_width="30dp"
@@ -332,16 +299,7 @@
         android:layout_marginRight="5dp"
         android:layout_marginTop="110dp">
 
-        <!--<ImageButton-->
-            <!--android:id="@+id/zoominFloating"-->
-            <!--android:layout_width="40dp"-->
-            <!--android:layout_height="40dp"-->
-            <!--android:layout_above="@+id/destination"-->
-            <!--android:layout_alignParentStart="true"-->
-            <!--android:elevation="10dp"-->
-            <!--android:scaleType="fitXY"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:background="#FFFFFF"/>-->
+
 
         <ImageButton
             android:layout_width="30dp"
@@ -354,33 +312,10 @@
     </FrameLayout>
 
 
-    <!--<FrameLayout-->
-        <!--android:id="@+id/zoonInFrameLayout"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_marginLeft="15dp"-->
-        <!--android:layout_marginTop="110dp">-->
-
-        <!--<android.support.design.widget.FloatingActionButton-->
-            <!--android:id="@+id/zoominFloating"-->
-            <!--android:layout_width="50dp"-->
-            <!--android:layout_height="50dp"-->
-            <!--android:layout_above="@+id/destination"-->
-            <!--android:layout_alignParentStart="true"-->
-            <!--android:elevation="10dp"-->
-            <!--android:scaleType="fitXY"-->
-            <!--app:backgroundTint="#F4F4F4" />-->
-
-        <!--<ImageButton-->
-            <!--android:layout_width="30dp"-->
-            <!--android:layout_height="30dp"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:background="@drawable/ic_add_black_24dp"-->
-            <!--android:elevation="8dp"-->
-            <!--android:scaleType="fitXY"-->
-            <!--android:onClick="btnZoomIn"/>-->
-    <!--</FrameLayout>-->
-
+    <ImageView
+        android:id="@+id/entireView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/tranparent"
+        />
 </RelativeLayout>
