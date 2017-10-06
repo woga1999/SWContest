@@ -35,7 +35,6 @@
         android:layout_height="100dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/turnright"
         android:layout_marginBottom="10dp"/>
 
     <TextView
@@ -47,24 +46,24 @@
         android:textStyle="bold"
         android:paddingLeft="5dp"
         android:textColor="#FFFFFF"
-        android:textSize="50dp"
+        android:gravity="center"
+        android:textSize="45dp"
+        android:layout_marginStart="35dp"
         android:layout_below="@+id/roadText"
-        android:layout_toEndOf="@+id/directionSign" />
+        android:layout_toEndOf="@+id/frameLayout2" />
 
     <RelativeLayout
-        android:layout_width="60dp"
-        android:layout_height="45dp"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
         android:layout_above="@+id/mapview"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/roadText"
-        android:layout_toEndOf="@+id/roadText"
-        android:background="@drawable/secondinform" >
+        android:background="@drawable/secondinform"
+        android:layout_below="@+id/roadText">
 
         <ImageView
             android:id="@+id/nextDirectionSign"
-            android:layout_width="50dp"
-            android:layout_height="40dp"
-            android:background="@drawable/turnright"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
             android:layout_centerVertical="true"
@@ -76,6 +75,7 @@
             android:layout_height="wrap_content"
             android:text="78m"
             android:paddingLeft="5dp"
+            android:gravity="center"
             android:paddingTop="5dp"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
@@ -199,12 +199,25 @@
                 android:onClick="showPopup" />
         </LinearLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/speedView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/gpsFrameLayout"
+        android:text="30"
+        android:gravity="left|center"
+        android:textSize="30dp"
+        android:textColor="#ff9600"
+        android:textStyle="bold"
+        android:layout_alignStart="@+id/gpsFrameLayout" />
     <FrameLayout
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="#f2f2f2"
         android:layout_alignTop="@+id/zoonInFrameLayout"
-        android:layout_alignStart="@+id/gpsFrameLayout">
+        android:layout_alignStart="@+id/gpsFrameLayout"
+        android:id="@+id/frameLayout2">
 
 
         <ImageButton
@@ -317,5 +330,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/tranparent"
-        />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

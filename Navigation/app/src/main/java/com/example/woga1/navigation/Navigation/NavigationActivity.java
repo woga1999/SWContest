@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -66,6 +65,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     ImageButton poiButton;
     ImageView entireView;
     TextView destinationText;
+    TextView speedView;
     ImageView directionImg;
     ImageView nextDirectionImg;
     TextView directionDistance;
@@ -125,6 +125,15 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
 //            signalTurnType(type);
 //        }
 
+
+        if(speed>0) {
+            speedView.setText(String.valueOf(speed));
+        }
+        else
+        {
+            speedView.setText("0");
+        }
+
         if(signalStopCheck == false )
         {
             if(x>100)
@@ -181,6 +190,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         entireView = (ImageView) findViewById(R.id.entireView);
         totalDis = (TextView)findViewById(R.id.km);
         destinationText = (TextView) findViewById(R.id.destination);
+        speedView = (TextView) findViewById(R.id.speedView);
         destinationText.setText(name);
         stopButton = (ImageButton) findViewById(R.id.stopButton);
         resetButton = (ImageButton) findViewById(R.id.resetButton);
@@ -345,11 +355,12 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                 }
             }
             else if(myLocation != null){
-                Criteria criteria = new Criteria();
-                criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-                String provider = lm.getBestProvider(criteria, true);
-                myLocation = lm.getLastKnownLocation(provider);
-                Log.d("myLocation: ", String.valueOf(myLocation.getLatitude()));
+                //네트워크 ,gps, 둘다 받으면 그 둘중에 뭐가 더 최적의  프로바이더 인지 뽑아내가지고, location 안에다가 데이터 집어넣는 것
+//                Criteria criteria = new Criteria();
+//                criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+//                String provider = lm.getBestProvider(criteria, true);
+//                myLocation = lm.getLastKnownLocation(provider);
+//                Log.d("myLocation: ", String.valueOf(myLocation.getLatitude()));
             }
         }
         return myLocation;
