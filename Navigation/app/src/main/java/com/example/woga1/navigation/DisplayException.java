@@ -1,6 +1,13 @@
 package com.example.woga1.navigation;
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
+
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by woga1 on 2017-09-27.
@@ -12,7 +19,10 @@ public class DisplayException {
     public static double STATIC_CURRENT_LONGITUDE = 0.0;
     public static double STATIC_CURRENT_LATITUDE = 0.0;
     public static boolean STATIC_CURRENT_GPS_CHECK = false;
-
+    Context mContext;
+    public DisplayException(Context context){
+        mContext = context;
+    }
     //네비액티비티에서 쓸 남은 시간
     public String remainTime(int totalTime, double speed, int meter) {
         String result = "";
@@ -74,6 +84,35 @@ public class DisplayException {
     }
 
 
+    public String nowPlaceAdress(double lat, double lon){
+        String latlongString;
+        String addressString = "No address found";
+        Geocoder gc = new Geocoder(mContext, Locale.KOREAN);
+        try {
+
+            List<Address> addresses = gc.getFromLocation(lat,lon, 1);
+            StringBuilder sb = new StringBuilder();
+            if (addresses.size() > 0) {
+                Address address = addresses.get(0);
+                for (int i = 0; i < address.getMaxAddressLineIndex(); i++)
+                    sb.append(address.getAddressLine(i)).append("\n");
+				/*
+
+				 * 우편번호는 나오지 않음
+
+				 */
+                sb.append(address.getAdminArea()).append(" ");		// 시
+                sb.append(address.getLocality() + " ");  		// 구
+                sb.append(address.getThoroughfare()).append(" ");	// 동
+                sb.append(address.getFeatureName()).append(" ");	// 번지
+                addressString = sb.toString();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return addressString;
+    }
 
     public String poiName(String name){
         String result = "";

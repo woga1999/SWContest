@@ -34,11 +34,6 @@
             android:name=".SplashActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".MainActivity"
             android:windowSoftInputMode="stateHidden"/>
@@ -51,7 +46,13 @@
         <activity
             android:name=".Navigation.ReadyActivity"
             android:parentActivityName=".MenuActivity" />
-        <activity android:name=".Navigation.NavigationActivity" />
+        <activity android:name=".Navigation.NavigationActivity" >
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+            </activity>
         <activity android:name=".SaveData.FavoriteActivity" />
         <activity android:name=".Search.NearActivity" />
         <activity android:name=".SaveData.DestinationActivity" />

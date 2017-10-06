@@ -63,7 +63,7 @@ public class ReadyActivity extends AppCompatActivity {
         actionBar.setBackgroundDrawable(new ColorDrawable());
 
         tmapgps = new TMapGpsManager(this);
-        DisplayException textException = new DisplayException();
+        DisplayException textException = new DisplayException(getApplicationContext());
 
         Intent intent = getIntent();
         destinationName = intent.getExtras().getString("destination");
@@ -83,7 +83,7 @@ public class ReadyActivity extends AppCompatActivity {
         TextView totaltime = (TextView)findViewById(R.id.time);
         TextView startPointAddress = (TextView) findViewById(R.id.startPointAddress);
         TextView departmentAddress = (TextView) findViewById(R.id.departmentAddress);
-        startPointAddress.setText("현재 위치");
+        startPointAddress.setText(textException.nowPlaceAdress(startLatitiude, startLongitude));
         departmentAddress.setText(destinationName);
 
         Button startNavigation = (Button) findViewById(R.id.startNavigation);
@@ -318,6 +318,7 @@ public class ReadyActivity extends AppCompatActivity {
         }
         return myLocation;
     }
+
 
     @Override
     protected void onStart() {

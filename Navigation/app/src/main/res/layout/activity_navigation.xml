@@ -80,9 +80,9 @@
             android:textColor="#FFFFFF"
             android:textStyle="bold"
             android:textSize="30dp"
-            android:layout_alignBottom="@+id/secondDirectionSign"
-            android:layout_toEndOf="@+id/secondDirectionSign"
-            android:layout_alignTop="@+id/secondDirectionSign" />
+            android:layout_alignBottom="@+id/nextDirectionSign"
+            android:layout_toEndOf="@+id/nextDirectionSign"
+            android:layout_alignTop="@+id/nextDirectionSign" />
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/mapview"
