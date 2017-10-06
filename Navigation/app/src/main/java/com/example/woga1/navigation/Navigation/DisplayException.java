@@ -24,7 +24,13 @@ public class DisplayException {
         mContext = context;
     }
     //네비액티비티에서 쓸 남은 시간
-    public String remainTime(int totalTime, double speed, int meter) {
+    public int remainTime(int totalTime, double speed, int meter) {
+        int result = 0;
+        double min = (meter / speed) * 60;
+        int min2 = (totalTime / 60) - (int) min;
+        return result;
+    }
+    public String strRemainTime(int totalTime, double speed, int meter) {
         String result = "";
         double min = (meter / speed) / 60;
         int min2 = (totalTime / 60) - (int) min;
