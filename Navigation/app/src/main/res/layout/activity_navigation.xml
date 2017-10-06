@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/navigationActivity"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -332,4 +333,40 @@
         android:background="@drawable/tranparent"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
+    <!--<FrameLayout-->
+        <!--android:id="@+id/zoonInFrameLayout"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_marginLeft="15dp"-->
+        <!--android:layout_marginTop="110dp">-->
+
+        <!--<android.support.design.widget.FloatingActionButton-->
+            <!--android:id="@+id/zoominFloating"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_above="@+id/destination"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:elevation="10dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--app:backgroundTint="#F4F4F4" />-->
+
+        <!--<ImageButton-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:background="@drawable/ic_add_black_24dp"-->
+            <!--android:elevation="8dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--android:onClick="btnZoomIn"/>-->
+    <!--</FrameLayout>-->
+    <view
+        android:id="@+id/plot"
+        class="com.example.woga1.navigation.SoundAnalyze.AnalyzerGraphic"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        custom:cutoffDb="-25"
+        custom:sampleRate="16000" />
+
 </RelativeLayout>

@@ -1,10 +1,13 @@
 package com.example.woga1.navigation.Navigation;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -13,7 +16,10 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -27,6 +33,10 @@ import android.widget.Toast;
 
 import com.example.woga1.navigation.R;
 import com.example.woga1.navigation.Search.POIActivity;
+import com.example.woga1.navigation.SoundAnalyze.AnalyzerGraphic;
+import com.example.woga1.navigation.SoundAnalyze.AnalyzerParameters;
+import com.example.woga1.navigation.SoundAnalyze.AnalyzerViews;
+import com.example.woga1.navigation.SoundAnalyze.SamplingLoop;
 import com.skp.Tmap.TMapData;
 import com.skp.Tmap.TMapGpsManager;
 import com.skp.Tmap.TMapMarkerItem;
@@ -57,7 +67,7 @@ import static android.R.attr.x;
 import static com.example.woga1.navigation.R.id.min;
 import static com.skp.Tmap.TMapView.TILETYPE_HDTILE;
 
-public class NavigationActivity extends Activity implements TMapGpsManager.onLocationChangedCallback{
+public class NavigationActivity extends Activity implements TMapGpsManager.onLocationChangedCallback, AnalyzerGraphic.Ready{
     //Navigation화면으로 나오는 Activity
     ImageButton stopButton;
     ImageButton volumeControl;
@@ -105,6 +115,29 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     private static final String TAG = "NavigationActivity";
 
 
+
+    //SoundAnalyze
+    public AnalyzerViews analyzerViews;
+    SamplingLoop samplingThread = null;
+    private AnalyzerParameters analyzerParam = null;
+    public double dtRMS = 0;
+    public double dtRMSFromFT = 0;
+    public double maxAmpDB;
+    public double maxAmpFreq;
+    double[] viewRangeArray = null;
+    private boolean isLockViewRange = false;
+    public volatile boolean bSaveWav = false;
+    private final int MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 1;  // just a number
+    private final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 2;
+    public Thread graphInit;
+    private boolean bSamplingPreparation = false;
+    // For call requestPermissions() after each showPermissionExplanation()
+    private int count_permission_explanation = 0;
+    // For preventing infinity loop: onResume() -> requestPermissions() -> onRequestPermissionsResult() -> onResume()
+    private int count_permission_request = 0;
+
+
+
     @Override
     public void onLocationChange(Location location) {
 
@@ -127,7 +160,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
 
 
         if(speed>0) {
-            speedView.setText(String.valueOf(speed));
+            speedView.setText(String.valueOf((location.getSpeed()*3600/1000)));
         }
         else
         {
@@ -174,7 +207,12 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
 
-        //((MainActivity)MainActivity.mContext).sendMessage("100 14");
+        //SoundAnalyze
+        Resources res = getResources();
+        analyzerParam = new AnalyzerParameters(res);
+        analyzerViews = new AnalyzerViews(this);
+        analyzerViews.graphView.switch2Spectrogram();
+
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         displayException = new DisplayException(getApplicationContext());
@@ -313,6 +351,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
             }
         });
         dialog.show();
+
     }
 
     public  void setTMap(){
@@ -750,6 +789,195 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         }
     }
 
+
+
+    //SoundAnalyze
+    private void LoadPreferences() {
+        // Load preferences for recorder and views, beside loadPreferenceForView()
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        boolean keepScreenOn = sharedPref.getBoolean("keepScreenOn", true);
+        if (keepScreenOn) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+
+        analyzerParam.audioSourceId = Integer.parseInt(sharedPref.getString("audioSource", Integer.toString(analyzerParam.RECORDER_AGC_OFF)));
+        analyzerParam.wndFuncName = sharedPref.getString("windowFunction", "Hanning");
+        analyzerParam.spectrogramDuration = Double.parseDouble(sharedPref.getString("spectrogramDuration",
+                Double.toString(6.0)));
+        analyzerParam.overlapPercent = Double.parseDouble(sharedPref.getString("fft_overlap_percent", "50.0"));
+        analyzerParam.hopLen = (int)(analyzerParam.fftLen*(1 - analyzerParam.overlapPercent/100) + 0.5);
+
+        analyzerParam.sampleRate   = sharedPref.getInt("button_sample_rate", 8000);
+        analyzerParam.fftLen       = sharedPref.getInt("button_fftlen",      1024);
+        analyzerParam.nFFTAverage  = sharedPref.getInt("button_average",        1);
+
+        // spectrogram
+        analyzerViews.graphView.setSpectrogramModeShifting(sharedPref.getBoolean("spectrogramShifting", false));
+        analyzerViews.graphView.setShowTimeAxis           (sharedPref.getBoolean("spectrogramTimeAxis", true));
+        analyzerViews.graphView.setShowFreqAlongX         (sharedPref.getBoolean("spectrogramShowFreqAlongX", true));
+        analyzerViews.graphView.setSmoothRender           (sharedPref.getBoolean("spectrogramSmoothRender", false));
+        analyzerViews.graphView.setColorMap               (sharedPref.getString ("spectrogramColorMap", "Hot"));
+        // set spectrogram show range
+        analyzerViews.graphView.setSpectrogramDBLowerBound(Float.parseFloat(
+                sharedPref.getString("spectrogramRange", Double.toString(analyzerViews.graphView.spectrogramPlot.spectrogramBMP.dBLowerBound))));
+
+        analyzerViews.bWarnOverrun = sharedPref.getBoolean("warnOverrun", false);
+        analyzerViews.setFpsLimit(Double.parseDouble(
+                sharedPref.getString("spectrogramFPS", getString(R.string.spectrogram_fps_default))));
+    }
+
+    private void restartSampling(final AnalyzerParameters _analyzerParam) {
+        // Stop previous sampler if any.
+        if (samplingThread != null) {
+            samplingThread.finish();
+            try {
+                samplingThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            samplingThread = null;
+        }
+
+        if (viewRangeArray != null) {
+            analyzerViews.graphView.setupAxes(analyzerParam);
+            double[] rangeDefault = analyzerViews.graphView.getViewPhysicalRange();
+            Log.i(TAG, "restartSampling(): setViewRange: " + viewRangeArray[0] + " ~ " + viewRangeArray[1]);
+            analyzerViews.graphView.setViewRange(viewRangeArray, rangeDefault);
+            if (! isLockViewRange) viewRangeArray = null;  // do not conserve
+        }
+
+        // Set the view for incoming data
+        graphInit = new Thread(new Runnable() {
+            public void run() {
+                analyzerViews.setupView(_analyzerParam);
+            }
+        });
+        graphInit.start();
+
+        // Check and request permissions
+        if (! checkAndRequestPermissions())
+            return;
+
+        if (! bSamplingPreparation)
+            return;
+
+        // Start sampling
+        samplingThread = new SamplingLoop(this, _analyzerParam);
+        samplingThread.start();
+    }
+
+    private boolean checkAndRequestPermissions() {
+        if (ContextCompat.checkSelfPermission(NavigationActivity.this, Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+            Log.w(TAG, "Permission RECORD_AUDIO denied. Trying  to request...");
+            if (ActivityCompat.shouldShowRequestPermissionRationale(NavigationActivity.this, Manifest.permission.RECORD_AUDIO) &&
+                    count_permission_explanation < 1) {
+                Log.w(TAG, "  Show explanation here....");
+                count_permission_explanation++;
+            } else {
+                Log.w(TAG, "  Requesting...");
+                if (count_permission_request < 3) {
+                    ActivityCompat.requestPermissions(NavigationActivity.this,
+                            new String[]{Manifest.permission.RECORD_AUDIO},
+                            MY_PERMISSIONS_REQUEST_RECORD_AUDIO);
+                    count_permission_explanation = 0;
+                    count_permission_request++;
+                } else {
+                    this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Context context = getApplicationContext();
+                            String text = "Permission denied.";
+                            Toast toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
+                            toast.show();
+                        }
+                    });
+                }
+            }
+            return false;
+        }
+        if (bSaveWav &&
+                ContextCompat.checkSelfPermission(NavigationActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+            Log.w(TAG, "Permission WRITE_EXTERNAL_STORAGE denied. Trying  to request...");
+            bSaveWav = false;
+            ActivityCompat.requestPermissions(NavigationActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_RECORD_AUDIO: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.w(TAG, "RECORD_AUDIO Permission granted by user.");
+                } else {
+                    Log.w(TAG, "RECORD_AUDIO Permission denied by user.");
+                }
+                break;
+            }
+            case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.w(TAG, "WRITE_EXTERNAL_STORAGE Permission granted by user.");
+                    if (! bSaveWav) {
+                        Log.w(TAG, "... bSaveWav == true");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                bSaveWav = true;
+                            }
+                        });
+                    } else {
+                        Log.w(TAG, "... bSaveWav == false");
+                    }
+                } else {
+                    Log.w(TAG, "WRITE_EXTERNAL_STORAGE Permission denied by user.");
+                }
+                break;
+            }
+        }
+        // Then onResume() will be called.
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putDouble("dtRMS",       dtRMS);
+        savedInstanceState.putDouble("dtRMSFromFT", dtRMSFromFT);
+        savedInstanceState.putDouble("maxAmpDB",    maxAmpDB);
+        savedInstanceState.putDouble("maxAmpFreq",  maxAmpFreq);
+
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        // will be called after the onStart()
+        super.onRestoreInstanceState(savedInstanceState);
+
+        dtRMS       = savedInstanceState.getDouble("dtRMS");
+        dtRMSFromFT = savedInstanceState.getDouble("dtRMSFromFT");
+        maxAmpDB    = savedInstanceState.getDouble("maxAmpDB");
+        maxAmpFreq  = savedInstanceState.getDouble("maxAmpFreq");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        LoadPreferences();
+        analyzerViews.graphView.setReady(this);  // TODO: move this earlier?
+
+        // Used to prevent extra calling to restartSampling() (e.g. in LoadPreferences())
+        bSamplingPreparation = true;
+
+        // Start sampling
+        restartSampling(analyzerParam);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -764,6 +992,11 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
 
     @Override
     protected void onPause() {
+        bSamplingPreparation = false;
+        if (samplingThread != null) {
+            samplingThread.finish();
+        }
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         super.onPause();
     }
 
@@ -775,9 +1008,13 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-//        }
     }
 
+    @Override
+    public void ready() {
+        // put code here for the moment that graph size just changed
+        Log.v(TAG, "ready()");
+        analyzerViews.invalidateGraphView();
+    }
 
 }
