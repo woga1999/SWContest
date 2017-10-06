@@ -20,13 +20,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.woga1.navigation.SaveData.DestinationActivity;
-import com.example.woga1.navigation.SaveData.FavoriteActivity;
 import com.example.woga1.navigation.MainActivity;
 import com.example.woga1.navigation.Navigation.ReadyActivity;
 import com.example.woga1.navigation.R;
+import com.example.woga1.navigation.SaveData.DestinationActivity;
+import com.example.woga1.navigation.SaveData.FavoriteActivity;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -164,9 +163,9 @@ public class SearchActivity extends AppCompatActivity implements PlaceSelectionL
     @Override
     public void onPlaceSelected(Place place) {
 //        Log.i(LOG_TAG, "Place Selected: " + place.getName());
-        Toast.makeText(getApplicationContext(),place.getName(),Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(),place.getAddress(),Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(),place.getPhoneNumber(),Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(),place.getName(),Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(),place.getAddress(),Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(),place.getPhoneNumber(),Toast.LENGTH_SHORT).show();
         changeToLongitudeLatitude(place.getAddress());
         Intent intent = new Intent(SearchActivity.this, ReadyActivity.class);
         intent.putExtra("destination", place.getName());
@@ -182,8 +181,8 @@ public class SearchActivity extends AppCompatActivity implements PlaceSelectionL
     @Override
     public void onError(Status status) {
         Log.e(LOG_TAG, "onError: Status = " + status.toString());
-        Toast.makeText(this, "Place selection failed: " + status.getStatusMessage(),
-                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Place selection failed: " + status.getStatusMessage(),
+//                Toast.LENGTH_SHORT).show();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

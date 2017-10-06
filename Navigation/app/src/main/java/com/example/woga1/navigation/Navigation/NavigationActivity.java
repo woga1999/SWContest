@@ -222,7 +222,6 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         latitude = intent.getExtras().getString("endLatitude");
         startLat = intent.getExtras().getString("startLatitude");
         startLon = intent.getExtras().getString("startLongitude");
-        Toast.makeText(getApplicationContext(),name,Toast.LENGTH_SHORT).show();
         time = (TextView)findViewById(min);
         mapView = (RelativeLayout) findViewById(R.id.mapview);
         entireView = (ImageView) findViewById(R.id.entireView);
@@ -254,7 +253,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         volumeControl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "volumeControl", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "volumeControl", Toast.LENGTH_SHORT).show();
                 showdDesibelStandard();
 
 
@@ -269,7 +268,6 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(), "resetButton", Toast.LENGTH_SHORT).show();
 //                        entireView.setBackgroundColor(Color.parseColor("#80FF0000"));
                         entireView.setBackgroundColor(Color.TRANSPARENT);
                     }
@@ -340,13 +338,13 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         b1.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_SHORT).show();
             }
         });
         b2.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Cancel", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "Cancel", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
@@ -567,6 +565,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
             switch (type) {
                 case 200:
                     Toast.makeText(getApplicationContext(), "출발", Toast.LENGTH_SHORT).show();
+                    //((MainActivity)MainActivity.mContext).sendMessage(String.valueOf(distance)+" 200.");
                     //sendMessage(String.valueOf(distance)+" 200.");
                     break;
                 case 201:

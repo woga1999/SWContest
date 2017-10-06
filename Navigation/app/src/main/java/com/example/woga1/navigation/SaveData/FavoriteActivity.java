@@ -206,9 +206,9 @@ public class FavoriteActivity extends AppCompatActivity implements PlaceSelectio
     @Override
     public void onPlaceSelected(Place place) {
 //        Log.i(LOG_TAG, "Place Selected: " + place.getName());
-        Toast.makeText(getApplicationContext(),place.getName(),Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(),place.getAddress(),Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(),place.getPhoneNumber(),Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(),place.getName(),Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(),place.getAddress(),Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(),place.getPhoneNumber(),Toast.LENGTH_SHORT).show();
         changeToLongitudeLatitude(place.getAddress());
 //      changeToLongitudeLatitude("서울 영등포구 도림로53길 9");
 //        Intent intent = new Intent(FavoriteActivity.this, ReadyActivity.class);
@@ -230,8 +230,8 @@ public class FavoriteActivity extends AppCompatActivity implements PlaceSelectio
     @Override
     public void onError(Status status) {
         Log.e(LOG_TAG, "onError: Status = " + status.toString());
-        Toast.makeText(this, "Place selection failed: " + status.getStatusMessage(),
-                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Place selection failed: " + status.getStatusMessage(),
+//                Toast.LENGTH_SHORT).show();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

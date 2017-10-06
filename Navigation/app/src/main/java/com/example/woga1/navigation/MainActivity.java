@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
                     }).show();
         }
         else{
-            Toast.makeText(getApplicationContext(),"네트워크 연결완료",Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(),"네트워크 연결완료",Toast.LENGTH_LONG).show();
         }
 
 
@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
                     }).show();
         }
         else{
-            Toast.makeText(getApplicationContext(),"네트워크 연결완료",Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(),"네트워크 연결완료",Toast.LENGTH_LONG).show();
         }
     }
 
@@ -745,7 +745,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText(getApplicationContext(),"GPS 연결완료",Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(),"GPS 연결완료",Toast.LENGTH_LONG).show();
         }
     }
 

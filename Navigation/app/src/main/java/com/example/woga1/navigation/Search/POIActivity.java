@@ -1,17 +1,16 @@
 package com.example.woga1.navigation.Search;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.woga1.navigation.R;
 import com.skp.Tmap.TMapData;
@@ -99,14 +98,14 @@ public class POIActivity extends AppCompatActivity {
 
         if(clickedButton == "gasStationButton"){
             fr = new GasStationFragment();
-            Toast.makeText(getApplicationContext(),"gasStationButton",Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(),"gasStationButton",Toast.LENGTH_SHORT).show();
 
         }else if(clickedButton == "restaurantButton"){
             fr = new RestaurantFragment();
-            Toast.makeText(getApplicationContext(),"restaurantButton",Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(),"restaurantButton",Toast.LENGTH_SHORT).show();
         }else if(clickedButton == "martButton"){
             fr = new MartFragment();
-            Toast.makeText(getApplicationContext(),"martButton",Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(),"martButton",Toast.LENGTH_SHORT).show();
         }
 
         FragmentManager fm = getFragmentManager();
