@@ -62,7 +62,7 @@ public class ReadyActivity extends AppCompatActivity {
         actionBar.setBackgroundDrawable(new ColorDrawable());
 
         tmapgps = new TMapGpsManager(this);
-
+        DisplayException textException = new DisplayException(getApplicationContext());
 
         Intent intent = getIntent();
         destinationName = intent.getExtras().getString("destination");
@@ -82,7 +82,7 @@ public class ReadyActivity extends AppCompatActivity {
         TextView totaltime = (TextView)findViewById(R.id.time);
         TextView startPointAddress = (TextView) findViewById(R.id.startPointAddress);
         TextView departmentAddress = (TextView) findViewById(R.id.departmentAddress);
-        startPointAddress.setText("현재 위치");
+        startPointAddress.setText(textException.nowPlaceAdress(startLatitiude, startLongitude));
         departmentAddress.setText(destinationName);
 
         Button startNavigation = (Button) findViewById(R.id.startNavigation);
@@ -101,9 +101,8 @@ public class ReadyActivity extends AppCompatActivity {
         mapView = (RelativeLayout) findViewById(mapview);
         execute(startLatitiude,startLongitude, Double.parseDouble(endLatitude),Double.parseDouble(endLongitude));
         Log.e("Totaldistance", String.valueOf(totalDistance));
-        double instant = totalDistance/(double)1000;
-        totalDis.setText(String.valueOf(instant)+"km");
-        totaltime.setText(String.valueOf(totalTime/60)+"분");
+        totalDis.setText(textException.strDistance(totalDistance));
+        totaltime.setText(textException.strTime(totalTime));
         backImageButton.setOnClickListener(new EditText.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -318,6 +317,7 @@ public class ReadyActivity extends AppCompatActivity {
         }
         return myLocation;
     }
+
 
     @Override
     protected void onStart() {
