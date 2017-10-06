@@ -256,6 +256,33 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    public void bluetoothCheck()
+    {
+
+        Log.d( TAG, "Initalizing Bluetooth adapter...");
+        //1.블루투스 사용 가능한지 검사합니다.
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (mBluetoothAdapter == null) {
+            showErrorDialog("This device is not implement Bluetooth.");
+            return;
+        }
+
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(intent, REQUEST_BLUETOOTH_ENABLE);
+        }
+        else {
+            Log.d(TAG, "Initialisation successful.");
+
+            //2. 페어링 되어 있는 블루투스 장치들의 목록을 보여줍니다.
+            //3. 목록에서 블루투스 장치를 선택하면 선택한 디바이스를 인자로 하여
+            //   doConnect 함수가 호출됩니다.
+            showPairedDevicesListDialog();
+        }
+
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -445,6 +472,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+
         @Override
         protected Boolean doInBackground(Void... params) {
 
@@ -571,6 +599,7 @@ public class MainActivity extends AppCompatActivity {
         items = new String[pairedDevices.length];
         for (int i=0;i<pairedDevices.length;i++) {
             items[i] = pairedDevices[i].getName();
+
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

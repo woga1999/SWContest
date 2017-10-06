@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.woga1.navigation.DisplayException;
+import com.example.woga1.navigation.MainActivity;
 import com.example.woga1.navigation.R;
 import com.example.woga1.navigation.Search.POIActivity;
 import com.skp.Tmap.TMapData;
@@ -143,6 +144,9 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+
+        ((MainActivity)MainActivity.mContext).sendMessage("100 14");
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         displayException = new DisplayException();
         Intent intent = getIntent();
@@ -242,6 +246,8 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
 
         execute(startPoint, endPoint);
 
+
+//        ((MainActivity)MainActivity.mContext).sendMessage("100 14");
     }
 
     public void showdDesibelStandard()

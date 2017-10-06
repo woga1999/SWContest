@@ -18,6 +18,9 @@ public class NoticeActivity extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.custom_notificationbar);
+
+
+//        ((MainActivity)MainActivity.mContext).sendMessage("100 14");
     }
 
 }

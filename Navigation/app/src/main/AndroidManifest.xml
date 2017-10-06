@@ -62,7 +62,9 @@
             android:name=".Navigation.StopNavigation"
             android:theme="@android:style/Theme.DeviceDefault.Light.Dialog" />
         <activity android:name=".Search.DetailSearchActivity" />
-        <activity android:name=".SaveData.NoticeActivity" />
+        <activity android:name=".SaveData.NoticeActivity" >
+
+        </activity>
         <activity
             android:name=".gpsCheck"
             android:theme="@android:style/Theme.DeviceDefault.Light.Dialog" />
