@@ -73,14 +73,23 @@ public class DisplayException {
         String result = "";
         String strTotal = "";
         String strRemain = "";
-        if( total_distance >= 1000 ) strTotal = total_distance / 1000 + "." + (total_distance % 1000 ) / 100;
-        else strTotal = "0." + total_distance/100;
 
-        if( remain_distance >= 1000 ) strRemain = remain_distance / 1000 + "." + (remain_distance % 1000 ) / 100;
-        else if( remain_distance <= 0 ) strRemain = "0.0";
-        else strRemain = "0." + remain_distance/100;
+        int value = total_distance - remain_distance;
 
-        return result = strRemain + " / " + strTotal +"km";
+        if(value>= 1000) {
+            strRemain = value/1000+ "." + (value % 1000) / 100 +"km";
+        }
+        else {
+            strRemain = value + "m";
+        }
+//        if( total_distance >= 1000 ) strTotal = total_distance / 1000 + "." + (total_distance % 1000 ) / 100;
+//        else strTotal = "0." + total_distance/100;
+//
+//        if( remain_distance >= 1000 ) strRemain = remain_distance / 1000 + "." + (remain_distance % 1000 ) / 100;
+//        else if( remain_distance <= 0 ) strRemain = "0.0";
+//        else strRemain = "0." + remain_distance/100;
+
+        return strRemain;
     }
 
 

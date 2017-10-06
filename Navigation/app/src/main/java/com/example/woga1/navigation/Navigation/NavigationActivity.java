@@ -101,7 +101,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     int totalDistance = 0;
     int totalTime = 0;
     int type = -1;
-    int index = 0;
+    int index = 1;
     int meter = 0;
     boolean signalStopCheck = false;
     boolean oneMoreAlarm = false;
@@ -197,6 +197,8 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
             //strCurrentDistance = exception.strDistance((int) driveInfoDistance);
             time.setText(displayException.remainTime(totalTime,speed,meter));
             //tv_distance.setText(strCurrentDistance);
+            //각 구간 m 줄어들기
+            directionDistance.setText(pointDistanceList.get(index-1)+"m");
             Log.i(TAG, "[[[[[ 남은 거리와 시간 ]]]]] : " + displayException.strDistance(meter) + displayException.remainTime(totalTime,speed,meter));
         }
     };   // [ End Handler ]
@@ -217,11 +219,12 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         displayException = new DisplayException(getApplicationContext());
         Intent intent = getIntent();
-        final String name = intent.getExtras().getString("destination");
-        longitude  = intent.getExtras().getString("endLongitude");
-        latitude = intent.getExtras().getString("endLatitude");
-        startLat = intent.getExtras().getString("startLatitude");
-        startLon = intent.getExtras().getString("startLongitude");
+        final String name = "스타벅스";
+//        final String name = intent.getExtras().getString("destination");
+//        longitude  = intent.getExtras().getString("endLongitude");
+//        latitude = intent.getExtras().getString("endLatitude");
+//        startLat = intent.getExtras().getString("startLatitude");
+//        startLon = intent.getExtras().getString("startLongitude");
         time = (TextView)findViewById(min);
         mapView = (RelativeLayout) findViewById(R.id.mapview);
         entireView = (ImageView) findViewById(R.id.entireView);
@@ -287,9 +290,10 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         });
         currentLocation = nowLocation();
         TMapPoint startPoint = new TMapPoint(currentLocation.getLatitude(), currentLocation.getLongitude());
-        TMapPoint endPoint = new TMapPoint(Double.parseDouble(latitude), Double.parseDouble(longitude));
+        //37.540542, 127.069236
+        //Double.parseDouble(latitude), Double.parseDouble(longitude)
+        TMapPoint endPoint = new TMapPoint(37.540542, 127.069236);
         TMapData tmapdata = new TMapData();
-        Log.e(TAG, displayException.nowPlaceAdress(37.535386, 127.068971));
         tmapview = new TMapView(this);
 
         tmapview.setLocationPoint(startPoint.getLongitude(),startPoint.getLatitude());
@@ -370,7 +374,6 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         tmapgps.setMinTime(0);
         tmapgps.OpenGps();
         tmapgps.setProvider(tmapgps.GPS_PROVIDER );
-        tmapgps.setProvider(tmapgps.NETWORK_PROVIDER);
     }
 
     public Location nowLocation() {
@@ -418,17 +421,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                     Log.e("checkarea", "도착");
                 }
             }
-            else if(i == index && index == 0)
-            {
-                if (distanceInMeters <= 20) {
-                    Log.e("checkarea", "출발");
-                    turnType = turnTypeList.get(0);
-                    signalTurnType(200);
-                    signalStopCheck = false;
-                    index++;
-                }
-            }
-            else if(i == index)
+            else
             {
                 if (distanceInMeters <= 100 && distanceInMeters > 10) {
                     turnType = turnTypeList.get(index);
@@ -443,7 +436,6 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                     oneMoreAlarm = false;
                     index++;
                     changeTopUIHandler.sendEmptyMessage(0);
-                    destinationText.setText(displayException.nowPlaceAdress(currentLocation.getLatitude(),currentLocation.getLongitude()));
                 }
             }
         }
@@ -469,7 +461,6 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         tmapview.setLocationPoint(startpoint.getLongitude(),startpoint.getLatitude());
         setTMap();
         //passList = getJsonData(startpoint, endpoint);
-
 
         for(int i=0; i<passList.size(); i++)
         {
@@ -509,13 +500,20 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     private Handler changeTopUIHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            Log.e("[ TopUI구간과 방향Handler ] ", String.valueOf(index));
-            changeTurnTypeDirection(turnTypeList.get(index), turnTypeList.get(index+1));
+            Log.e("[ TopUI구간과 방향Handler ] ", String.valueOf(index+1));
+            if(index<turnTypeList.size()-2) {
+                changeTurnTypeDirection(turnTypeList.get(index + 1), turnTypeList.get(index + 2));
+            }
+            else if(index == turnTypeList.size()-2)
+            {
+                changeTurnTypeDirection(turnTypeList.get(index + 1), 0);
+            }
         }
     };
 
     public void changeTurnTypeDirection(int turntype, int nextturntype)
     {
+        Log.e(TAG, String.valueOf(turntype)+" "+String.valueOf(nextturntype));
         switch(turntype)
         {
             case 11:
@@ -529,6 +527,9 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                 break;
             case 14:
                 directionImg.setImageResource(R.drawable.uturn);
+                break;
+            case 201:
+                directionImg.setImageResource(R.drawable.endpurple_resized);
                 break;
         }
         switch (nextturntype)
@@ -545,6 +546,9 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
             case 14:
                 nextDirectionImg.setImageResource(R.drawable.uturn);
                 break;
+            case 201:
+                nextDirectionImg.setImageResource(R.drawable.endpurple_resized);
+                break;
         }
         if(index < pointDistanceList.size())
         {
@@ -556,12 +560,12 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
             nextdirectionDistance.setText(pointDistanceList.get(index+1)+"m");
         }
         else if(index+1 == pointDistanceList.size()) {
-            nextdirectionDistance.setText("도착");
+            nextdirectionDistance.setText(" ");
         }
     }
 
     public void signalTurnType(int type) {
-        if (signalStopCheck == false || oneMoreAlarm == true) {
+        if (!signalStopCheck) {
             switch (type) {
                 case 200:
                     Toast.makeText(getApplicationContext(), "출발", Toast.LENGTH_SHORT).show();
@@ -588,40 +592,28 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                     Toast.makeText(getApplicationContext(), "U턴", Toast.LENGTH_SHORT).show();
                     //sendMessage(String.valueOf(distance)+" 14.");
                     break;
-                case 15:
-                    Toast.makeText(getApplicationContext(), "P턴", Toast.LENGTH_SHORT).show();
-                    //sendMessage(String.valueOf(distance)+" 15.");
-                    break;
-                case 16:
-                    Toast.makeText(getApplicationContext(), "8시방향 좌회", Toast.LENGTH_SHORT).show();
-                    //sendMessage(String.valueOf(distance)+" 16.");
-                    break;
-                case 17:
-                    Toast.makeText(getApplicationContext(), "10시방향 좌회", Toast.LENGTH_SHORT).show();
-                    //sendMessage(String.valueOf(distance)+" 17.");
-                    break;
-                case 18:
-                    Toast.makeText(getApplicationContext(), "2시방향 우회", Toast.LENGTH_SHORT).show();
-                    //sendMessage(String.valueOf(distance)+" 18.");
-                    break;
-                case 19:
-                    Toast.makeText(getApplicationContext(), "4시방향 우회", Toast.LENGTH_SHORT).show();
-                    //sendMessage(String.valueOf(distance)+" 19.");
-                    break;
-                case 43:
-                    Toast.makeText(getApplicationContext(), "오른쪽", Toast.LENGTH_SHORT).show();
-                    //sendMessage(String.valueOf(distance)+" 43.");
-                    break;
-                case 44:
-                    Toast.makeText(getApplicationContext(), "왼쪽", Toast.LENGTH_SHORT).show();
-                    //sendMessage(String.valueOf(distance)+" 44.");
-                    break;
-                case 51:
-                    Toast.makeText(getApplicationContext(), "직진 방향", Toast.LENGTH_SHORT).show();
-                    //sendMessage(String.valueOf(distance)+" 51.");
-                    break;
             }
             signalStopCheck = true;
+        }
+        else if (oneMoreAlarm) {
+            switch (type) {
+                case 104:
+                    Toast.makeText(getApplicationContext(), "직진", Toast.LENGTH_SHORT).show();
+                    //sendMessage(String.valueOf(distance)+" 11.");
+                    break;
+                case 103:
+                    Toast.makeText(getApplicationContext(), "좌회전", Toast.LENGTH_SHORT).show();
+                    //sendMessage(String.valueOf(distance)+" 12.");
+                    break;
+                case 102:
+                    Toast.makeText(getApplicationContext(), "우회전", Toast.LENGTH_SHORT).show();
+                    //sendMessage(String.valueOf(distance)+" 13.");
+                    break;
+                case 105:
+                    Toast.makeText(getApplicationContext(), "U턴", Toast.LENGTH_SHORT).show();
+                    //sendMessage(String.valueOf(distance)+" 14.");
+                    break;
+            }
         }
     }
 
@@ -636,7 +628,6 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
 
                 String urlString = "https://apis.skplanetx.com/tmap/routes?version=1&format=json&appKey=cad2cc9b-a3d5-3c32-8709-23279b7247f9";
                 //String urlString = "https://apis.skplanetx.com/tmap/routes/pedestrian?callback=&bizAppId=&version=1&format=json&appKey=e2a7df79-5bc7-3f7f-8bca-2d335a0526e7";
-
 
                 // &format={xml 또는 json}
                 try{
