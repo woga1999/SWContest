@@ -99,7 +99,9 @@ public class ReadyActivity extends AppCompatActivity {
             }
         });
         mapView = (RelativeLayout) findViewById(mapview);
-        execute(startLatitiude,startLongitude, Double.parseDouble(endLatitude),Double.parseDouble(endLongitude));
+        //startLatitude,startLongitude
+        //용덕관 앞
+        execute(37.551451, 127.073621, Double.parseDouble(endLatitude),Double.parseDouble(endLongitude));
         Log.e("Totaldistance", String.valueOf(totalDistance));
         totalDis.setText(textException.strDistance(totalDistance));
         totaltime.setText(textException.strTime(totalTime));

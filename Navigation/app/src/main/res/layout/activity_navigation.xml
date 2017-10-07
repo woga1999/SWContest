@@ -48,7 +48,7 @@
         android:paddingLeft="5dp"
         android:textColor="#FFFFFF"
         android:gravity="center"
-        android:textSize="45dp"
+        android:textSize="40dp"
         android:layout_marginStart="35dp"
         android:layout_below="@+id/roadText"
         android:layout_toEndOf="@+id/frameLayout2" />
@@ -80,7 +80,7 @@
             android:paddingTop="5dp"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
-            android:textSize="30dp"
+            android:textSize="25dp"
             android:layout_alignBottom="@+id/nextDirectionSign"
             android:layout_toEndOf="@+id/nextDirectionSign"
             android:layout_alignTop="@+id/nextDirectionSign" />
@@ -206,7 +206,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_above="@+id/gpsFrameLayout"
-        android:text="30"
+        android:text="0"
         android:gravity="left|center"
         android:textSize="30dp"
         android:textColor="#ff9600"

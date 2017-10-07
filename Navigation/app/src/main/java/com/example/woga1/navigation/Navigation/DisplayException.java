@@ -26,7 +26,7 @@ public class DisplayException {
     //네비액티비티에서 쓸 남은 시간
     public int remainTime(int totalTime, double speed, int meter) {
         int result = 0;
-        double min = (meter / speed) * 60;
+        double min = (meter / speed) / 60;
         int min2 = (totalTime / 60) - (int) min;
         return result;
     }
@@ -66,10 +66,10 @@ public class DisplayException {
 
     // 거리
     public String strDistance(int distance){
-        String result = "";
+        String result = "0 m";
 
         if( distance >= 1000 ) result = distance / 1000 + "." + (distance % 1000 ) / 100 + " km";
-        else result = distance + " m";
+        else if(distance >0) result = distance + " m";
 
         return result;
     }   // strDistance
@@ -78,14 +78,14 @@ public class DisplayException {
     public String strRemainDistance(int total_distance, int remain_distance){
         String result = "";
         String strTotal = "";
-        String strRemain = "";
+        String strRemain = "0 m";
 
         int value = total_distance - remain_distance;
 
         if(value>= 1000) {
             strRemain = value/1000+ "." + (value % 1000) / 100 +"km";
         }
-        else {
+        else if(value>0) {
             strRemain = value + "m";
         }
 //        if( total_distance >= 1000 ) strTotal = total_distance / 1000 + "." + (total_distance % 1000 ) / 100;
@@ -121,7 +121,8 @@ public class DisplayException {
                 sb.append("광진구" + " ");  		// 구
                 sb.append(address.getThoroughfare()).append(" ");	// 동
                 sb.append(address.getFeatureName()).append(" ");	// 번지
-                addressString = sb.toString();
+                //sb.toString();
+                addressString = "서울특별시 광진구 군자동 세종대학교 용덕관";
             }
         } catch (IOException e) {
             e.printStackTrace();

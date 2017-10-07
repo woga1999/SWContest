@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
-import com.example.woga1.navigation.MenuActivity;
+import com.example.woga1.navigation.MainActivity;
 import com.example.woga1.navigation.R;
 
 public class StopNavigation extends Activity {
@@ -18,21 +18,21 @@ public class StopNavigation extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_stop_navigation);
-        Button noButton = (Button)findViewById(R.id.noButton);
+//        Button noButton = (Button)findViewById(R.id.noButton);
         Button finishButton = (Button)findViewById(R.id.finishButton);
 
-        noButton.setOnClickListener(new Button.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-
-        });
+//        noButton.setOnClickListener(new Button.OnClickListener(){
+//            @Override
+//            public void onClick(View view) {
+//                finish();
+//            }
+//
+//        });
 
         finishButton.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(StopNavigation.this, MenuActivity.class);
+                Intent intent = new Intent(StopNavigation.this, MainActivity.class);
                 startActivityForResult(intent, 1);
             }
 

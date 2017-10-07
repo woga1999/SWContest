@@ -31,6 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.woga1.navigation.MainActivity;
 import com.example.woga1.navigation.R;
 import com.example.woga1.navigation.Search.POIActivity;
 import com.example.woga1.navigation.SoundAnalyze.AnalyzerGraphic;
@@ -66,7 +67,7 @@ import java.util.List;
 import static com.example.woga1.navigation.R.id.min;
 import static com.skp.Tmap.TMapView.TILETYPE_HDTILE;
 
-public class NavigationActivity extends Activity implements TMapGpsManager.onLocationChangedCallback, AnalyzerGraphic.Ready{
+public class NavigationActivity extends Activity implements TMapGpsManager.onLocationChangedCallback, AnalyzerGraphic.Ready {
     //Navigation화면으로 나오는 Activity
     ImageButton stopButton;
     ImageButton volumeControl;
@@ -91,9 +92,9 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     TMapView tmapview;
     DisplayException displayException;
     //---변수---//
-    double distance;
+    int distance;
     String startLat, startLon;
-    String longitude,latitude;
+    String longitude, latitude;
     //-------------onLocation에서 쓰이는 변수//
     TextView totalDis;
     TextView time;
@@ -102,6 +103,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     int type = -1;
     int index = 0;
     int meter = 0;
+    int oneMoreAlarmCount = 0;
     boolean signalStopCheck = false;
     boolean oneMoreAlarm = false;
     boolean oneMoreAlarmSignalStopCheck = false;
@@ -134,60 +136,63 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     private int count_permission_request = 0;
 
 
-
     @Override
     public void onLocationChange(Location location) {
 
         currentLocation = location;
-        meter = totalDistance - (int)currentDistance(startPlaceLat,startPlaceLon,currentLocation.getLatitude(),currentLocation.getLongitude());
+        meter = totalDistance - (int) currentDistance(startPlaceLat, startPlaceLon, currentLocation.getLatitude(), currentLocation.getLongitude());
         speed = location.getSpeed();
 //        tmapview.setCompassMode(true); //이것도 방향변환지점?
 //        tmapview.setMarkerRotate(true); //이거랑
-        distance = currentToPointDistance(currentLocation, index);
+        distance = (int)currentToPointDistance(currentLocation, index);
         type = checkArea(currentLocation, distance);
         changeMarker();
-        if(speed>0) {
-            speedView.setText(String.valueOf((location.getSpeed()*3600/1000)));
-        }
-        else
-        {
+        if (speed > 0) {
+            speedView.setText(String.valueOf((int)(location.getSpeed() * 3600 / 1000)));
+        } else {
             speedView.setText("0");
         }
 
-        if(oneMoreAlarm)
-        {
-            oneMoreSignalTurnType(type);
-        }
-        else if(!signalStopCheck)
-        {
-            if(oneMoreAlarm)
-            {
-                oneMoreSignalTurnType(type);
+        if (!signalStopCheck) {
+            if (oneMoreAlarm) {
+                oneMoreAlarmCount++;
+                if(oneMoreAlarmCount == 1) {
+                    oneMoreSignalTurnType(type);
+                }
                 oneMoreAlarm = false;
-            }
-            else if(oneMoreAlarmSignalStopCheck)
-            {
+            } else if (oneMoreAlarmSignalStopCheck) {
                 signalTurnType(type);
                 signalStopCheck = true;
             }
         }
     }
 
-    private void changeMarker(){
+    public void initValue(){
+        index = 0;
+        meter = 0;
+        oneMoreAlarmCount = 0;
+    }
+    public void initProcess(){
+        signalStopCheck = false;
+        oneMoreAlarm = false;
+        oneMoreAlarmSignalStopCheck = false;
+        oneMoreAlarmCount = 0;
+    }
+
+    private void changeMarker() {
         tmapview.setTrackingMode(true);
         tmapview.setLocationPoint(currentLocation.getLongitude(), currentLocation.getLatitude());
         //남은거리 변경
         totalDis.setText(displayException.strDistance(meter));
         //strCurrentDistance = exception.strDistance((int) driveInfoDistance);
-        int textTime = displayException.remainTime(totalTime,speed,meter);
-        if(textTime>0)
-        {
-            time.setText(String.valueOf(textTime)+"분");
+        int textTime = displayException.remainTime(totalTime, speed, meter);
+        if (textTime > 0) {
+            time.setText(String.valueOf(textTime) + "분");
         }
         //tv_distance.setText(strCurrentDistance);
         //각 구간 m 줄어들기
-        directionDistance.setText(displayException.strDistance((int)distance));
-        Log.i(TAG, "[[[[[ 남은 거리와 시간 ]]]]] : " + displayException.strDistance(meter) + displayException.remainTime(totalTime,speed,meter));
+        directionDistance.setText(displayException.strDistance(distance));
+        Log.i(TAG, "[[[[[ 남은 거리와 시간 ]]]]] : " + displayException.strDistance(meter) + displayException.remainTime(totalTime, speed, meter));
     }
 
 //    private Handler handler = new Handler() {
@@ -216,14 +221,16 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         Intent intent = getIntent();
         //final String name = "스타벅스";
         final String name = intent.getExtras().getString("destination");
-        longitude  = intent.getExtras().getString("endLongitude");
+        longitude = intent.getExtras().getString("endLongitude");
         latitude = intent.getExtras().getString("endLatitude");
-        startLat = intent.getExtras().getString("startLatitude");
-        startLon = intent.getExtras().getString("startLongitude");
-        time = (TextView)findViewById(min);
+//        startLat = intent.getExtras().getString("startLatitude");
+//        startLon = intent.getExtras().getString("startLongitude");
+        initValue();
+
+        time = (TextView) findViewById(min);
         mapView = (RelativeLayout) findViewById(R.id.mapview);
         entireView = (ImageView) findViewById(R.id.entireView);
-        totalDis = (TextView)findViewById(R.id.km);
+        totalDis = (TextView) findViewById(R.id.km);
         destinationText = (TextView) findViewById(R.id.destination);
         speedView = (TextView) findViewById(R.id.speedView);
         destinationText.setText(name);
@@ -281,31 +288,33 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
             }
         });
         currentLocation = nowLocation();
-        startPlaceLat = currentLocation.getLatitude();
-        startPlaceLon = currentLocation.getLongitude();
-        TMapPoint startPoint = new TMapPoint(currentLocation.getLatitude(), currentLocation.getLongitude());
+        startPlaceLat = 37.551451;
+        startPlaceLon = 127.073621;
+        //currentLocation.getLatitude(), currentLocation.getLongitude()
+        //37.551451, 127.073621
+        TMapPoint startPoint = new TMapPoint(37.551451, 127.073621);
         //37.540542, 127.069236
         //Double.parseDouble(latitude), Double.parseDouble(longitude)
         TMapPoint endPoint = new TMapPoint(Double.parseDouble(latitude), Double.parseDouble(longitude));
         TMapData tmapdata = new TMapData();
         tmapview = new TMapView(this);
 
-        tmapview.setLocationPoint(startPoint.getLongitude(),startPoint.getLatitude());
+        tmapview.setLocationPoint(startPoint.getLongitude(), startPoint.getLatitude());
 
         passList = getJsonData(startPoint, endPoint);
         time.setText(displayException.strTime(totalTime));
-        Log.e("totalTime",displayException.strTime(totalTime));
+        Log.e("totalTime", displayException.strTime(totalTime));
         totalDis.setText(displayException.strDistance(totalDistance));
-        Log.e("totalDis",String.valueOf(totalDistance/1000)+"km");
+        Log.e("totalDis", String.valueOf(totalDistance / 1000) + "km");
         displayRoad.setText(roadName.get(index));
         setTMap();
 
-        tmapdata.findPathDataWithType(TMapData.TMapPathType.CAR_PATH, startPoint, endPoint,  new TMapData.FindPathDataListenerCallback() {
+        tmapdata.findPathDataWithType(TMapData.TMapPathType.CAR_PATH, startPoint, endPoint, new TMapData.FindPathDataListenerCallback() {
             @Override
             public void onFindPathData(TMapPolyLine polyLine) {
 //폴리 라인을 그리고 시작, 끝지점의 거리를 산출하여 로그에 표시한다
-                Bitmap start = BitmapFactory.decodeResource(getResources(),R.drawable.startpurple_resized);
-                Bitmap end = BitmapFactory.decodeResource(getResources(),R.drawable.endpurple_resized);
+                Bitmap start = BitmapFactory.decodeResource(getResources(), R.drawable.startpurple_resized);
+                Bitmap end = BitmapFactory.decodeResource(getResources(), R.drawable.endpurple_resized);
                 tmapview.setTMapPathIcon(start, end);
                 polyLine.setLineColor(Color.GRAY);
                 polyLine.setLineWidth(25);
@@ -317,12 +326,11 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         });
 
         execute(startPoint, endPoint);
-        changeTurnTypeDirection(turnTypeList.get(index+1),turnTypeList.get(index+2));
+        changeTurnTypeDirection(turnTypeList.get(index + 1), turnTypeList.get(index + 2));
 //        ((MainActivity)MainActivity.mContext).sendMessage("100 14");
     }
 
-    public void showdDesibelStandard()
-    {
+    public void showdDesibelStandard() {
         final Dialog dialog = new Dialog(NavigationActivity.this);
         dialog.setTitle("마이크 민감도 설정");
         dialog.setContentView(R.layout.dialog);
@@ -333,13 +341,13 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         np.setMinValue(0);
         np.setWrapSelectorWheel(false);
 //        np.setOnValueChangedListener(this);
-        b1.setOnClickListener(new Button.OnClickListener(){
+        b1.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_SHORT).show();
             }
         });
-        b2.setOnClickListener(new Button.OnClickListener(){
+        b2.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                Toast.makeText(getApplicationContext(), "Cancel", Toast.LENGTH_SHORT).show();
@@ -349,7 +357,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         dialog.show();
     }
 
-    public  void setTMap(){
+    public void setTMap() {
         tmapview.setTileType(TILETYPE_HDTILE);
         tmapview.setSKPMapApiKey(tmapAPI);
         tmapview.setCompassMode(true);
@@ -361,12 +369,12 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         tmapview.setPathRotate(true); //나침반 회전 시 출,도착 아이콘을 같이 회전시킬지 여부를 결정합니다.
     }
 
-    public void setGPS(){
+    public void setGPS() {
         tmapgps = new TMapGpsManager(this);
         tmapgps.setMinDistance(0);
         tmapgps.setMinTime(0);
         tmapgps.OpenGps();
-        tmapgps.setProvider(tmapgps.GPS_PROVIDER );
+        tmapgps.setProvider(tmapgps.GPS_PROVIDER);
     }
 
     public Location nowLocation() {
@@ -382,12 +390,10 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
             myLocation = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             if (myLocation == null) {
                 myLocation = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                if(myLocation != null)
-                {
+                if (myLocation != null) {
                     Log.e("myLocation: ", String.valueOf(myLocation.getLatitude()));
                 }
-            }
-            else if(myLocation != null){
+            } else if (myLocation != null) {
                 //네트워크 ,gps, 둘다 받으면 그 둘중에 뭐가 더 최적의  프로바이더 인지 뽑아내가지고, location 안에다가 데이터 집어넣는 것
 //                Criteria criteria = new Criteria();
 //                criteria.setAccuracy(Criteria.ACCURACY_COARSE);
@@ -399,87 +405,85 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         return myLocation;
     }
 
-    public int checkArea(Location location, double distanceInMeters) {
+    public int checkArea(Location location, int distanceInMeters) {
         int turnType = 0;
         int r;
         //double distanceInMeters = currentToPointDistance(location, cnt);
-        for(int i= 0; i<passList.size(); i++) {
+//        for (int i = 0; i < passList.size(); i++) {
             if (index == passList.size() - 1) {
                 //도착지 범위는 좀 더 작게
                 //r = Radius(passList.get(i).getLatitude(), passList.get(i).getLongitude(), nowPlace.getLatitude(), nowPlace.getLongitude());
                 if (distanceInMeters <= 10) {
-                    turnType = turnTypeList.get(i);
-                    signalStopCheck = false;
+                    turnType = turnTypeList.get(passList.size()-1);
+//                    Toast.makeText(getApplicationContext(), "도착", Toast.LENGTH_SHORT).show();
+                    intentHandler.sendEmptyMessage(0);
                     Log.e("checkarea", "도착");
                 }
             }
-            else
-            {
-                if (distanceInMeters <= 100 && distanceInMeters > 10) {
-                    turnType = turnTypeList.get(index);
-                    oneMoreAlarmSignalStopCheck = true;
-                }
-                if (distanceInMeters > 100) {
-                    turnType = turnTypeList.get(index);
-                    oneMoreAlarm = true;
-                }
-                else if (distanceInMeters <= 10) {
-                    Log.e("checkarea", "다음인덱스로 넘어갈 단계");
+            else if (index == 0) {
+                if (distanceInMeters <= 30) {
                     signalStopCheck = false;
                     oneMoreAlarm = false;
                     oneMoreAlarmSignalStopCheck = false;
+                    index++;
+                    Toast.makeText(getApplicationContext(),"index == 0 ->"+String.valueOf(index),Toast.LENGTH_SHORT).show();
+                }
+            }
+            else if(index > 0 && index < passList.size()-1) {
+                if (distanceInMeters <= 100 && distanceInMeters > 10) {
+                    turnType = turnTypeList.get(index);
+                    oneMoreAlarmSignalStopCheck = true;
+                    oneMoreAlarm = false;
+                    //Toast.makeText(getApplicationContext(),"index: "+String.valueOf(index)+" 100미터 미만",Toast.LENGTH_SHORT).show();
+                }
+                else if (distanceInMeters > 100) {
+                    turnType = turnTypeList.get(index);
+                    oneMoreAlarm = true;
+                    //Toast.makeText(getApplicationContext(),"index: "+String.valueOf(index)+" 100미터 이상",Toast.LENGTH_SHORT).show();
+                }
+                else if (distanceInMeters <= 10) {
+                    Log.e("checkarea", "다음인덱스로 넘어갈 단계");
+                    initProcess();
+                    Toast.makeText(getApplicationContext(),String.valueOf(index)+" 다음인덱스로 넘어감 ",Toast.LENGTH_SHORT).show();
                     index++;
                     changeTopUIHandler.sendEmptyMessage(0);
                     tmapview.setCompassMode(true);
                     tmapview.setMarkerRotate(true);
                 }
             }
-        }
+//        }
         return turnType;
     }
 
-    public double currentToPointDistance(Location myLocation, int cnt)
-    {
+    public double currentToPointDistance(Location myLocation, int cnt) {
         double distance = 0;
-        for(int i =0; i<passList.size(); i++) {
-            if(i == cnt) {
-                distance = currentDistance(passList.get(i).getLatitude(), passList.get(i).getLongitude(), myLocation.getLatitude(), myLocation.getLongitude());
-            }
-        }
+        distance = currentDistance(passList.get(cnt).getLatitude(), passList.get(cnt).getLongitude(), myLocation.getLatitude(), myLocation.getLongitude());
+
         return distance;
     }
 
     public void execute(TMapPoint startpoint, TMapPoint endpoint) {
 
-        Log.e("excecute함수","실행");
+        Log.e("excecute함수", "실행");
         //tmapview = new TMapView(this);
 
-        tmapview.setLocationPoint(startpoint.getLongitude(),startpoint.getLatitude());
+        tmapview.setLocationPoint(startpoint.getLongitude(), startpoint.getLatitude());
         setTMap();
         //passList = getJsonData(startpoint, endpoint);
 
-        for(int i=0; i<passList.size(); i++)
-        {
+        for (int i = 0; i < passList.size(); i++) {
             TMapMarkerItem item = new TMapMarkerItem();
             TMapPoint passpoint = new TMapPoint(passList.get(i).getLatitude(), passList.get(i).getLongitude());
             Bitmap mark = null;
-            if(turnTypeList.get(i) == 11)
-            {
-                mark = BitmapFactory.decodeResource(getResources(),R.drawable.go);
-            }
-            else if(turnTypeList.get(i) == 12)
-            {
-                mark = BitmapFactory.decodeResource(getResources(),R.drawable.left);
-            }
-            else if(turnTypeList.get(i) == 13)
-            {
-                mark = BitmapFactory.decodeResource(getResources(),R.drawable.right);
-            }
-            else if(turnTypeList.get(i) == 14)
-            {
-                mark = BitmapFactory.decodeResource(getResources(),R.drawable.uturn);
-            }
-            else{
+            if (turnTypeList.get(i) == 11) {
+                mark = BitmapFactory.decodeResource(getResources(), R.drawable.go);
+            } else if (turnTypeList.get(i) == 12) {
+                mark = BitmapFactory.decodeResource(getResources(), R.drawable.left);
+            } else if (turnTypeList.get(i) == 13) {
+                mark = BitmapFactory.decodeResource(getResources(), R.drawable.right);
+            } else if (turnTypeList.get(i) == 14) {
+                mark = BitmapFactory.decodeResource(getResources(), R.drawable.uturn);
+            } else {
                 mark = BitmapFactory.decodeResource(getResources(), R.drawable.tranparent);
             }
 
@@ -488,7 +492,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
             tmapview.bringMarkerToFront(item);
             tmapview.addMarkerItem(String.valueOf(i), item);
         }
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.guide_arrow_blue);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.guide_arrow_blue);
         tmapview.setIcon(bitmap);
         mapView.addView(tmapview);
     }
@@ -496,22 +500,27 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     private Handler changeTopUIHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            Log.e("[ TopUI구간과 방향Handler ] ", String.valueOf(index+1));
-            if(index<turnTypeList.size()-1) {
-                changeTurnTypeDirection(turnTypeList.get(index), turnTypeList.get(index+1));
-            }
-            else if(index == turnTypeList.size()-1)
-            {
+            Log.e("[ TopUI구간과 방향Handler ] ", String.valueOf(index + 1));
+            if (index < turnTypeList.size() - 1) {
+                changeTurnTypeDirection(turnTypeList.get(index), turnTypeList.get(index + 1));
+            } else if (index == turnTypeList.size() - 1) {
                 changeTurnTypeDirection(turnTypeList.get(index), 0);
             }
         }
     };
 
-    public void changeTurnTypeDirection(int turntype, int nextturntype)
-    {
-        Log.e(TAG, String.valueOf(turntype)+" "+String.valueOf(nextturntype));
-        switch(turntype)
-        {
+    private Handler intentHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            Intent intent = new Intent(NavigationActivity.this, StopNavigation.class);
+            startActivityForResult(intent, 1);
+            finish();
+        }
+    };
+
+    public void changeTurnTypeDirection(int turntype, int nextturntype) {
+        Log.e(TAG, String.valueOf(turntype) + " " + String.valueOf(nextturntype));
+        switch (turntype) {
             case 11:
                 directionImg.setImageResource(R.drawable.straight);
                 break;
@@ -525,11 +534,14 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                 directionImg.setImageResource(R.drawable.uturn);
                 break;
             case 201:
+                Toast.makeText(getApplicationContext(),"changeTurntype: "+String.valueOf(turntype),Toast.LENGTH_SHORT).show();
                 directionImg.setImageResource(R.drawable.endpurple_resized);
                 break;
         }
-        switch (nextturntype)
-        {
+        switch (nextturntype) {
+            case 0:
+                nextDirectionImg.setImageResource(R.drawable.tranparent);
+                break;
             case 11:
                 nextDirectionImg.setImageResource(R.drawable.straight);
                 break;
@@ -546,85 +558,73 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                 nextDirectionImg.setImageResource(R.drawable.endpurple_resized);
                 break;
         }
-        if(index < pointDistanceList.size())
-        {
-            directionDistance.setText(pointDistanceList.get(index)+"m");
-            displayRoad.setText(roadName.get(index));
 
+        if (index < pointDistanceList.size()) {
+            directionDistance.setText(displayException.strDistance(pointDistanceList.get(index)));
+            displayRoad.setText(roadName.get(index));
         }
-        if(index+1 < pointDistanceList.size()) {
-            nextdirectionDistance.setText(pointDistanceList.get(index+1)+"m");
+        if (index + 1 < pointDistanceList.size()-1) {
+            nextdirectionDistance.setText(displayException.strDistance(pointDistanceList.get(index + 1)));
         }
-        else if(index+1 == pointDistanceList.size()) {
+        if(turntype == 201)
+        {
             nextdirectionDistance.setText(" ");
         }
     }
 
     public void signalTurnType(int type) {
-        if (!signalStopCheck) {
-            switch (type) {
-                case 200:
-                    Toast.makeText(getApplicationContext(), "출발", Toast.LENGTH_SHORT).show();
-                    //((MainActivity)MainActivity.mContext).sendMessage(String.valueOf(distance)+" 200.");
-                    //sendMessage(String.valueOf(distance)+" 200.");
-                    break;
-                case 201:
-                    Toast.makeText(getApplicationContext(), "도착", Toast.LENGTH_SHORT).show();
-                    //((MainActivity)MainActivity.mContext).sendMessage(String.valueOf(distance)+" 201.");
-                    //sendMessage(String.valueOf(distance)+" 201.");
-                    break;
-                case 11:
-                    Toast.makeText(getApplicationContext(), "직진", Toast.LENGTH_SHORT).show();
-                    //((MainActivity)MainActivity.mContext).sendMessage(String.valueOf(distance)+" 11.");
-                    //sendMessage(String.valueOf(distance)+" 11.");
-                    break;
-                case 12:
-                    Toast.makeText(getApplicationContext(), "좌회전", Toast.LENGTH_SHORT).show();
-                    //((MainActivity)MainActivity.mContext).sendMessage(String.valueOf(distance)+" 12.");
-                    //sendMessage(String.valueOf(distance)+" 12.");
-                    break;
-                case 13:
-                    Toast.makeText(getApplicationContext(), "우회전", Toast.LENGTH_SHORT).show();
-                    //((MainActivity)MainActivity.mContext).sendMessage(String.valueOf(distance)+" 13.");
-                    //sendMessage(String.valueOf(distance)+" 13.");
-                    break;
-                case 14:
-                    Toast.makeText(getApplicationContext(), "U턴", Toast.LENGTH_SHORT).show();
-                    //((MainActivity)MainActivity.mContext).sendMessage(String.valueOf(distance)+" 14.");
-                    //sendMessage(String.valueOf(distance)+" 14.");
-                    break;
-            }
-        }
-    }
-    public void oneMoreSignalTurnType(int type){
-        if (oneMoreAlarm) {
-            switch (type) {
-                case 104:
-                    Toast.makeText(getApplicationContext(), "직진", Toast.LENGTH_SHORT).show();
-                    //((MainActivity)MainActivity.mContext).sendMessage(String.valueOf(distance)+" 104.");
-                    //sendMessage(String.valueOf(distance)+" 11.");
-                    break;
-                case 103:
-                    Toast.makeText(getApplicationContext(), "좌회전", Toast.LENGTH_SHORT).show();
-                    //((MainActivity)MainActivity.mContext).sendMessage(String.valueOf(distance)+" 103.");
-                    //sendMessage(String.valueOf(distance)+" 12.");
-                    break;
-                case 102:
-                    Toast.makeText(getApplicationContext(), "우회전", Toast.LENGTH_SHORT).show();
-                    //((MainActivity)MainActivity.mContext).sendMessage(String.valueOf(distance)+" 102.");
-                    //sendMessage(String.valueOf(distance)+" 13.");
-                    break;
-                case 105:
-                    Toast.makeText(getApplicationContext(), "U턴", Toast.LENGTH_SHORT).show();
-                    //((MainActivity)MainActivity.mContext).sendMessage(String.valueOf(distance)+" 105.");
-                    //sendMessage(String.valueOf(distance)+" 14.");
-                    break;
-            }
+        Toast.makeText(getApplicationContext(), "index: "+String.valueOf(index)+"의 알림",Toast.LENGTH_SHORT).show();
+        switch (type) {
+            case 200:
+                Toast.makeText(getApplicationContext(), "출발", Toast.LENGTH_SHORT).show();
+                ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 200.");
+                break;
+            case 201:
+                Toast.makeText(getApplicationContext(), "도착", Toast.LENGTH_SHORT).show();
+                ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 201.");
+                break;
+            case 11:
+                Toast.makeText(getApplicationContext(), "직진", Toast.LENGTH_SHORT).show();
+                ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 11.");
+                break;
+            case 12:
+                Toast.makeText(getApplicationContext(), "좌회전", Toast.LENGTH_SHORT).show();
+                ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 12.");
+                break;
+            case 13:
+                Toast.makeText(getApplicationContext(), "우회전", Toast.LENGTH_SHORT).show();
+                ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 13.");
+                break;
+            case 14:
+                Toast.makeText(getApplicationContext(), "U턴", Toast.LENGTH_SHORT).show();
+                ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 14.");
+                break;
         }
     }
 
-    public ArrayList<TMapPoint> getJsonData(final TMapPoint startPoint, final TMapPoint endPoint)
-    {
+    public void oneMoreSignalTurnType(int type) {
+            Toast.makeText(getApplicationContext(),"index: "+String.valueOf(index)+" 예비 알림",Toast.LENGTH_SHORT).show();
+            switch (type) {
+                case 11:
+                    Toast.makeText(getApplicationContext(), "직진", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 104.");
+                    break;
+                case 12:
+                    Toast.makeText(getApplicationContext(), "좌회전", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 103.");
+                    break;
+                case 13:
+                    Toast.makeText(getApplicationContext(), "우회전", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 102.");
+                    break;
+                case 14:
+                    Toast.makeText(getApplicationContext(), "U턴", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 105.");
+                    break;
+            }
+    }
+
+    public ArrayList<TMapPoint> getJsonData(final TMapPoint startPoint, final TMapPoint endPoint) {
         Thread thread = new Thread() {
             //내가 본 예시에서는 Thread를 따로 파서 넣었는데 json파싱할때 어싱크태스크를 이용한 코드들도 봤음!
             //Thread가 돌아가면 바로 이 안으로 들어오지않고 밑에 보면 Thread.start 있는데 그거 실행해야 안으로 들어옴!
@@ -636,7 +636,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                 //String urlString = "https://apis.skplanetx.com/tmap/routes/pedestrian?callback=&bizAppId=&version=1&format=json&appKey=e2a7df79-5bc7-3f7f-8bca-2d335a0526e7";
 
                 // &format={xml 또는 json}
-                try{
+                try {
                     URI uri = new URI(urlString);
 
                     HttpPost httpPost = new HttpPost();
@@ -663,7 +663,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                     String message = response.getStatusLine().getReasonPhrase();
                     Log.d(TAG, "run: " + message);
                     String responseString;
-                    if(response.getEntity() != null)
+                    if (response.getEntity() != null)
                         responseString = EntityUtils.toString(response.getEntity(), HTTP.UTF_8);
                     else
                         return;
@@ -676,7 +676,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                     JSONArray features = jAr.getJSONArray("features"); //그리고 이것도 티맵 포럼 보면 알 수 있는데 feature라는 태그에 담긴 정보를 가지고온다고 생각하면 이해하기 쉬움
                     passList = new ArrayList<>();
 
-                    for(int i=0; i<features.length(); i++) {
+                    for (int i = 0; i < features.length(); i++) {
                         JSONObject root = features.getJSONObject(i);
                         JSONObject properties = root.getJSONObject("properties");
                         if (i == 0) { //총거리 총시간이 for문 돌리기 맨 처음에 있으니 여기서 뽑아주고
@@ -686,13 +686,13 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                             totalTime += properties.getInt("totalTime");
                         }
                         JSONObject geometry = root.getJSONObject("geometry");
-                        Log.e("geometry","파싱성공");
+                        Log.e("geometry", "파싱성공");
                         JSONArray coordinates = geometry.getJSONArray("coordinates");
-                        Log.e("coordinates","파싱성공");
+                        Log.e("coordinates", "파싱성공");
                         String geoType = geometry.getString("type");
-                        Log.e("type","파싱성공");
+                        Log.e("type", "파싱성공");
                         if (geoType.equals("Point")) { //여기서 경로에서 방향변환지점들이 있을거아냐 그 지점들 위도경도를 받아옴
-                            Log.e("Point","파싱성공");
+                            Log.e("Point", "파싱성공");
                             double lonJson = coordinates.getDouble(0);
                             double latJson = coordinates.getDouble(1);
                             int turnType = properties.getInt("turnType");
@@ -708,7 +708,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                             passList.add(point);
 
                         }
-                        if(geoType.equals("LineString")){ //이 태그도 위랑 비슷한데 경로 중간중간 위도경도 받을 수 있어!
+                        if (geoType.equals("LineString")) { //이 태그도 위랑 비슷한데 경로 중간중간 위도경도 받을 수 있어!
                             int pointDis = properties.getInt("distance");
                             String roadname = properties.getString("name");
                             roadName.add(roadname);
@@ -738,15 +738,15 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         };
         thread.start();
 
-        try{
+        try {
             thread.join();
-        }catch (InterruptedException e){
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         return passList;
     }
 
-    public double currentDistance(double lat1, double lon1, double lat2, double lon2){
+    public double currentDistance(double lat1, double lon1, double lat2, double lon2) {
 
         double theta, dist;
         theta = lon1 - lon2;
@@ -763,13 +763,13 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     }
 
     // 주어진 도(degree) 값을 라디언으로 변환
-    private double degToRad(double deg){
-        return (double)(deg * Math.PI / (double)180d);
+    private double degToRad(double deg) {
+        return (double) (deg * Math.PI / (double) 180d);
     }
 
     // 주어진 라디언(radian) 값을 도(degree) 값으로 변환
-    private double radToDeg(double rad){
-        return (double)(rad * (double)180d / Math.PI);
+    private double radToDeg(double rad) {
+        return (double) (rad * (double) 180d / Math.PI);
     }
 
     public void btnNowLocation(View v) {
@@ -792,7 +792,6 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     }
 
 
-
     //SoundAnalyze
     private void LoadPreferences() {
         // Load preferences for recorder and views, beside loadPreferenceForView()
@@ -810,18 +809,18 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         analyzerParam.spectrogramDuration = Double.parseDouble(sharedPref.getString("spectrogramDuration",
                 Double.toString(6.0)));
         analyzerParam.overlapPercent = Double.parseDouble(sharedPref.getString("fft_overlap_percent", "50.0"));
-        analyzerParam.hopLen = (int)(analyzerParam.fftLen*(1 - analyzerParam.overlapPercent/100) + 0.5);
+        analyzerParam.hopLen = (int) (analyzerParam.fftLen * (1 - analyzerParam.overlapPercent / 100) + 0.5);
 
-        analyzerParam.sampleRate   = sharedPref.getInt("button_sample_rate", 8000);
-        analyzerParam.fftLen       = sharedPref.getInt("button_fftlen",      1024);
-        analyzerParam.nFFTAverage  = sharedPref.getInt("button_average",        1);
+        analyzerParam.sampleRate = sharedPref.getInt("button_sample_rate", 8000);
+        analyzerParam.fftLen = sharedPref.getInt("button_fftlen", 1024);
+        analyzerParam.nFFTAverage = sharedPref.getInt("button_average", 1);
 
         // spectrogram
         analyzerViews.graphView.setSpectrogramModeShifting(sharedPref.getBoolean("spectrogramShifting", false));
-        analyzerViews.graphView.setShowTimeAxis           (sharedPref.getBoolean("spectrogramTimeAxis", true));
-        analyzerViews.graphView.setShowFreqAlongX         (sharedPref.getBoolean("spectrogramShowFreqAlongX", true));
-        analyzerViews.graphView.setSmoothRender           (sharedPref.getBoolean("spectrogramSmoothRender", false));
-        analyzerViews.graphView.setColorMap               (sharedPref.getString ("spectrogramColorMap", "Hot"));
+        analyzerViews.graphView.setShowTimeAxis(sharedPref.getBoolean("spectrogramTimeAxis", true));
+        analyzerViews.graphView.setShowFreqAlongX(sharedPref.getBoolean("spectrogramShowFreqAlongX", true));
+        analyzerViews.graphView.setSmoothRender(sharedPref.getBoolean("spectrogramSmoothRender", false));
+        analyzerViews.graphView.setColorMap(sharedPref.getString("spectrogramColorMap", "Hot"));
         // set spectrogram show range
         analyzerViews.graphView.setSpectrogramDBLowerBound(Float.parseFloat(
                 sharedPref.getString("spectrogramRange", Double.toString(analyzerViews.graphView.spectrogramPlot.spectrogramBMP.dBLowerBound))));
@@ -848,7 +847,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
             double[] rangeDefault = analyzerViews.graphView.getViewPhysicalRange();
             Log.i(TAG, "restartSampling(): setViewRange: " + viewRangeArray[0] + " ~ " + viewRangeArray[1]);
             analyzerViews.graphView.setViewRange(viewRangeArray, rangeDefault);
-            if (! isLockViewRange) viewRangeArray = null;  // do not conserve
+            if (!isLockViewRange) viewRangeArray = null;  // do not conserve
         }
 
         // Set the view for incoming data
@@ -860,10 +859,10 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         graphInit.start();
 
         // Check and request permissions
-        if (! checkAndRequestPermissions())
+        if (!checkAndRequestPermissions())
             return;
 
-        if (! bSamplingPreparation)
+        if (!bSamplingPreparation)
             return;
 
         // Start sampling
@@ -925,7 +924,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
             case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.w(TAG, "WRITE_EXTERNAL_STORAGE Permission granted by user.");
-                    if (! bSaveWav) {
+                    if (!bSaveWav) {
                         Log.w(TAG, "... bSaveWav == true");
                         runOnUiThread(new Runnable() {
                             @Override
@@ -947,10 +946,10 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putDouble("dtRMS",       dtRMS);
+        savedInstanceState.putDouble("dtRMS", dtRMS);
         savedInstanceState.putDouble("dtRMSFromFT", dtRMSFromFT);
-        savedInstanceState.putDouble("maxAmpDB",    maxAmpDB);
-        savedInstanceState.putDouble("maxAmpFreq",  maxAmpFreq);
+        savedInstanceState.putDouble("maxAmpDB", maxAmpDB);
+        savedInstanceState.putDouble("maxAmpFreq", maxAmpFreq);
 
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -960,10 +959,10 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         // will be called after the onStart()
         super.onRestoreInstanceState(savedInstanceState);
 
-        dtRMS       = savedInstanceState.getDouble("dtRMS");
+        dtRMS = savedInstanceState.getDouble("dtRMS");
         dtRMSFromFT = savedInstanceState.getDouble("dtRMSFromFT");
-        maxAmpDB    = savedInstanceState.getDouble("maxAmpDB");
-        maxAmpFreq  = savedInstanceState.getDouble("maxAmpFreq");
+        maxAmpDB = savedInstanceState.getDouble("maxAmpDB");
+        maxAmpFreq = savedInstanceState.getDouble("maxAmpFreq");
     }
 
     @Override
@@ -983,13 +982,13 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     @Override
     protected void onStart() {
         super.onStart();
-        Log.e("onStart","true");
+        Log.e("onStart", "true");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();  // Always call the superclass method first
-        Log.e("onRestart","true");
+        Log.e("onRestart", "true");
     }
 
     @Override
