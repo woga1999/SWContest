@@ -237,7 +237,7 @@ public class SpectrogramBMP {
                             }
                         }
 
-                        if(gapCount > 8)
+                        if(gapCount > 11)
                         {
                             // 신호
                             Log.e("ss", "=========================================================");

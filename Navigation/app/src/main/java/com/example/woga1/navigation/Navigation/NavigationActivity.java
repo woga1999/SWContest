@@ -566,12 +566,10 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                 case 200:
                     Toast.makeText(getApplicationContext(), "출발", Toast.LENGTH_SHORT).show();
                     //((MainActivity)MainActivity.mContext).sendMessage(String.valueOf(distance)+" 200.");
-                    //sendMessage(String.valueOf(distance)+" 200.");
                     break;
                 case 201:
                     Toast.makeText(getApplicationContext(), "도착", Toast.LENGTH_SHORT).show();
                     //((MainActivity)MainActivity.mContext).sendMessage(String.valueOf(distance)+" 201.");
-                    //sendMessage(String.valueOf(distance)+" 201.");
                     break;
                 case 11:
                     Toast.makeText(getApplicationContext(), "직진", Toast.LENGTH_SHORT).show();
@@ -581,17 +579,14 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                 case 12:
                     Toast.makeText(getApplicationContext(), "좌회전", Toast.LENGTH_SHORT).show();
                     //((MainActivity)MainActivity.mContext).sendMessage(String.valueOf(distance)+" 12.");
-                    //sendMessage(String.valueOf(distance)+" 12.");
                     break;
                 case 13:
                     Toast.makeText(getApplicationContext(), "우회전", Toast.LENGTH_SHORT).show();
                     //((MainActivity)MainActivity.mContext).sendMessage(String.valueOf(distance)+" 13.");
-                    //sendMessage(String.valueOf(distance)+" 13.");
                     break;
                 case 14:
                     Toast.makeText(getApplicationContext(), "U턴", Toast.LENGTH_SHORT).show();
                     //((MainActivity)MainActivity.mContext).sendMessage(String.valueOf(distance)+" 14.");
-                    //sendMessage(String.valueOf(distance)+" 14.");
                     break;
             }
         }
@@ -602,22 +597,18 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                 case 104:
                     Toast.makeText(getApplicationContext(), "직진", Toast.LENGTH_SHORT).show();
                     //((MainActivity)MainActivity.mContext).sendMessage(String.valueOf(distance)+" 104.");
-                    //sendMessage(String.valueOf(distance)+" 11.");
                     break;
                 case 103:
                     Toast.makeText(getApplicationContext(), "좌회전", Toast.LENGTH_SHORT).show();
                     //((MainActivity)MainActivity.mContext).sendMessage(String.valueOf(distance)+" 103.");
-                    //sendMessage(String.valueOf(distance)+" 12.");
                     break;
                 case 102:
                     Toast.makeText(getApplicationContext(), "우회전", Toast.LENGTH_SHORT).show();
                     //((MainActivity)MainActivity.mContext).sendMessage(String.valueOf(distance)+" 102.");
-                    //sendMessage(String.valueOf(distance)+" 13.");
                     break;
                 case 105:
                     Toast.makeText(getApplicationContext(), "U턴", Toast.LENGTH_SHORT).show();
                     //((MainActivity)MainActivity.mContext).sendMessage(String.valueOf(distance)+" 105.");
-                    //sendMessage(String.valueOf(distance)+" 14.");
                     break;
             }
         }
