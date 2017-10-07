@@ -72,7 +72,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     ImageButton volumeControl;
     ImageButton resetButton;
     ImageButton poiButton;
-    public static ImageView entireView;
+    static ImageView entireView;
     TextView destinationText;
     TextView speedView;
     ImageView directionImg;
@@ -791,7 +791,21 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         }
     }
 
+    //SoundAnalyze horn alert Handler
+    public static Handler changeEntireView = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
 
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    entireView.setBackgroundColor(Color.TRANSPARENT);
+                }
+            }, 2000);
+            entireView.setBackgroundColor(Color.parseColor("#80FF0000"));
+        }
+    };
 
     //SoundAnalyze
     private void LoadPreferences() {

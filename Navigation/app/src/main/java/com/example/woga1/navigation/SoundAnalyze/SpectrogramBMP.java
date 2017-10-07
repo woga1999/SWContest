@@ -4,6 +4,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.Log;
 
+import com.example.woga1.navigation.MainActivity;
+import com.example.woga1.navigation.Navigation.NavigationActivity;
+
 import java.util.Arrays;
 
 public class SpectrogramBMP {
@@ -240,9 +243,8 @@ public class SpectrogramBMP {
                             Log.e("ss", "=========================================================");
                             Log.e("ss", "" + gapCount);
 
-//                            ((MainActivity)MainActivity.mContext).sendMessage("100 100.");
-//                            NavigationActivity.entireView.setBackgroundColor(Color.parseColor("#80FF0000"));
-//                            NavigationActivity.resetButton.callOnClick();
+                            ((MainActivity)MainActivity.mContext).sendMessage("100 100.");
+                            NavigationActivity.changeEntireView.sendEmptyMessage(0);
                         }
                     }
                     else
