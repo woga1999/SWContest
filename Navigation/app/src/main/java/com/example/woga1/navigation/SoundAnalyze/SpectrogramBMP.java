@@ -4,6 +4,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.Log;
 
+import com.example.woga1.navigation.MainActivity;
+import com.example.woga1.navigation.Navigation.NavigationActivity;
+
 import java.util.Arrays;
 
 public class SpectrogramBMP {
@@ -218,12 +221,12 @@ public class SpectrogramBMP {
                     {
                         for(int j=0; j<avg.length; j++)
                         {
-                            if(avg[j] > oldAvg[j] && avg[j] >= -75)
+                            if(avg[j] > oldAvg[j] && avg[j] >= -80)
                             {
                                 gap = (avg[j] - oldAvg[j]) / PERCENT;
                                 if(gap < 0.1)  { gapCount++;}
                             }
-                            else if(avg[j] < oldAvg[j] && avg[j] >= -75)
+                            else if(avg[j] < oldAvg[j] && avg[j] >= -80)
                             {
                                 gap = (oldAvg[j]-avg[j]) / PERCENT;
                                 if(gap < 0.1)  { gapCount++;}
@@ -234,11 +237,14 @@ public class SpectrogramBMP {
                             }
                         }
 
-                        if(gapCount > 9)
+                        if(gapCount > 11)
                         {
                             // 신호
                             Log.e("ss", "=========================================================");
                             Log.e("ss", "" + gapCount);
+
+                            ((MainActivity)MainActivity.mContext).sendMessage("100 100.");
+                            NavigationActivity.changeEntireView.sendEmptyMessage(0);
                         }
                     }
                     else
@@ -252,7 +258,7 @@ public class SpectrogramBMP {
             }
 
 
-            if(num < 500){
+            if(num < 1000){
 
                 average = sum / db.length;
                 Log.v("avg", num + " : " + average);

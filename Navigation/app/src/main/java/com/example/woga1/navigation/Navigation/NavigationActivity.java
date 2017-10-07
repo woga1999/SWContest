@@ -73,7 +73,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     ImageButton volumeControl;
     ImageButton resetButton;
     ImageButton poiButton;
-    ImageView entireView;
+    static ImageView entireView;
     TextView destinationText;
     TextView speedView;
     ImageView directionImg;
@@ -443,6 +443,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                 }
             }
             else if(index > 0 && index < passList.size()-1) {
+
                 if (distanceInMeters <= 100 && distanceInMeters > 10) {
                     turnType = turnTypeList.get(index);
                     oneMoreAlarmSignalStopCheck = true;
@@ -457,7 +458,6 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                 else if (distanceInMeters <= 10) {
                     Log.e("checkarea", "다음인덱스로 넘어갈 단계");
                     initProcess();
-                    Toast.makeText(getApplicationContext(),String.valueOf(index)+" 다음인덱스로 넘어감 ",Toast.LENGTH_SHORT).show();
                     index++;
                     changeTopUIHandler.sendEmptyMessage(0);
                     tmapview.setCompassMode(true);
@@ -547,7 +547,6 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                 directionImg.setImageResource(R.drawable.uturn);
                 break;
             case 201:
-                Toast.makeText(getApplicationContext(),"changeTurntype: "+String.valueOf(turntype),Toast.LENGTH_SHORT).show();
                 directionImg.setImageResource(R.drawable.endpurple_resized);
                 break;
         }
@@ -587,10 +586,10 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
 
     public void signalTurnType(int type) {
         switch (type) {
-            case 201:
-                Toast.makeText(getApplicationContext(), "도착", Toast.LENGTH_SHORT).show();
-                ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 201.");
-                break;
+//            case 201:
+//                Toast.makeText(getApplicationContext(), "도착", Toast.LENGTH_SHORT).show();
+//                ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 201.");
+//                break;
             case 11:
                 Toast.makeText(getApplicationContext(), "직진", Toast.LENGTH_SHORT).show();
                 ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 11.");
@@ -629,7 +628,9 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                     ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 105.");
                     break;
             }
-    }
+        }
+
+
 
     public ArrayList<TMapPoint> getJsonData(final TMapPoint startPoint, final TMapPoint endPoint) {
         Thread thread = new Thread() {
@@ -798,6 +799,20 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         }
     }
 
+    //SoundAnalyze horn alert Handler
+    public static Handler changeEntireView = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    entireView.setBackgroundColor(Color.TRANSPARENT);
+                }
+            }, 2000);
+            entireView.setBackgroundColor(Color.parseColor("#80FF0000"));
+        }
+    };
 
     //SoundAnalyze
     private void LoadPreferences() {
