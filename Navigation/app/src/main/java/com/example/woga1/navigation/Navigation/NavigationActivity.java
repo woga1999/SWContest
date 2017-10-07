@@ -429,7 +429,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                 //r = Radius(passList.get(i).getLatitude(), passList.get(i).getLongitude(), nowPlace.getLatitude(), nowPlace.getLongitude());
                 if (distanceInMeters <= 10) {
                     turnType = turnTypeList.get(passList.size()-1);
-//                    Toast.makeText(getApplicationContext(), "도착", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "도착", Toast.LENGTH_SHORT).show();
                     Log.e("checkarea", "도착");
                 }
             }
@@ -459,6 +459,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                     Log.e("checkarea", "다음인덱스로 넘어갈 단계");
                     initProcess();
                     index++;
+                    Toast.makeText(getApplicationContext(), "다음 인덱스로 넘어감", Toast.LENGTH_SHORT).show();
                     changeTopUIHandler.sendEmptyMessage(0);
                     tmapview.setCompassMode(true);
                     tmapview.setMarkerRotate(true);
@@ -585,6 +586,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     }
 
     public void signalTurnType(int type) {
+        Toast.makeText(getApplicationContext(), "알림", Toast.LENGTH_SHORT).show();
         switch (type) {
 //            case 201:
 //                Toast.makeText(getApplicationContext(), "도착", Toast.LENGTH_SHORT).show();
@@ -610,6 +612,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     }
 
     public void oneMoreSignalTurnType(int type) {
+        Toast.makeText(getApplicationContext(), "예비 알림", Toast.LENGTH_SHORT).show();
             switch (type) {
                 case 11:
                     Toast.makeText(getApplicationContext(), "직진", Toast.LENGTH_SHORT).show();
