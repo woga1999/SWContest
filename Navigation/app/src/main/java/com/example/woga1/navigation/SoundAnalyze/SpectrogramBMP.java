@@ -218,12 +218,12 @@ public class SpectrogramBMP {
                     {
                         for(int j=0; j<avg.length; j++)
                         {
-                            if(avg[j] > oldAvg[j] && avg[j] >= -75)
+                            if(avg[j] > oldAvg[j] && avg[j] >= -77)
                             {
                                 gap = (avg[j] - oldAvg[j]) / PERCENT;
                                 if(gap < 0.1)  { gapCount++;}
                             }
-                            else if(avg[j] < oldAvg[j] && avg[j] >= -75)
+                            else if(avg[j] < oldAvg[j] && avg[j] >= -77)
                             {
                                 gap = (oldAvg[j]-avg[j]) / PERCENT;
                                 if(gap < 0.1)  { gapCount++;}
@@ -234,11 +234,15 @@ public class SpectrogramBMP {
                             }
                         }
 
-                        if(gapCount > 9)
+                        if(gapCount > 10)
                         {
                             // 신호
                             Log.e("ss", "=========================================================");
                             Log.e("ss", "" + gapCount);
+
+//                            ((MainActivity)MainActivity.mContext).sendMessage("100 100.");
+//                            NavigationActivity.entireView.setBackgroundColor(Color.parseColor("#80FF0000"));
+//                            NavigationActivity.resetButton.callOnClick();
                         }
                     }
                     else

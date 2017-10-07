@@ -72,7 +72,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     ImageButton volumeControl;
     ImageButton resetButton;
     ImageButton poiButton;
-    ImageView entireView;
+    public static ImageView entireView;
     TextView destinationText;
     TextView speedView;
     ImageView directionImg;
@@ -415,7 +415,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
             }
             else
             {
-                if (distanceInMeters <= 100 && distanceInMeters > 10) {
+                if (distanceInMeters <= 100 && distanceInMeters > 30) {
                     turnType = turnTypeList.get(index);
                     oneMoreAlarmSignalStopCheck = true;
                 }
@@ -423,7 +423,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                     turnType = turnTypeList.get(index);
                     oneMoreAlarm = true;
                 }
-                else if (distanceInMeters <= 10) {
+                else if (distanceInMeters <= 30) {
                     Log.e("checkarea", "다음인덱스로 넘어갈 단계");
                     signalStopCheck = false;
                     oneMoreAlarm = false;
