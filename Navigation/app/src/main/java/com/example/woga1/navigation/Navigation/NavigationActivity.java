@@ -147,6 +147,21 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         distance = (int)currentToPointDistance(currentLocation, index);
         type = checkArea(currentLocation, distance);
         changeMarker();
+        
+        if (type == 201) {
+            totalDis.setText(displayException.strDistance(distance));
+            Handler mHandler = new Handler();
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // TODO Auto-generated method stub
+                    Intent intent = new Intent(NavigationActivity.this, StopNavigation.class);
+                    startActivityForResult(intent, 1);
+                    finish();
+                }
+            }, 3000); // 1000ms
+        }
+
         if (speed > 0) {
             speedView.setText(String.valueOf((int)(location.getSpeed() * 3600 / 1000)));
         } else {
@@ -416,7 +431,6 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                 if (distanceInMeters <= 10) {
                     turnType = turnTypeList.get(passList.size()-1);
 //                    Toast.makeText(getApplicationContext(), "도착", Toast.LENGTH_SHORT).show();
-                    intentHandler.sendEmptyMessage(0);
                     Log.e("checkarea", "도착");
                 }
             }
