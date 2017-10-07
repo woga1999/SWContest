@@ -142,14 +142,13 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         currentLocation = location;
         meter = totalDistance - (int) currentDistance(startPlaceLat, startPlaceLon, currentLocation.getLatitude(), currentLocation.getLongitude());
         speed = location.getSpeed();
-//        tmapview.setCompassMode(true); //이것도 방향변환지점?
-//        tmapview.setMarkerRotate(true); //이거랑
         distance = (int)currentToPointDistance(currentLocation, index);
         type = checkArea(currentLocation, distance);
         changeMarker();
         
         if (type == 201) {
             totalDis.setText(displayException.strDistance(distance));
+            ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 101.");
             Handler mHandler = new Handler();
             mHandler.postDelayed(new Runnable() {
                 @Override
@@ -587,12 +586,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     }
 
     public void signalTurnType(int type) {
-        Toast.makeText(getApplicationContext(), "index: "+String.valueOf(index)+"의 알림",Toast.LENGTH_SHORT).show();
         switch (type) {
-            case 200:
-                Toast.makeText(getApplicationContext(), "출발", Toast.LENGTH_SHORT).show();
-                ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 200.");
-                break;
             case 201:
                 Toast.makeText(getApplicationContext(), "도착", Toast.LENGTH_SHORT).show();
                 ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 201.");
@@ -617,7 +611,6 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     }
 
     public void oneMoreSignalTurnType(int type) {
-            Toast.makeText(getApplicationContext(),"index: "+String.valueOf(index)+" 예비 알림",Toast.LENGTH_SHORT).show();
             switch (type) {
                 case 11:
                     Toast.makeText(getApplicationContext(), "직진", Toast.LENGTH_SHORT).show();
