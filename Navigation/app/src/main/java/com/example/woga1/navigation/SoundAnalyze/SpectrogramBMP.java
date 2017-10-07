@@ -237,7 +237,7 @@ public class SpectrogramBMP {
                             }
                         }
 
-                        if(gapCount > 8)
+                        if(gapCount > 11)
                         {
                             // 신호
                             Log.e("ss", "=========================================================");
@@ -276,7 +276,6 @@ public class SpectrogramBMP {
                         + db[470] + " " + db[480] + " " + db[490] + " " + db[500]);
             }
             num++;
-
 
             iTimePointer++;
             if (iTimePointer >= nTime) iTimePointer = 0;
