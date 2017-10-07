@@ -277,7 +277,6 @@ public class SpectrogramBMP {
             }
             num++;
 
-
             iTimePointer++;
             if (iTimePointer >= nTime) iTimePointer = 0;
         }
