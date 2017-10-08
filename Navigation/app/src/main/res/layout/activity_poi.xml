@@ -19,7 +19,7 @@
             android:background="#0e3f66"
             android:gravity="center"
             android:text="주유소/충전소"
-            android:textColor="#C90000"
+            android:textColor="#ff0000"
             android:textStyle="bold" />
 
         <Button
@@ -50,6 +50,7 @@
         android:name="com.example.woga1.navigation.Search.GasStationFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#FFFFFF"
         tools:layout = "@layout/fragment_gas_station" />
 
 </LinearLayout>

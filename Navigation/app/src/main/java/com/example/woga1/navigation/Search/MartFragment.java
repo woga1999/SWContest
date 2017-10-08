@@ -35,7 +35,7 @@ public class MartFragment extends ListFragment {
         martAdapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.martpoi), "GS25 세종대우정당점", "220m") ;
         martAdapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.martpoi), "GS25 군자원룸점", "246m") ;
         martAdapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.martpoi), "GS25 광진군자로점", "337m") ;
-        martAdapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.martpoi), "팝스토어", "550m") ;
+        martAdapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.martpoi), "세븐일레븐 화양삼거리점", "550m") ;
         martAdapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.martpoi), "CU 세종대후문점", "706m") ;
         martAdapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.martpoi), "세븐일레븐 세종대역점", "837m") ;
         martAdapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.martpoi), "세븐일레븐 군자파라곤점", "950m") ;

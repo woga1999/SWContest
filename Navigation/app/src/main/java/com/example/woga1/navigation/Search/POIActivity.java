@@ -62,7 +62,7 @@ public class POIActivity extends AppCompatActivity {
         gasStationButton.setOnClickListener(new EditText.OnClickListener(){
             @Override
             public void onClick(View view) {
-                gasStationButton.setTextColor(Color.parseColor("#FF0000"));
+                gasStationButton.setTextColor(Color.parseColor("#ff0000"));
                 restaurantButton.setTextColor(Color.parseColor("#FFFFFF"));
                 martButton.setTextColor(Color.parseColor("#FFFFFF"));
                 switchFragment("gasStationButton");
@@ -72,7 +72,7 @@ public class POIActivity extends AppCompatActivity {
         restaurantButton.setOnClickListener(new EditText.OnClickListener(){
             @Override
             public void onClick(View view) {
-                restaurantButton.setTextColor(Color.parseColor("#FF0000"));
+                restaurantButton.setTextColor(Color.parseColor("#ff0000"));
                 gasStationButton.setTextColor(Color.parseColor("#FFFFFF"));
                 martButton.setTextColor(Color.parseColor("#FFFFFF"));
                 switchFragment("restaurantButton");
@@ -84,7 +84,7 @@ public class POIActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                martButton.setTextColor(Color.parseColor("#FF0000"));
+                martButton.setTextColor(Color.parseColor("#ff0000"));
                 restaurantButton.setTextColor(Color.parseColor("#FFFFFF"));
                 gasStationButton.setTextColor(Color.parseColor("#FFFFFF"));
                 switchFragment("martButton");

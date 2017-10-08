@@ -37,7 +37,7 @@ public class GasStationFragment extends ListFragment {
         // 첫 번째 아이템 추가.
         gasStationAdapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.gasstationpoi), "오일뱅크 KLP제2셀프주유소", "380m") ;
         // 두 번째 아이템 추가.
-        gasStationAdapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.gasstationpoi), "SK 장수주유소", "396m") ;
+        gasStationAdapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.gasstationpoi), "SK엔크린 군자동주유소", "396m") ;
         // 세 번째 아이템 추가.
         gasStationAdapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.gasstationpoi), "SK 대영셀프주유소 (직영)", "517m") ;
         gasStationAdapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.gasstationpoi), "오일뱅크 능동셀프주유소", "737m") ;
@@ -46,6 +46,8 @@ public class GasStationFragment extends ListFragment {
         gasStationAdapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.gasstationpoi), "SK 윈윈주유소 (직영)", "996m") ;
         // 세 번째 아이템 추가.
         gasStationAdapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.gasstationpoi), "오일뱅크 MS주유소", "1017m") ;
+        gasStationAdapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.gasstationpoi), "현대오일뱅크직영 능동주유소", "1217m") ;
+        gasStationAdapter.addItem(ContextCompat.getDrawable(getActivity(), R.drawable.gasstationpoi), "GS칼택스 동부주유소", "1317m") ;
         return super.onCreateView(inflater, container, savedInstanceState);
 
     }
