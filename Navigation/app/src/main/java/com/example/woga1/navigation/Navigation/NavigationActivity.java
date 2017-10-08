@@ -148,7 +148,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         
         if (type == 201) {
             totalDis.setText(displayException.strDistance(distance));
-            ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 101.");
+            ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 100.");
             Handler mHandler = new Handler();
             mHandler.postDelayed(new Runnable() {
                 @Override
@@ -158,7 +158,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                     startActivityForResult(intent, 1);
                     finish();
                 }
-            }, 3000); // 1000ms
+            }, 1500); // 1000ms
         }
 
         if (speed > 0) {
@@ -234,6 +234,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         displayException = new DisplayException(getApplicationContext());
         Intent intent = getIntent();
         //final String name = "스타벅스";
+        ((MainActivity) MainActivity.mContext).sendMessage("100 200.");
         final String name = intent.getExtras().getString("destination");
         longitude = intent.getExtras().getString("endLongitude");
         latitude = intent.getExtras().getString("endLatitude");
@@ -306,10 +307,12 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         startPlaceLon = 127.073621;
         //currentLocation.getLatitude(), currentLocation.getLongitude()
         //37.551451, 127.073621
+        //세종대학교 용덕관
         TMapPoint startPoint = new TMapPoint(37.551451, 127.073621);
         //37.540542, 127.069236
         //Double.parseDouble(latitude), Double.parseDouble(longitude)
-        TMapPoint endPoint = new TMapPoint(Double.parseDouble(latitude), Double.parseDouble(longitude));
+        //광진소방서
+        TMapPoint endPoint = new TMapPoint(37.545169, 127.082834);
         TMapData tmapdata = new TMapData();
         tmapview = new TMapView(this);
 
@@ -427,9 +430,9 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
             if (index == passList.size() - 1) {
                 //도착지 범위는 좀 더 작게
                 //r = Radius(passList.get(i).getLatitude(), passList.get(i).getLongitude(), nowPlace.getLatitude(), nowPlace.getLongitude());
-                if (distanceInMeters <= 10) {
+                if (distanceInMeters <= 30) {
                     turnType = turnTypeList.get(passList.size()-1);
-                    Toast.makeText(getApplicationContext(), "도착", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "도착", Toast.LENGTH_SHORT).show();
                     Log.e("checkarea", "도착");
                 }
             }
@@ -439,7 +442,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                     oneMoreAlarm = false;
                     oneMoreAlarmSignalStopCheck = false;
                     index++;
-                    Toast.makeText(getApplicationContext(),"index == 0 ->"+String.valueOf(index),Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(),"index == 0 ->"+String.valueOf(index),Toast.LENGTH_SHORT).show();
                 }
             }
             else if(index > 0 && index < passList.size()-1) {
@@ -586,48 +589,48 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
     }
 
     public void signalTurnType(int type) {
-        Toast.makeText(getApplicationContext(), "알림", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "알림", Toast.LENGTH_SHORT).show();
         switch (type) {
 //            case 201:
 //                Toast.makeText(getApplicationContext(), "도착", Toast.LENGTH_SHORT).show();
 //                ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 201.");
 //                break;
             case 11:
-                Toast.makeText(getApplicationContext(), "직진", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "직진", Toast.LENGTH_SHORT).show();
                 ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 11.");
                 break;
             case 12:
-                Toast.makeText(getApplicationContext(), "좌회전", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "좌회전", Toast.LENGTH_SHORT).show();
                 ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 12.");
                 break;
             case 13:
-                Toast.makeText(getApplicationContext(), "우회전", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "우회전", Toast.LENGTH_SHORT).show();
                 ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 13.");
                 break;
             case 14:
-                Toast.makeText(getApplicationContext(), "U턴", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "U턴", Toast.LENGTH_SHORT).show();
                 ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 14.");
                 break;
         }
     }
 
     public void oneMoreSignalTurnType(int type) {
-        Toast.makeText(getApplicationContext(), "예비 알림", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "예비 알림", Toast.LENGTH_SHORT).show();
             switch (type) {
                 case 11:
-                    Toast.makeText(getApplicationContext(), "직진", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "직진", Toast.LENGTH_SHORT).show();
                     ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 104.");
                     break;
                 case 12:
-                    Toast.makeText(getApplicationContext(), "좌회전", Toast.LENGTH_SHORT).show();
-                    ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 103.");
-                    break;
-                case 13:
-                    Toast.makeText(getApplicationContext(), "우회전", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "좌회전", Toast.LENGTH_SHORT).show();
                     ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 102.");
                     break;
+                case 13:
+                    //Toast.makeText(getApplicationContext(), "우회전", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 103.");
+                    break;
                 case 14:
-                    Toast.makeText(getApplicationContext(), "U턴", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "U턴", Toast.LENGTH_SHORT).show();
                     ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 105.");
                     break;
             }

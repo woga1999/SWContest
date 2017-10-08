@@ -221,12 +221,12 @@ public class SpectrogramBMP {
                     {
                         for(int j=0; j<avg.length; j++)
                         {
-                            if(avg[j] > oldAvg[j] && avg[j] >= -80)
+                            if(avg[j] > oldAvg[j] && avg[j] >= -70)
                             {
                                 gap = (avg[j] - oldAvg[j]) / PERCENT;
                                 if(gap < 0.1)  { gapCount++;}
                             }
-                            else if(avg[j] < oldAvg[j] && avg[j] >= -80)
+                            else if(avg[j] < oldAvg[j] && avg[j] >= -70)
                             {
                                 gap = (oldAvg[j]-avg[j]) / PERCENT;
                                 if(gap < 0.1)  { gapCount++;}
