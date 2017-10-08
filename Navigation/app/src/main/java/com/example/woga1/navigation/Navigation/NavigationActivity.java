@@ -148,7 +148,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         
         if (type == 201) {
             totalDis.setText(displayException.strDistance(distance));
-            ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 100.");
+            ((MainActivity) MainActivity.mContext).sendMessage(String.valueOf(distance) + " 200.");
             Handler mHandler = new Handler();
             mHandler.postDelayed(new Runnable() {
                 @Override
@@ -158,7 +158,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                     startActivityForResult(intent, 1);
                     finish();
                 }
-            }, 1500); // 1000ms
+            }, 1000); // 1000ms
         }
 
         if (speed > 0) {
@@ -430,7 +430,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
             if (index == passList.size() - 1) {
                 //도착지 범위는 좀 더 작게
                 //r = Radius(passList.get(i).getLatitude(), passList.get(i).getLongitude(), nowPlace.getLatitude(), nowPlace.getLongitude());
-                if (distanceInMeters <= 30) {
+                if (distanceInMeters <= 40) {
                     turnType = turnTypeList.get(passList.size()-1);
                     //Toast.makeText(getApplicationContext(), "도착", Toast.LENGTH_SHORT).show();
                     Log.e("checkarea", "도착");
@@ -447,7 +447,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
             }
             else if(index > 0 && index < passList.size()-1) {
 
-                if (distanceInMeters <= 100 && distanceInMeters > 10) {
+                if (distanceInMeters <= 100 && distanceInMeters > 15) {
                     turnType = turnTypeList.get(index);
                     oneMoreAlarmSignalStopCheck = true;
                     oneMoreAlarm = false;
@@ -458,7 +458,7 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
                     oneMoreAlarm = true;
                     //Toast.makeText(getApplicationContext(),"index: "+String.valueOf(index)+" 100미터 이상",Toast.LENGTH_SHORT).show();
                 }
-                else if (distanceInMeters <= 10) {
+                else if (distanceInMeters <= 15) {
                     Log.e("checkarea", "다음인덱스로 넘어갈 단계");
                     initProcess();
                     index++;

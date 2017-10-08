@@ -221,12 +221,12 @@ public class SpectrogramBMP {
                     {
                         for(int j=0; j<avg.length; j++)
                         {
-                            if(avg[j] > oldAvg[j] && avg[j] >= -70)
+                            if(avg[j] > oldAvg[j] && avg[j] >= -77)
                             {
                                 gap = (avg[j] - oldAvg[j]) / PERCENT;
                                 if(gap < 0.1)  { gapCount++;}
                             }
-                            else if(avg[j] < oldAvg[j] && avg[j] >= -70)
+                            else if(avg[j] < oldAvg[j] && avg[j] >= -77)
                             {
                                 gap = (oldAvg[j]-avg[j]) / PERCENT;
                                 if(gap < 0.1)  { gapCount++;}
@@ -237,7 +237,7 @@ public class SpectrogramBMP {
                             }
                         }
 
-                        if(gapCount > 11)
+                        if(gapCount > 11 && gapCount!= 512)
                         {
                             // 신호
                             Log.e("ss", "=========================================================");
