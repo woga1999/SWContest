@@ -24,7 +24,6 @@ import android.widget.TextView;
 import com.example.woga1.navigation.MainActivity;
 import com.example.woga1.navigation.Navigation.ReadyActivity;
 import com.example.woga1.navigation.R;
-import com.example.woga1.navigation.SaveData.DestinationActivity;
 import com.example.woga1.navigation.SaveData.FavoriteActivity;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -57,10 +56,7 @@ public class SearchActivity extends AppCompatActivity implements PlaceSelectionL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        Button destination = (Button) findViewById(R.id.destination);
         Button favorite = (Button) findViewById(R.id.favorite);
-        Button detailsearch = (Button) findViewById(R.id.detailsearch);
-        Button setpoint = (Button) findViewById(R.id.setpoint);
         EditText search = (EditText) findViewById(R.id.search);
         search.setMovementMethod(null);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
@@ -96,13 +92,7 @@ public class SearchActivity extends AppCompatActivity implements PlaceSelectionL
 
         });
 
-        destination.setOnClickListener(new EditText.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(SearchActivity.this, DestinationActivity.class));
-            }
 
-        });
 
         favorite.setOnClickListener(new EditText.OnClickListener(){
             @Override
@@ -112,13 +102,7 @@ public class SearchActivity extends AppCompatActivity implements PlaceSelectionL
 
         });
 
-        detailsearch.setOnClickListener(new EditText.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(SearchActivity.this, DetailSearchActivity.class));
-            }
 
-        });
 
         //listView에 sharedPreference의 목적지 변수 넣기
         SharedPreferences sharedPreferences = getSharedPreferences("pref", Activity.MODE_PRIVATE);

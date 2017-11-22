@@ -28,14 +28,26 @@ public class NoticeActivity extends AppCompatActivity {
         testButton.setOnClickListener(new EditText.OnClickListener(){
             @Override
             public void onClick(View view) {
-                if(count%3==0) {
-                    ((MainActivity) MainActivity.mContext).sendMessage("100 14.");
+                if(count%7==0) {
+                    ((MainActivity) MainActivity.mContext).sendMessage("100 200.");
                     count++;
-                }else if(count%3==1) {
+                }else if(count%7==1) {
+                    ((MainActivity) MainActivity.mContext).sendMessage("100 11.");
+                    count++;
+                }else if(count%7==2) {
                     ((MainActivity) MainActivity.mContext).sendMessage("100 12.");
                     count++;
-                }else if(count%3==2) {
-                    ((MainActivity) MainActivity.mContext).sendMessage("100 13.");
+                }else if(count%7==3) {
+                    ((MainActivity) MainActivity.mContext).sendMessage("150 102.");
+                    count++;
+                }else if(count%7==4) {
+                    ((MainActivity) MainActivity.mContext).sendMessage("150 105.");
+                    count++;
+                }else if(count%7==5) {
+                    ((MainActivity) MainActivity.mContext).sendMessage("100 100.");
+                    count++;
+                }else if(count%7==6) {
+                    ((MainActivity) MainActivity.mContext).sendMessage("100 101.");
                     count++;
                 }
             }
