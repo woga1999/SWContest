@@ -18,16 +18,16 @@ public class StopNavigation extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_stop_navigation);
-//        Button noButton = (Button)findViewById(R.id.noButton);
+        Button noButton = (Button)findViewById(R.id.noButton);
         Button finishButton = (Button)findViewById(R.id.finishButton);
 
-//        noButton.setOnClickListener(new Button.OnClickListener(){
-//            @Override
-//            public void onClick(View view) {
-//                finish();
-//            }
-//
-//        });
+        noButton.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+
+        });
 
         finishButton.setOnClickListener(new Button.OnClickListener(){
             @Override

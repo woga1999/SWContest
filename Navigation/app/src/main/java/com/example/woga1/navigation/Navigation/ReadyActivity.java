@@ -71,6 +71,8 @@ public class ReadyActivity extends AppCompatActivity {
         nowPlace = nowLocation();
         startLatitiude = nowPlace.getLatitude();
         startLongitude = nowPlace.getLongitude();
+        Log.e("Totaldistance", String.valueOf(startLatitiude));
+        Log.e("Totaldistance", String.valueOf(startLongitude));
         setContentView(R.layout.activity_ready);
         TMapData tMapData = new TMapData();
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFFFFFFFF));
@@ -101,7 +103,7 @@ public class ReadyActivity extends AppCompatActivity {
         mapView = (RelativeLayout) findViewById(mapview);
         //startLatitude,startLongitude
         //용덕관 앞
-        execute(37.551451, 127.073621, Double.parseDouble(endLatitude),Double.parseDouble(endLongitude));
+        execute(startLatitiude,startLongitude, Double.parseDouble(endLatitude),Double.parseDouble(endLongitude));
         Log.e("Totaldistance", String.valueOf(totalDistance));
         totalDis.setText(textException.strDistance(totalDistance));
         totaltime.setText(textException.strTime(totalTime));

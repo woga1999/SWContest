@@ -281,16 +281,16 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-//                        entireView.setBackgroundColor(Color.parseColor("#80FF0000"));
-                        entireView.setBackgroundColor(Color.TRANSPARENT);
-                    }
-                }, 1000);
-//                entireView.setBackgroundColor(Color.TRANSPARENT);
-                entireView.setBackgroundColor(Color.parseColor("#80FF0000"));
+//                Handler handler = new Handler();
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+////                        entireView.setBackgroundColor(Color.parseColor("#80FF0000"));
+//                        entireView.setBackgroundColor(Color.TRANSPARENT);
+//                    }
+//                }, 1000);
+////                entireView.setBackgroundColor(Color.TRANSPARENT);
+//                entireView.setBackgroundColor(Color.parseColor("#80FF0000"));
             }
         });
         //주변 편의시설로 넘어가는
@@ -303,16 +303,16 @@ public class NavigationActivity extends Activity implements TMapGpsManager.onLoc
             }
         });
         currentLocation = nowLocation();
-        startPlaceLat = 37.551451;
-        startPlaceLon = 127.073621;
+        startPlaceLat = currentLocation.getLatitude();
+        startPlaceLon = currentLocation.getLongitude();
         //currentLocation.getLatitude(), currentLocation.getLongitude()
         //37.551451, 127.073621
         //세종대학교 용덕관
-        TMapPoint startPoint = new TMapPoint(37.551451, 127.073621);
+        TMapPoint startPoint = new TMapPoint(startPlaceLat, startPlaceLon);
         //37.540542, 127.069236
         //Double.parseDouble(latitude), Double.parseDouble(longitude)
         //광진소방서
-        TMapPoint endPoint = new TMapPoint(37.545169, 127.082834);
+        TMapPoint endPoint = new TMapPoint(Double.parseDouble(latitude), Double.parseDouble(longitude));
         TMapData tmapdata = new TMapData();
         tmapview = new TMapView(this);
 

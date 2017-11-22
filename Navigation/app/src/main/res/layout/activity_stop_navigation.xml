@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:text="수고하셨습니다!"
+            android:text="잠깐!"
             android:textSize="15dp"
             android:textColor="#000000"
             android:textStyle="bold"
@@ -34,10 +34,10 @@
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/txtText"
-            android:textSize="20dp"
+            android:textSize="15dp"
             android:textColor="#0e3f66"
             android:alpha="0.87"
-            android:text="목적지에 도착했습니다."
+            android:text="경로안내를 종료하시겠습니까?"
             android:gravity="center"
             android:textStyle="bold"
             android:layout_marginBottom="3dp"
@@ -59,18 +59,18 @@
         android:background="#F4F4F4"
         android:orientation="horizontal">
 
-        <!--<Button-->
-            <!--android:id="@+id/noButton"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="53dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:background="#00000000"-->
-            <!--android:gravity="center"-->
-            <!--android:onClick="mOnClose"-->
-            <!--android:padding="16dp"-->
-            <!--android:text="아니오"-->
-            <!--android:textColor="#000000"-->
-            <!--android:textSize="15sp" />-->
+        <Button
+            android:id="@+id/noButton"
+            android:layout_width="0dp"
+            android:layout_height="53dp"
+            android:layout_weight="1"
+            android:background="#00000000"
+            android:gravity="center"
+            android:onClick="mOnClose"
+            android:padding="16dp"
+            android:text="아니오"
+            android:textColor="#000000"
+            android:textSize="15sp" />
 
         <Button
             android:id="@+id/finishButton"
