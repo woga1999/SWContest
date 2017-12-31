@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.woga1.navigation.Search.POIActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/gasStationButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="#0e3f66"
+            android:gravity="center"
+            android:text="주유소/충전소"
+            android:textColor="#C90000"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/restaurantButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="#0e3f66"
+            android:gravity="center"
+            android:text="음식점"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/martButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="#0e3f66"
+            android:gravity="center"
+            android:text="마트/편의점"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/listFragment"
+        android:name="com.example.woga1.navigation.Search.GasStationFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout = "@layout/fragment_gas_station" />
+
+</LinearLayout>

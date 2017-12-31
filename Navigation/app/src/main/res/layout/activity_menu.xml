@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="#0e3f66"
+        android:background="#4C4C4C"
         android:layout_alignParentTop="true"
         android:orientation="horizontal">
 
@@ -36,13 +36,13 @@
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:layout_weight="1">
-
             <ImageButton
-                android:id="@+id/poiButton"
+                android:id="@+id/button2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:background="@drawable/gasstationbutton" />
+                android:background="@drawable/gasstationbutton"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -51,28 +51,28 @@
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:layout_weight="1">
-
             <ImageButton
-                android:id="@+id/destinationButton"
+                android:id="@+id/button3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:background="@drawable/mappointbutton" />
+                android:background="@drawable/mappointbutton"
+                />
         </LinearLayout>
 
         <!--<LinearLayout-->
-        <!--android:layout_margin="7dp"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="60dp"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:layout_weight="1">-->
-        <!--<ImageButton-->
-        <!--android:id="@+id/button4"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:background="@drawable/bluetoothtest3"-->
-        <!--/>-->
+            <!--android:layout_margin="7dp"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="60dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight="1">-->
+            <!--<ImageButton-->
+                <!--android:id="@+id/button4"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:background="@drawable/bluetoothtest3"-->
+                <!--/>-->
         <!--</LinearLayout>-->
 
         <LinearLayout
@@ -81,13 +81,13 @@
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:layout_weight="1">
-
             <ImageButton
-                android:id="@+id/notificationButton"
+                android:id="@+id/button5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:background="@mipmap/notificationbutton" />
+                android:background="@mipmap/notificationbutton"
+                />
         </LinearLayout>
 
     </LinearLayout>
@@ -95,7 +95,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="#0e3f66"
+        android:background="#4C4C4C"
         android:layout_toEndOf="@+id/destination"
         android:orientation="horizontal"
         android:layout_marginBottom="5dp">
@@ -128,13 +128,13 @@
             android:textColor="#FFFFFF" />
 
         <!--<TextView-->
-        <!--android:id="@+id/textView4"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_weight="1"-->
-        <!--android:gravity="center"-->
-        <!--android:text="블루투스"-->
-        <!--android:textColor="#FFFFFF" />-->
+            <!--android:id="@+id/textView4"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center"-->
+            <!--android:text="블루투스"-->
+            <!--android:textColor="#FFFFFF" />-->
 
         <TextView
             android:id="@+id/textView5"
@@ -177,13 +177,13 @@
             android:paddingLeft="10dp"/>
     </LinearLayout>
     <!--<EditText-->
-    <!--android:id="@+id/search"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="50dp"-->
-    <!--android:layout_gravity="center"-->
-    <!--android:background="@drawable/searchbar"-->
-    <!--android:hint="장소/주소"-->
-    <!--android:paddingLeft="70dp" />-->
+        <!--android:id="@+id/search"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:background="@drawable/searchbar"-->
+        <!--android:hint="장소/주소"-->
+        <!--android:paddingLeft="70dp" />-->
 
 
     <GridView

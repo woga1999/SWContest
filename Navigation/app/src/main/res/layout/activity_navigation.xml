@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/navigationActivity"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.woga1.navigation.Navigation.NavigationActivity">
+
+
+
+    <ImageView
+        android:id="@+id/directionView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#0e3f66"
+        android:layout_alignBottom="@+id/directionSign"
+        />
+
+    <TextView
+        android:id="@+id/roadText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="선릉로 방면"
+        android:textColor="#FFFFFF"
+        android:gravity="center_vertical"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/directionSign" />
+
+    <ImageView
+        android:id="@+id/directionSign"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/distanceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="35m"
+
+        android:textStyle="bold"
+        android:paddingLeft="5dp"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:textSize="40dp"
+        android:layout_marginStart="35dp"
+        android:layout_below="@+id/roadText"
+        android:layout_toEndOf="@+id/frameLayout2" />
+
+    <RelativeLayout
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_above="@+id/mapview"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/secondinform"
+        android:layout_below="@+id/roadText">
+
+        <ImageView
+            android:id="@+id/nextDirectionSign"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="11dp" />
+        <TextView
+            android:id="@+id/nextDistanceText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="78m"
+            android:paddingLeft="5dp"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:layout_alignBottom="@+id/nextDirectionSign"
+            android:layout_toEndOf="@+id/nextDirectionSign"
+            android:layout_alignTop="@+id/nextDirectionSign" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/mapview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/destination"
+        android:layout_below="@+id/directionView">
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/destination"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:background="#A6A6A6"
+        android:gravity="center"
+        android:text="서울특별시 광진구 군자동"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_above="@+id/linearLayout"
+        android:layout_toEndOf="@+id/mapview"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="#595959"
+        android:padding="16dp"
+        android:id="@+id/linearLayout">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+
+            <ImageButton
+                android:id="@+id/resetButton"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:background="@drawable/refresh" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/kmTitle"
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="남은거리"
+            android:textColor="#FFFFFF"
+            android:textSize="10dp"
+            android:layout_weight="0.5"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/km"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:text="22km"
+                android:paddingLeft="10dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="23dp" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/minTItle"
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="false"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="소요시간"
+            android:textColor="#FFFFFF"
+            android:textSize="10dp"
+            android:layout_weight="0.5"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/min"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:text="55분"
+                android:paddingLeft="10dp"
+                android:textColor="#FFFFFF"
+                android:textSize="23dp"
+                android:layout_weight="2.5"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+
+            <ImageButton
+                android:id="@+id/stopButton"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center|right"
+                android:background="@drawable/powerbutton"
+                android:onClick="showPopup" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/speedView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/gpsFrameLayout"
+        android:text="0"
+        android:gravity="left|center"
+        android:textSize="30dp"
+        android:textColor="#ff9600"
+        android:textStyle="bold"
+        android:layout_alignStart="@+id/gpsFrameLayout" />
+    <FrameLayout
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="#f2f2f2"
+        android:layout_alignTop="@+id/zoonInFrameLayout"
+        android:layout_alignStart="@+id/gpsFrameLayout"
+        android:id="@+id/frameLayout2">
+
+
+        <ImageButton
+            android:id="@+id/volumeControl"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:background="@drawable/volumecontrol"
+            android:elevation="8dp"
+            android:scaleType="fitXY" />
+
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/roundSearch"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="#f2f2f2"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_alignTop="@+id/gpsFrameLayout"
+        android:layout_alignParentEnd="true">
+
+
+
+        <ImageButton
+            android:id="@+id/poiButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_local_gas_station_black_24dp"
+            android:elevation="8dp"
+            android:onClick="btnNowLocation"
+            android:scaleType="fitXY" />
+
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/gpsFrameLayout"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="#f2f2f2"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginBottom="16dp"
+        android:layout_above="@+id/destination"
+        android:layout_alignParentStart="true">
+
+
+
+        <ImageButton
+            android:id="@+id/gpsButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_my_location_black_24dp"
+            android:elevation="8dp"
+            android:onClick="btnNowLocation"
+            android:scaleType="fitXY" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/zoomOutFrameLayout"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="#f2f2f2"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/zoonInFrameLayout"
+        android:layout_marginLeft="15dp">
+
+
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_remove_black_24dp"
+            android:elevation="8dp"
+            android:scaleType="fitXY"
+            android:onClick="btnZoomOut"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/zoonInFrameLayout"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:background="#f2f2f2"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="110dp">
+
+
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_add_black_24dp"
+            android:elevation="8dp"
+            android:scaleType="fitXY"
+            android:onClick="btnZoomIn"/>
+    </FrameLayout>
+
+
+    <ImageView
+        android:id="@+id/entireView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/tranparent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+    <!--<FrameLayout-->
+        <!--android:id="@+id/zoonInFrameLayout"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_marginLeft="15dp"-->
+        <!--android:layout_marginTop="110dp">-->
+
+        <!--<android.support.design.widget.FloatingActionButton-->
+            <!--android:id="@+id/zoominFloating"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_above="@+id/destination"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:elevation="10dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--app:backgroundTint="#F4F4F4" />-->
+
+        <!--<ImageButton-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:background="@drawable/ic_add_black_24dp"-->
+            <!--android:elevation="8dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--android:onClick="btnZoomIn"/>-->
+    <!--</FrameLayout>-->
+    <view
+        android:id="@+id/plot"
+        class="com.example.woga1.navigation.SoundAnalyze.AnalyzerGraphic"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        custom:cutoffDb="-25"
+        custom:sampleRate="16000" />
+
+</RelativeLayout>
